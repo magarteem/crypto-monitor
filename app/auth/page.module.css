@@ -1,0 +1,266 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--background);
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem 1rem;
+  gap: 2rem;
+  max-width: 500px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #999;
+  font-weight: 300;
+}
+
+/* Card */
+.card {
+  width: 100%;
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: 16px;
+  padding: 2rem;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.tab {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.tab:hover {
+  color: var(--primary);
+}
+
+.tabActive {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+/* Form */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.input {
+  padding: 0.875rem 1rem;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  color: var(--foreground);
+  font-size: 1rem;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.passwordWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.passwordWrapper .input {
+  padding-right: 3rem;
+}
+
+.eyeButton {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  color: #666;
+}
+
+.eyeButton:hover {
+  color: var(--primary);
+}
+
+.eyeButton svg {
+  width: 20px;
+  height: 20px;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.input::placeholder {
+  color: #555;
+}
+
+.testAccount {
+  padding: 0.75rem 1rem;
+  background: rgba(255, 107, 74, 0.1);
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #999;
+}
+
+.testCredentials {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.errorMessage {
+  padding: 0.75rem 1rem;
+  background: rgba(220, 38, 38, 0.1);
+  border: 1px solid #dc2626;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #dc2626;
+  text-align: center;
+}
+
+.submitButton {
+  padding: 1rem;
+  background: var(--primary);
+  border: none;
+  border-radius: 8px;
+  color: #000;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.submitButton:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.submitButton:active {
+  transform: translateY(0);
+}
+
+/* About Card */
+.aboutCard {
+  width: 100%;
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: 16px;
+  padding: 2rem;
+}
+
+.aboutTitle {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.aboutDescription {
+  color: #999;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Features */
+.features {
+  display: flex;
+  justify-content: space-around;
+  gap: 2rem;
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.featureIcon {
+  font-size: 2.5rem;
+  filter: grayscale(0.3);
+}
+
+.featureName {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--foreground);
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main {
+    padding: 2rem 1rem;
+  }
+
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .card,
+  .aboutCard {
+    padding: 1.5rem;
+  }
+
+  .features {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
