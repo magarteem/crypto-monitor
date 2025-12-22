@@ -1,121 +1,165 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  ReferenceLine,
-} from "recharts";
+import dynamic from "next/dynamic";
+import ApexCharts from "apexcharts";
 import styles from "./CryptoChart.module.css";
+
+// Динамический импорт для Next.js
+const ReactApexChart = dynamic(() => import("react-apexcharts"), {
+  ssr: false,
+});
+
+type Candle = {
+  x: Date;
+  y: [number, number, number, number]; // [open, high, low, close]
+};
 
 interface CryptoChartProps {
   name: string;
-  data: Array<{ time: string; price: number }>;
-  currentPrice: number;
-  change: string;
   symbol: string;
+  change: string;
+  currentPrice: number;
 }
 
 export const CryptoChart = ({
   name,
-  data,
-  currentPrice: initialPrice,
-  change,
   symbol,
+  change,
+  currentPrice: initialPrice,
 }: CryptoChartProps) => {
-  const [zoomLevel, setZoomLevel] = useState(1);
+  const [series, setSeries] = useState<{ data: Candle[] }>({ data: [] });
   const [currentPrice, setCurrentPrice] = useState(initialPrice);
   const isPositive = parseFloat(change) >= 0;
 
-  // Обновление цены каждые 5 секунд
-  useEffect(() => {
-    const fetchPrice = async () => {
-      try {
-        const response = await fetch(
-          `https://api.binance.com/api/v3/ticker/price?symbol=${symbol}`
-        );
-        const data = await response.json();
-        if (data.price) {
-          setCurrentPrice(parseFloat(data.price));
-        }
-      } catch (error) {
-        console.error(`Error fetching price for ${symbol}:`, error);
-      }
-    };
+  async function fetchData() {
+    try {
+      // Получаем свечи за последние 100 минут
+      const res = await fetch(
+        `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=1m&limit=100`
+      );
+      const raw = await res.json();
 
-    const interval = setInterval(fetchPrice, 5000);
+      const candles: Candle[] = raw.map((c: any) => ({
+        x: new Date(c[0]),
+        y: [
+          parseFloat(c[1]), // open
+          parseFloat(c[2]), // high
+          parseFloat(c[3]), // low
+          parseFloat(c[4]), // close
+        ],
+      }));
+
+      setSeries({ data: candles });
+      setCurrentPrice(parseFloat(raw[raw.length - 1][4])); // последний close
+    } catch (error) {
+      console.error(`Error fetching data for ${symbol}:`, error);
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+    const interval = setInterval(fetchData, 10000); // обновляем каждые 10 секунд
     return () => clearInterval(interval);
   }, [symbol]);
 
-  // Вычисляем диапазон цен для красивого отображения
-  const prices = data.map((d) => d.price);
-  const minPrice = Math.min(...prices);
-  const maxPrice = Math.max(...prices);
-  const padding = (maxPrice - minPrice) * 0.1;
-
-  // Применяем zoom
-  const displayData = data.slice(-Math.floor(data.length / zoomLevel));
-
-  const handleZoomIn = () => {
-    setZoomLevel((prev) => Math.min(prev * 1.5, 4));
-  };
-
-  const handleZoomOut = () => {
-    setZoomLevel((prev) => Math.max(prev / 1.5, 1));
-  };
-
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className={styles.tooltip}>
-          <p className={styles.tooltipLabel}>{payload[0].payload.time}</p>
-          <p className={styles.tooltipValue}>
-            $
-            {payload[0].value.toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 6,
-            })}
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
-
-  // Кастомная метка с фоном для текущей цены
-  const PriceLabel = (props: any) => {
-    const { viewBox } = props;
-    const priceText = `$${currentPrice.toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: currentPrice < 1 ? 6 : 2,
-    })}`;
-
-    return (
-      <g>
-        <rect
-          x={viewBox.width - 70}
-          y={viewBox.y - 18}
-          width={65}
-          height={16}
-          fill="rgba(255, 107, 74, 0.6)"
-          rx={3}
-        />
-        <text
-          x={viewBox.width - 37.5}
-          y={viewBox.y - 8}
-          fill="#fff"
-          fontSize={10}
-          fontWeight="bold"
-          textAnchor="middle"
-        >
-          {priceText}
-        </text>
-      </g>
-    );
+  const options: ApexCharts.ApexOptions = {
+    chart: {
+      type: "candlestick",
+      height: 250,
+      background: "transparent",
+      toolbar: {
+        show: true,
+        tools: {
+          download: false,
+          zoom: true,
+          zoomin: true,
+          zoomout: true,
+          pan: true,
+          reset: true,
+        },
+        autoSelected: "zoom",
+      },
+      animations: {
+        enabled: true,
+        speed: 300,
+      },
+    },
+    plotOptions: {
+      candlestick: {
+        colors: {
+          upward: "#00ff88",
+          downward: "#ff4444",
+        },
+        wick: {
+          useFillColor: true,
+        },
+      },
+    },
+    xaxis: {
+      type: "datetime",
+      labels: {
+        style: {
+          colors: "#666",
+          fontSize: "10px",
+        },
+        datetimeUTC: false,
+      },
+    },
+    yaxis: {
+      opposite: true, // шкала справа
+      tooltip: {
+        enabled: true,
+      },
+      labels: {
+        style: {
+          colors: "#666",
+          fontSize: "10px",
+        },
+        formatter: (value) => value.toFixed(2),
+      },
+    },
+    tooltip: {
+      enabled: true,
+      theme: "dark",
+      x: {
+        format: "HH:mm",
+      },
+    },
+    grid: {
+      borderColor: "#333",
+      strokeDashArray: 4,
+    },
+    annotations: {
+      yaxis: [
+        currentPrice
+          ? {
+              y: currentPrice,
+              borderColor: "#ff6b4a",
+              strokeDashArray: 5,
+              label: {
+                borderColor: "rgba(255, 107, 74, 0.6)",
+                style: {
+                  color: "#fff",
+                  background: "rgba(255, 107, 74, 0.6)",
+                  fontSize: "10px",
+                  fontWeight: "bold",
+                  padding: {
+                    left: 8,
+                    right: 8,
+                    top: 4,
+                    bottom: 4,
+                  },
+                },
+                text: `$${currentPrice.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: currentPrice < 1 ? 6 : 2,
+                })}`,
+              },
+            }
+          : {},
+      ],
+    },
   };
 
   return (
@@ -136,110 +180,20 @@ export const CryptoChart = ({
           $
           {currentPrice.toLocaleString(undefined, {
             minimumFractionDigits: 2,
-            maximumFractionDigits: 6,
+            maximumFractionDigits: currentPrice < 1 ? 6 : 2,
           })}
         </div>
       </div>
 
       <div className={styles.chartContainer}>
-        <ResponsiveContainer width="100%" height={200}>
-          <LineChart
-            data={displayData}
-            margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
-          >
-            <defs>
-              <linearGradient
-                id={`gradient-${name}`}
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="1"
-              >
-                <stop
-                  offset="5%"
-                  stopColor={isPositive ? "#00ff88" : "#ff4444"}
-                  stopOpacity={0.3}
-                />
-                <stop
-                  offset="95%"
-                  stopColor={isPositive ? "#00ff88" : "#ff4444"}
-                  stopOpacity={0}
-                />
-              </linearGradient>
-            </defs>
-            <XAxis
-              dataKey="time"
-              stroke="#666"
-              tick={{ fontSize: 10 }}
-              interval={Math.floor(displayData.length / 8)}
-            />
-            <YAxis
-              stroke="#666"
-              tick={{ fontSize: 10 }}
-              domain={[minPrice - padding, maxPrice + padding]}
-              tickFormatter={(value) => value.toFixed(2)}
-              width={60}
-            />
-            <Tooltip content={<CustomTooltip />} />
-            {/* Линия текущей цены */}
-            <ReferenceLine
-              y={currentPrice}
-              stroke="#ff6b4a"
-              strokeDasharray="3 3"
-              strokeWidth={2}
-              label={<PriceLabel />}
-            />
-            <Line
-              type="monotone"
-              dataKey="price"
-              stroke={isPositive ? "#00ff88" : "#ff4444"}
-              strokeWidth={2}
-              dot={false}
-              fill={`url(#gradient-${name})`}
-              animationDuration={300}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-
-      <div className={styles.chartControls}>
-        <button
-          type="button"
-          onClick={handleZoomOut}
-          className={styles.zoomButton}
-          disabled={zoomLevel <= 1}
-        >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-          >
-            <circle cx="11" cy="11" r="8" strokeWidth="2" />
-            <path d="M21 21l-4.35-4.35" strokeWidth="2" strokeLinecap="round" />
-            <path d="M8 11h6" strokeWidth="2" strokeLinecap="round" />
-          </svg>
-        </button>
-        <span className={styles.zoomLevel}>{Math.round(zoomLevel * 100)}%</span>
-        <button
-          type="button"
-          onClick={handleZoomIn}
-          className={styles.zoomButton}
-          disabled={zoomLevel >= 4}
-        >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-          >
-            <circle cx="11" cy="11" r="8" strokeWidth="2" />
-            <path d="M21 21l-4.35-4.35" strokeWidth="2" strokeLinecap="round" />
-            <path d="M11 8v6M8 11h6" strokeWidth="2" strokeLinecap="round" />
-          </svg>
-        </button>
+        {series.data.length > 0 && (
+          <ReactApexChart
+            options={options}
+            series={[series]}
+            type="candlestick"
+            height={250}
+          />
+        )}
       </div>
     </div>
   );

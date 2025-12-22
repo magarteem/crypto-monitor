@@ -1,6 +1,6 @@
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+    --background: #0a0a0a;
+    --foreground: #ededed;
   --primary: #ff6b4a;
   --primary-dark: #e55a3a;
   --card-bg: #1a1410;
@@ -34,6 +34,6 @@ a {
   text-decoration: none;
 }
 
-html {
-  color-scheme: dark;
+  html {
+    color-scheme: dark;
 }
