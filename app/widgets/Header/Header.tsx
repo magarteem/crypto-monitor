@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import styles from "./Header.module.css";
+import { RouteNames } from "@/app/shared/types/RouteNames";
 
 interface HeaderProps {
   userEmail?: string;
@@ -25,19 +26,19 @@ export const Header = ({
 
         {/* Navigation */}
         <nav className={styles.nav}>
-          <Link href="/" className={styles.navLink}>
+          <Link href={RouteNames.HOME} className={styles.navLink}>
             Crypto
           </Link>
-          <Link href="/dashboard" className={styles.navLink}>
+          <Link href={RouteNames.DASHBOARD} className={styles.navLink}>
             Dashboard
           </Link>
-          <Link href="/dashboard/earn" className={styles.navLink}>
+          <Link href={RouteNames.EARN} className={styles.navLink}>
             Earn
           </Link>
-          <Link href="/dashboard/govern" className={styles.navLink}>
+          <Link href={RouteNames.GOVERN} className={styles.navLink}>
             Govern
           </Link>
-          <Link href="/dashboard/learn" className={styles.navLink}>
+          <Link href={RouteNames.LEARN} className={styles.navLink}>
             Learn
           </Link>
         </nav>

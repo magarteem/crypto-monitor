@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Header } from "../_widgets/Header";
-import { ProfileSidebar } from "../_widgets/ProfileSidebar";
-import { SettingsSidebar } from "../_widgets/SettingsSidebar";
+import { Header } from "../widgets/Header";
+import { ProfileSidebar } from "../widgets/ProfileSidebar";
+import { SettingsSidebar } from "../widgets/SettingsSidebar";
 import styles from "./dashboard.module.css";
 
 export default function Dashboard() {

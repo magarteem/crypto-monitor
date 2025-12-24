@@ -2,27 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Header } from "./_widgets/Header";
-import { ProfileSidebar } from "./_widgets/ProfileSidebar";
-import { SettingsSidebar } from "./_widgets/SettingsSidebar";
-import { CryptoChart } from "./CryptoChart";
+import { Header } from "./widgets/Header";
+import { ProfileSidebar } from "./widgets/ProfileSidebar";
+import { SettingsSidebar } from "./widgets/SettingsSidebar";
 import styles from "./page.module.css";
-
-// Список отслеживаемых монет
-const CRYPTO_COINS = [
-  { symbol: "BTCUSDT", name: "BTC/USDT" },
-  { symbol: "ETHUSDT", name: "ETH/USDT" },
-  { symbol: "BNBUSDT", name: "BNB/USDT" },
-  { symbol: "SOLUSDT", name: "SOL/USDT" },
-  { symbol: "XRPUSDT", name: "XRP/USDT" },
-  { symbol: "LINKUSDT", name: "LINK/USDT" },
-  { symbol: "LTCUSDT", name: "LTC/USDT" },
-  { symbol: "ATOMUSDT", name: "ATOM/USDT" },
-  { symbol: "CHZUSDT", name: "CHZ/USDT" },
-  { symbol: "AAVEUSDT", name: "AAVE/USDT" },
-  { symbol: "INJUSDT", name: "INJ/USDT" },
-  { symbol: "GNSUSDT", name: "GNS/USDT" },
-];
+import { CryptoChart } from "@widgets/crypto/CryptoChart";
+import { CRYPTO_COINS } from "@const/cryptoConst";
 
 export default function CryptoPage() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
