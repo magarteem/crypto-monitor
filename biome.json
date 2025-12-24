@@ -7,8 +7,25 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!node_modules", "!.next", "!dist", "!build"]
+    "includes": ["**", "!node_modules", "!.next", "!dist", "!build"],
+    "ignore": ["node_modules/**", ".next/**"]
   },
+  "overrides": [
+    {
+      "include": ["app/**/*.ts", "app/**/*.tsx"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedImports": "error",
+            "noUnusedVariables": "error"
+          },
+          "style": {
+            "noParameterAssign": "off"
+          }
+        }
+      }
+    }
+  ],
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
@@ -17,7 +34,20 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "correctness": {
+        "noUnusedImports": "error",
+        "useExhaustiveDependencies": "warn",
+        "noUnusedVariables": "error"
+      },
+      "style": {
+        "noRestrictedImports": {
+          "level": "off"
+        }
+      },
+      "suspicious": {
+        "noRestrictedGlobals": "off"
+      }
     },
     "domains": {
       "next": "recommended",

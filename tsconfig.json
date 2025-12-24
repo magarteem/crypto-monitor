@@ -25,7 +25,7 @@
       "@helpers/*": ["./app/shared/helpers/*"],
       "@hooks/*": ["./app/shared/hooks/*"],
       "@providers/*": ["./app/shared/providers/*"],
-      "@types/*": ["./app/shared/types/*"],
+      "@sharedTypes/*": ["./app/shared/types/*"],
       "@ui/*": ["./app/shared/ui/*"],
       "@widgets/*": ["./app/widgets/*"],
       "@entities/*": ["./app/entities/*"],

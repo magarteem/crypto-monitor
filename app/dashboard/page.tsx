@@ -1,32 +1,11 @@
-"use client";
-
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Header } from "../widgets/Header";
-import { ProfileSidebar } from "../widgets/ProfileSidebar";
-import { SettingsSidebar } from "../widgets/SettingsSidebar";
+import { Header } from "@widgets/Header";
 import styles from "./dashboard.module.css";
 
 export default function Dashboard() {
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const router = useRouter();
-
-  const handleLogout = () => {
-    document.cookie = "auth_token=; path=/; max-age=0";
-    router.push("/auth");
-  };
-
   return (
     <div className={styles.page}>
       {/* Header */}
-      <Header onProfileClick={() => setIsProfileOpen(true)} />
-
-      {/* Profile Sidebar */}
-      <ProfileSidebar
-        isOpen={isProfileOpen}
-        onClose={() => setIsProfileOpen(false)}
-        onDisconnect={handleLogout}
-      />
+      <Header />
 
       {/* Main Content */}
       <main className={styles.main}>

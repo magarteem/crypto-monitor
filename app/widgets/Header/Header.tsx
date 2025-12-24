@@ -2,65 +2,61 @@
 
 import Link from "next/link";
 import styles from "./Header.module.css";
-import { RouteNames } from "@/app/shared/types/RouteNames";
+import { RouteNames } from "@sharedTypes/RouteNames";
+import { ProfileSidebar } from "../ProfileSidebar";
+import { SettingsSidebar } from "../SettingsSidebar";
+import { useState } from "react";
 
-interface HeaderProps {
-  userEmail?: string;
-  onProfileClick?: () => void;
-  onSettingsClick?: () => void;
-}
+export const Header = () => {
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-export const Header = ({
-  userEmail = "ivan@example.com",
-  onProfileClick,
-  onSettingsClick,
-}: HeaderProps) => {
   return (
-    <header className={styles.header}>
-      <div className={styles.container}>
-        {/* Logo */}
-        <Link href="/" className={styles.logo}>
-          <div className={styles.logoIcon}>C</div>
-          <span className={styles.logoText}>Chancey</span>
-        </Link>
+    <>
+      <header className={styles.header}>
+        <div className={styles.container}>
+          {/* Logo */}
+          <Link href="/" className={styles.logo}>
+            <div className={styles.logoIcon}>C</div>
+            <span className={styles.logoText}>Chancey</span>
+          </Link>
 
-        {/* Navigation */}
-        <nav className={styles.nav}>
-          <Link href={RouteNames.HOME} className={styles.navLink}>
-            Crypto
-          </Link>
-          <Link href={RouteNames.DASHBOARD} className={styles.navLink}>
-            Dashboard
-          </Link>
-          <Link href={RouteNames.EARN} className={styles.navLink}>
-            Earn
-          </Link>
-          <Link href={RouteNames.GOVERN} className={styles.navLink}>
-            Govern
-          </Link>
-          <Link href={RouteNames.LEARN} className={styles.navLink}>
-            Learn
-          </Link>
-        </nav>
+          {/* Navigation */}
+          <nav className={styles.nav}>
+            <Link href={RouteNames.HOME} className={styles.navLink}>
+              Crypto
+            </Link>
+            <Link href={RouteNames.DASHBOARD} className={styles.navLink}>
+              Dashboard
+            </Link>
+            <Link href={RouteNames.EARN} className={styles.navLink}>
+              Earn
+            </Link>
+            <Link href={RouteNames.GOVERN} className={styles.navLink}>
+              Govern
+            </Link>
+            <Link href={RouteNames.LEARN} className={styles.navLink}>
+              Learn
+            </Link>
+          </nav>
 
-        {/* Action Buttons */}
-        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-          <button
-            type="button"
-            className={styles.profileButton}
-            onClick={onProfileClick}
-          >
-            <span className={styles.profileEmail}>
-              {userEmail.substring(0, 15)}...
-            </span>
-            <span className={styles.profileNetwork}>| Base Sepolia</span>
-          </button>
+          {/* Action Buttons */}
+          <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+            <button
+              type="button"
+              className={styles.profileButton}
+              onClick={() => setIsProfileOpen(true)}
+            >
+              <span className={styles.profileEmail}>
+                {"ivan@example.com".substring(0, 15)}...
+              </span>
+              <span className={styles.profileNetwork}>| Base Sepolia</span>
+            </button>
 
-          {onSettingsClick && (
             <button
               type="button"
               className={styles.settingsButton}
-              onClick={onSettingsClick}
+              onClick={() => setIsSettingsOpen(true)}
               aria-label="Открыть настройки"
             >
               <svg
@@ -83,9 +79,18 @@ export const Header = ({
                 />
               </svg>
             </button>
-          )}
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      <ProfileSidebar
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
+      />
+      <SettingsSidebar
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+      />
+    </>
   );
 };

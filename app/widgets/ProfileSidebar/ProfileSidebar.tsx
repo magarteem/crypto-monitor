@@ -22,7 +22,9 @@ export const ProfileSidebar = ({
 
   const handleDisconnect = () => {
     if (onDisconnect) {
-      onDisconnect();
+      document.cookie =
+        "loggedIn=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      router.push("/auth");
     } else {
       // Удаляем cookie и редиректим
       document.cookie = "auth_token=; path=/; max-age=0";
@@ -85,4 +87,3 @@ export const ProfileSidebar = ({
     </>
   );
 };
-

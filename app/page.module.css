@@ -35,74 +35,10 @@
   color: #999;
 }
 
-/* Loading */
-.loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 50vh;
-  gap: 1.5rem;
-}
-
-.spinner {
-  width: 50px;
-  height: 50px;
-  border: 3px solid rgba(255, 107, 74, 0.1);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.loading p {
-  color: #999;
-  font-size: 1.1rem;
-}
-
-/* Charts Grid */
-.chartsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  gap: 2rem;
-  animation: fadeIn 0.5s ease-in;
-  overflow-y: auto;
-  flex: 1;
-  padding-right: 0.5rem;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Responsive */
-@media (max-width: 1400px) {
-  .chartsGrid {
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  }
-}
-
 @media (max-width: 1024px) {
   .main {
     padding-left: 1rem;
     padding-right: 1rem;
-  }
-
-  .chartsGrid {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
   }
 
   .title {
@@ -114,11 +50,6 @@
   .main {
     padding-top: 70px;
     height: calc(100vh - 70px);
-  }
-
-  .chartsGrid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
   }
 
   .title {

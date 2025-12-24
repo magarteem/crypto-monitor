@@ -1,0 +1,67 @@
+import { NextResponse } from "next/server";
+
+export async function GET() {
+  const manifest = {
+    name: "Crypto Monitor",
+    short_name: "CryptoMon",
+    description: "Progressive Web Application for cryptocurrency monitoring",
+    start_url: "/",
+    display: "standalone",
+    background_color: "#ffffff",
+    theme_color: "#000000",
+    orientation: "portrait-primary",
+    icons: [
+      {
+        src: "icons/icon-192x192.png",
+        sizes: "192x192",
+        type: "image/png",
+        purpose: "any",
+      },
+      {
+        src: "icons/icon-256x256.png",
+        sizes: "256x256",
+        type: "image/png",
+        purpose: "any",
+      },
+      {
+        src: "icons/icon-384x384.png",
+        sizes: "384x384",
+        type: "image/png",
+        purpose: "any",
+      },
+      {
+        src: "icons/icon-512x512.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "any",
+      },
+      {
+        src: "icons/maskable.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "maskable",
+      },
+    ],
+    screenshots: [
+      {
+        src: "screenshots/desktop.png",
+        sizes: "1920x1080",
+        type: "image/png",
+        form_factor: "wide",
+        label: "Crypto Monitor Desktop View",
+      },
+      {
+        src: "screenshots/mobile.png",
+        sizes: "390x844",
+        type: "image/png",
+        label: "Crypto Monitor Mobile View",
+      },
+    ],
+  };
+
+  return NextResponse.json(manifest, {
+    headers: {
+      "Content-Type": "application/manifest+json",
+    },
+  });
+}

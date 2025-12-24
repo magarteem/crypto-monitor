@@ -2,22 +2,10 @@
 
 import { useState, useEffect } from "react";
 import styles from "./SettingsSidebar.module.css";
+import { CRYPTO_COINS } from "@const/cryptoConst";
 
-// Список отслеживаемых монет
-const CRYPTO_COINS = [
-  "BTCUSDT",
-  "ETHUSDT",
-  "BNBUSDT",
-  "SOLUSDT",
-  "XRPUSDT",
-  "LINKUSDT",
-  "LTCUSDT",
-  "ATOMUSDT",
-  "CHZUSDT",
-  "AAVEUSDT",
-  "INJUSDT",
-  "GNSUSDT",
-];
+// Список символов для настроек
+const CRYPTO_SYMBOLS = CRYPTO_COINS.map((coin) => coin.symbol);
 
 interface SettingsData {
   updateInterval: number; // в миллисекундах
@@ -32,7 +20,7 @@ const DEFAULT_SETTINGS: SettingsData = {
   updateInterval: 300000, // 5 минут
   priceDropThreshold: 5, // 5%
   priceGrowthThreshold: 5, // 5%
-  selectedCoins: [...CRYPTO_COINS],
+  selectedCoins: [...CRYPTO_SYMBOLS],
   trackDrop: true,
   trackGrowth: true,
 };
@@ -84,7 +72,7 @@ export const SettingsSidebar = ({
   const selectAllCoins = () => {
     setSettings((prev) => ({
       ...prev,
-      selectedCoins: [...CRYPTO_COINS],
+      selectedCoins: [...CRYPTO_SYMBOLS],
     }));
   };
 
@@ -284,12 +272,12 @@ export const SettingsSidebar = ({
                 Снять все
               </button>
               <span className={styles.coinCounter}>
-                {settings.selectedCoins.length} / {CRYPTO_COINS.length}
+                {settings.selectedCoins.length} / {CRYPTO_SYMBOLS.length}
               </span>
             </div>
 
             <div className={styles.coinsGrid}>
-              {CRYPTO_COINS.map((coin) => (
+              {CRYPTO_SYMBOLS.map((coin) => (
                 <div key={coin} className={styles.coinCheckbox}>
                   <input
                     type="checkbox"

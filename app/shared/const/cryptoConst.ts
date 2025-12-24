@@ -9,7 +9,7 @@ export type CryptoCoins = readonly CryptoCoin[];
 // Список отслеживаемых монет
 export const CRYPTO_COINS: CryptoCoins = [
   { symbol: "BTCUSDT", name: "BTC/USDT" },
-  { symbol: "ATOM", name: "ETH/USDT" },
+  { symbol: "ETHUSDT", name: "ETH/USDT" },
   { symbol: "BNBUSDT", name: "BNB/USDT" },
   { symbol: "SOLUSDT", name: "SOL/USDT" },
   { symbol: "XRPUSDT", name: "XRP/USDT" },
