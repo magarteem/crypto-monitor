@@ -28,9 +28,6 @@ export default function Dashboard() {
         onDisconnect={handleLogout}
       />
 
-      {/* Settings Sidebar */}
-      <SettingsSidebar />
-
       {/* Main Content */}
       <main className={styles.main}>
         {/* Hero Section */}
