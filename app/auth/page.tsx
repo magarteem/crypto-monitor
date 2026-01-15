@@ -39,17 +39,17 @@ export default function Home() {
   }, [status, router]);
 
   // Показываем загрузку, пока проверяется сессия
-  if (status === "loading" || status === "authenticated") {
-    return (
-      <div className={styles.page}>
-        <main className={styles.main}>
-          <div className={styles.header}>
-            <h1 className={styles.title}>Загрузка...</h1>
-          </div>
-        </main>
-      </div>
-    );
-  }
+  //if (status === "loading" || status === "authenticated") {
+  //  return (
+  //    <div className={styles.page}>
+  //      <main className={styles.main}>
+  //        <div className={styles.header}>
+  //          <h1 className={styles.title}>Загрузка...</h1>
+  //        </div>
+  //      </main>
+  //    </div>
+  //  );
+  //}
 
   const handleGoogleAuth = async () => {
     try {

@@ -4,30 +4,17 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 import { InputFormField } from "@/app/shared/formFields/inputFormField/InputFormField";
 import { Button } from "@ui/button";
 import { loginSchema, type LoginFormData } from "../schemas";
 import styles from "../page.module.css";
 import { EyeClosedIcon, EyeOpenIcon } from "@/public/img";
 import { RouteNames } from "@/app/shared/types";
-import { axiosInstance } from "@/app/shared/api/axios-instance";
 
 interface LoginFormProps {
   onError: (error: string) => void;
   globalError: string;
-}
-
-interface AuthResponse {
-  user: {
-    id: string;
-    email: string | null;
-    displayName: string | null;
-    picture: string | null;
-    role: string;
-    method: string;
-  };
-  token: string;
 }
 
 export function LoginForm({ onError, globalError }: LoginFormProps) {
@@ -44,25 +31,16 @@ export function LoginForm({ onError, globalError }: LoginFormProps) {
     },
   });
 
-  const onLoginSubmit = async (data: LoginFormData) => {
+  const onLoginSubmit = async (
+    data: LoginFormData,
+    e?: React.BaseSyntheticEvent
+  ) => {
+    e?.preventDefault();
     onError("");
     setIsLoggingIn(true);
 
     try {
-      // Получаем токен от API
-      const response = await axiosInstance.post<AuthResponse>("/api/auth/login", {
-        email: data.email,
-        password: data.password,
-      });
-
-      const { token } = response.data;
-
-      // Сохраняем токен в localStorage
-      if (typeof window !== "undefined") {
-        localStorage.setItem("auth_token", token);
-      }
-
-      // Авторизуем через next-auth
+      // Авторизуем через next-auth (запрос к API происходит в auth.config.ts)
       const result = await signIn("credentials", {
         email: data.email,
         password: data.password,
@@ -71,16 +49,19 @@ export function LoginForm({ onError, globalError }: LoginFormProps) {
 
       if (result?.error) {
         onError("Неверный email или пароль");
-      } else {
+      } else if (result?.ok) {
+        // Получаем session и сохраняем токен в localStorage для axios interceptors
+        const session = await getSession();
+        if (session && (session as any).accessToken) {
+          if (typeof window !== "undefined") {
+            localStorage.setItem("auth_token", (session as any).accessToken);
+          }
+        }
         router.push(RouteNames.HOME);
       }
     } catch (error: any) {
       console.error("Login error:", error);
-      const errorMessage =
-        error.response?.data?.message ||
-        error.response?.data?.error ||
-        "Неверный email или пароль";
-      onError(errorMessage);
+      onError("Ошибка при входе. Попробуйте еще раз.");
     } finally {
       setIsLoggingIn(false);
     }
@@ -90,7 +71,10 @@ export function LoginForm({ onError, globalError }: LoginFormProps) {
     <form
       key="login-form"
       className={styles.form}
-      onSubmit={loginForm.handleSubmit(onLoginSubmit)}
+      onSubmit={(e) => {
+        e.preventDefault();
+        loginForm.handleSubmit(onLoginSubmit)(e);
+      }}
     >
       <InputFormField
         form={loginForm}
@@ -127,9 +111,7 @@ export function LoginForm({ onError, globalError }: LoginFormProps) {
         }
       />
 
-      {globalError && (
-        <div className={styles.errorMessage}>{globalError}</div>
-      )}
+      {globalError && <div className={styles.errorMessage}>{globalError}</div>}
 
       <Button
         type="submit"

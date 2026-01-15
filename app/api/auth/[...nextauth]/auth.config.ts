@@ -71,8 +71,8 @@ export const authOptions: AuthOptions = {
       // При первой авторизации сохраняем данные пользователя
       if (user) {
         token.id = user.id;
-        token.email = user.email;
-        token.name = user.name;
+        token.email = user.email || undefined;
+        token.name = user.name || undefined;
         token.picture = user.image || undefined;
         // Сохраняем токен API, если он есть (для credentials провайдера)
         if ("accessToken" in user && user.accessToken) {
@@ -125,9 +125,9 @@ export const authOptions: AuthOptions = {
         } else {
           // Если уже был отправлен, используем сохраненные данные
           token.id = token.id || user.id;
-          token.email = token.email || user.email;
-          token.name = token.name || user.name;
-          token.picture = token.picture || user.image;
+          token.email = token.email || user.email || undefined;
+          token.name = token.name || user.name || undefined;
+          token.picture = token.picture || user.image || undefined;
         }
       }
 
@@ -139,6 +139,10 @@ export const authOptions: AuthOptions = {
         session.user.email = token.email as string;
         session.user.name = token.name as string;
         session.user.image = token.picture as string;
+        // Добавляем токен API в session для доступа на клиенте
+        if (token.accessToken) {
+          (session as any).accessToken = token.accessToken;
+        }
       }
       return session;
     },

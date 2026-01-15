@@ -94,7 +94,7 @@ function NewPasswordForm() {
       token,
       data: {
         password: data.password,
-        passwordRepeat: data.confirmPassword,
+        //passwordRepeat: data.confirmPassword,
       },
     });
   };
