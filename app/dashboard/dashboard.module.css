@@ -1,0 +1,291 @@
+.page {
+  min-height: 100vh;
+  background: #000;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Main */
+.main {
+  padding-top: 80px;
+  min-height: 100vh;
+}
+
+/* Hero Section */
+.hero {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 107, 74, 0.15) 0%, transparent 50%);
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  width: 4px;
+  height: 4px;
+  background: var(--primary);
+  border-radius: 50%;
+  animation: twinkle 3s infinite;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 60%;
+  right: 15%;
+  width: 4px;
+  height: 4px;
+  background: var(--primary);
+  border-radius: 50%;
+  animation: twinkle 4s infinite 1s;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.heroContent {
+  text-align: center;
+  z-index: 1;
+}
+
+.heroTitle {
+  font-size: 5rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 40px rgba(255, 107, 74, 0.5);
+}
+
+.heroSubtitle {
+  font-size: 1.25rem;
+  color: #999;
+  margin-bottom: 2rem;
+}
+
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 107, 74, 0.1);
+  border: 1px solid rgba(255, 107, 74, 0.3);
+  border-radius: 50px;
+  color: var(--primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 2.5rem;
+}
+
+.heroBadge svg {
+  width: 16px;
+  height: 16px;
+}
+
+.heroButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.playButton {
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #ff6b4a 0%, #ff8c42 100%);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.playButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 107, 74, 0.5);
+}
+
+.playIcon {
+  font-size: 1rem;
+}
+
+.paperButton {
+  padding: 1rem 2rem;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: var(--foreground);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.paperButton:hover {
+  border-color: var(--primary);
+  background: rgba(255, 107, 74, 0.1);
+}
+
+.paperIcon {
+  font-size: 1rem;
+}
+
+/* Features Section */
+.features {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+}
+
+.featureCard {
+  background: linear-gradient(135deg, rgba(255, 107, 74, 0.05) 0%, rgba(0, 0, 0, 0.5) 100%);
+  border: 1px solid rgba(255, 107, 74, 0.2);
+  border-radius: 20px;
+  padding: 3rem;
+  transition: all 0.3s;
+}
+
+.featureCard:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary);
+  box-shadow: 0 10px 40px rgba(255, 107, 74, 0.3);
+}
+
+.featureIconWrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 2rem;
+}
+
+.featureIconBg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  z-index: 2;
+}
+
+.featureDecor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: rotate 10s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.featureTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.featureDescription {
+  color: #ccc;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.featureSubtext {
+  color: #999;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .features {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding-top: 80px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+
+  .heroButtons {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .features {
+    padding: 2rem 1rem;
+    gap: 1.5rem;
+  }
+
+  .featureCard {
+    padding: 1.5rem;
+  }
+
+  .featureTitle {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main {
+    padding-top: 70px;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .heroTitle {
+    font-size: 2rem;
+  }
+
+  .heroSubtitle {
+    font-size: 0.9rem;
+  }
+
+  .features {
+    padding: 1.5rem 0.75rem;
+    gap: 1.25rem;
+  }
+
+  .featureCard {
+    padding: 1.25rem;
+  }
+
+  .featureTitle {
+    font-size: 1.25rem;
+  }
+
+  .featureDescription {
+    font-size: 0.95rem;
+  }
+}

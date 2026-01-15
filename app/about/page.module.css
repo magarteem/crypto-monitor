@@ -1,0 +1,331 @@
+.page {
+  min-height: 100vh;
+  background: #000 url("/img/bg_4.webp") center/cover no-repeat fixed;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Затемняющий оверлей для читаемости */
+.page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(20, 0, 40, 0.8) 50%,
+    rgba(40, 0, 20, 0.7) 100%
+  );
+  z-index: 0;
+  pointer-events: none;
+}
+
+.main {
+  padding-top: 120px;
+  padding-bottom: 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 4rem;
+  padding: 2rem;
+  background: rgba(0, 10, 30, 0.5);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ff6b9d 0%, #c711e1 50%, #00d4ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 30px rgba(255, 107, 157, 0.4);
+  filter: drop-shadow(0 0 20px rgba(199, 17, 225, 0.6));
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 400;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Content */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.section {
+  width: 100%;
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card {
+  padding: 2.5rem;
+  background: rgba(10, 10, 30, 0.6);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 107, 157, 0.3);
+  box-shadow: 0 12px 48px rgba(255, 107, 157, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.text {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+.text:last-child {
+  margin-bottom: 0;
+}
+
+/* Features Grid */
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.featureCard {
+  padding: 2rem;
+  background: rgba(10, 10, 30, 0.6);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.featureCard:hover {
+  transform: translateY(-8px);
+  border-color: rgba(0, 212, 255, 0.5);
+  box-shadow: 0 16px 48px rgba(0, 212, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.featureIcon {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(255, 107, 157, 0.2));
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+  color: #00d4ff;
+  filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5));
+}
+
+.featureTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.featureText {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
+}
+
+/* Tech List */
+.techList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.techItem {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.8;
+  padding-left: 2rem;
+  position: relative;
+}
+
+.techItem::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: #00d4ff;
+  font-size: 1.5rem;
+  filter: drop-shadow(0 0 4px rgba(0, 212, 255, 0.5));
+}
+
+.techName {
+  font-weight: 700;
+  color: #00d4ff;
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .main {
+    padding-top: 100px;
+  }
+
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .featuresGrid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding-top: 90px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 3rem;
+  }
+
+  .header {
+    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.5rem;
+  }
+
+  .content {
+    gap: 2rem;
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
+
+  .featuresGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .featureCard {
+    padding: 1.5rem;
+  }
+
+  .featureIcon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .text {
+    font-size: 1rem;
+  }
+
+  .techItem {
+    font-size: 1rem;
+    padding-left: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main {
+    padding-top: 80px;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .header {
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.25rem;
+  }
+
+  .card {
+    padding: 1.25rem;
+  }
+
+  .featureCard {
+    padding: 1.25rem;
+  }
+
+  .featureIcon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 1rem;
+  }
+
+  .featureTitle {
+    font-size: 1.25rem;
+  }
+
+  .text {
+    font-size: 0.95rem;
+  }
+}

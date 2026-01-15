@@ -1,0 +1,177 @@
+.container {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  padding: var(--container-padding, 20px);
+  background: rgba(20, 20, 20, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(122, 92, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--header-margin, 20px);
+  flex-wrap: wrap;
+  gap: var(--header-gap, 16px);
+  min-width: 0;
+  width: 100%;
+}
+
+.priceInfo {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--price-info-gap, 4px);
+  flex-wrap: wrap;
+}
+
+.symbol {
+  font-size: var(--symbol-size, 24px);
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.price {
+  font-size: var(--price-size, 32px);
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--price-gap, 0);
+}
+
+.priceChange {
+  font-size: var(--price-change-size, 16px);
+  font-weight: 500;
+  margin-left: var(--price-change-margin, 12px);
+  white-space: nowrap;
+}
+
+.priceChange.positive {
+  color: #26a69a;
+}
+
+.priceChange.negative {
+  color: #ef5350;
+}
+
+.timeframeControls {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.timeframeSelector {
+  display: flex;
+  gap: var(--timeframe-gap, 8px);
+  background: rgba(128, 128, 128, 0.1);
+  padding: var(--timeframe-padding, 4px);
+  border-radius: 8px;
+  flex-wrap: wrap;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.notificationButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: rgba(128, 128, 128, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.notificationButton:hover {
+  background: rgba(122, 92, 255, 0.2);
+  border-color: rgba(122, 92, 255, 0.4);
+  color: rgba(255, 255, 255, 1);
+  transform: translateY(-1px);
+}
+
+.notificationButton:active {
+  transform: translateY(0);
+}
+
+.notificationButton svg {
+  transition: transform 0.2s ease;
+}
+
+.notificationButton:hover svg {
+  transform: scale(1.1);
+}
+
+.timeframeButton {
+  padding: var(--timeframe-button-padding, 8px 16px);
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: var(--timeframe-button-size, 14px);
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.timeframeButton:hover {
+  background: rgba(128, 128, 128, 0.15);
+}
+
+.timeframeButton.active {
+  background: #7a5cff;
+  color: #ffffff;
+}
+
+.chartContainer {
+  width: 100%;
+  max-width: 100%;
+  height: var(--chart-height, 400px);
+  min-height: var(--chart-height, 400px);
+  max-height: var(--chart-height, 400px);
+  flex: 1;
+  position: relative;
+  background: rgba(30, 30, 30, 0.9);
+  border-radius: 8px;
+  border: 2px solid rgba(122, 92, 255, 0.3);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #ffffff;
+  font-size: 18px;
+}
+
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #ef5350;
+  font-size: 18px;
+}
