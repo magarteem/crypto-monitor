@@ -4,77 +4,59 @@ import { useState } from "react";
 import { GoBack } from "@features/goBack";
 import { CheckmarkIcon } from "@/public/img";
 import styles from "./page.module.css";
+import { useSubscriptionControllerGetTariffs } from "../shared/api/generated/subscription/subscription";
+import { useSession } from "next-auth/react";
+import { RouteNames } from "../shared/types";
+import { useRouter } from "next/router";
 
 type BillingPeriod = "monthly" | "yearly";
 
 export default function TariffsPage() {
+  const router = useRouter();
+  const { data: session } = useSession();
   const [billingPeriod, setBillingPeriod] = useState<BillingPeriod>("monthly");
+  const { data: tariffs, isLoading } = useSubscriptionControllerGetTariffs();
 
-  const getTariffs = (period: BillingPeriod) => [
-    {
-      name: "Free",
-      priceMonthly: 0,
-      priceYearly: 0,
-      features: [
-        "До 3 отслеживаемых монет",
-        "Обновление каждые 15 минут",
-        "До 100 уведомлений в месяц",
-        "Единый % изменения для всех монет",
-        "Базовая аналитика",
-      ],
-      recommended: false,
-    },
-    {
-      name: "Medium",
-      priceMonthly: 9.99,
-      priceYearly: 99.99,
-      features: [
-        "До 10 отслеживаемых монет",
-        "Обновление каждую минуту",
-        "До 500 уведомлений в месяц",
-        "Индивидуальный % для каждой монеты",
-        "Расширенная аналитика",
-        "Уведомления в Telegram",
-      ],
-      recommended: true,
-    },
-    {
-      name: "Pro",
-      priceMonthly: 29.99,
-      priceYearly: 299.99,
-      features: [
-        "До 100 отслеживаемых монет",
-        "Обновление каждую минуту",
-        "Безлимитные уведомления",
-        "Индивидуальный % для каждой монеты",
-        "Продвинутая аналитика",
-        "Приоритетная поддержка 24/7",
-        "API доступ",
-      ],
-      recommended: false,
-    },
-  ];
+  if (isLoading || !tariffs) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.loadingContainer}>
+          <div className={styles.spinner}></div>
+          <p className={styles.loadingText}>Загрузка тарифов...</p>
+        </div>
+      </div>
+    );
+  }
 
-  const tariffs = getTariffs(billingPeriod);
-
-  const getPrice = (tariff: typeof tariffs[0]) => {
+  const getPrice = (tariff: (typeof tariffs)[0]) => {
     if (tariff.priceMonthly === 0) return "Бесплатно";
-    const price = billingPeriod === "monthly" ? tariff.priceMonthly : tariff.priceYearly;
+    const price =
+      billingPeriod === "monthly" ? tariff.priceMonthly : tariff.priceYearly;
     return `$${price}`;
   };
 
-  const getPeriod = (tariff: typeof tariffs[0]) => {
+  const getPeriod = (tariff: (typeof tariffs)[0]) => {
     if (tariff.priceMonthly === 0) return "";
     return billingPeriod === "monthly" ? "/месяц" : "/год";
   };
 
-  const getSavings = (tariff: typeof tariffs[0]) => {
+  const getSavings = (tariff: (typeof tariffs)[0]) => {
     if (tariff.priceMonthly === 0 || billingPeriod === "monthly") return null;
     const monthlyCost = tariff.priceMonthly * 12;
-    const savings = Math.round(((monthlyCost - tariff.priceYearly) / monthlyCost) * 100);
+    const savings = Math.round(
+      ((monthlyCost - tariff.priceYearly) / monthlyCost) * 100
+    );
     return savings > 0 ? savings : null;
   };
 
+  const handleSelectTariff = (tariff: (typeof tariffs)[0]) => {
+    console.log(tariff);
+    if (!session) {
+      router.push(RouteNames.AUTH);
+    } else {
+      // set api post tariffId
+    }
+  };
   return (
     <div className={styles.page}>
       <GoBack />
@@ -109,7 +91,7 @@ export default function TariffsPage() {
         </div>
 
         <div className={styles.tariffsGrid}>
-          {tariffs.map((tariff) => {
+          {tariffs?.map((tariff) => {
             const savings = getSavings(tariff);
             return (
               <div
@@ -122,9 +104,7 @@ export default function TariffsPage() {
                   <div className={styles.badge}>Рекомендуем</div>
                 )}
                 {savings && (
-                  <div className={styles.savingsBadge}>
-                    Экономия {savings}%
-                  </div>
+                  <div className={styles.savingsBadge}>Экономия {savings}%</div>
                 )}
 
                 <h3 className={styles.tariffName}>{tariff.name}</h3>
@@ -145,8 +125,13 @@ export default function TariffsPage() {
                   ))}
                 </ul>
 
-                <button className={styles.selectButton}>
-                  {tariff.priceMonthly === 0 ? "Начать бесплатно" : "Выбрать план"}
+                <button
+                  className={styles.selectButton}
+                  onClick={() => handleSelectTariff(tariff)}
+                >
+                  {tariff.priceMonthly === 0
+                    ? "Начать бесплатно"
+                    : "Выбрать план"}
                 </button>
               </div>
             );
@@ -160,7 +145,8 @@ export default function TariffsPage() {
             Принимаем оплату в <strong>USDT</strong> на крипто-кошелек
           </p>
           <p className={styles.paymentNote}>
-            💡 При окончании подписки без оплаты тариф автоматически переходит на Free
+            💡 При окончании подписки без оплаты тариф автоматически переходит
+            на Free
           </p>
         </div>
       </main>

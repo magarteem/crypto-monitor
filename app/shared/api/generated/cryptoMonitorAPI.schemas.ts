@@ -150,3 +150,16 @@ export interface NewPasswordDto {
   password: string;
 }
 
+export interface TariffResponseDto {
+  /** Название тарифа */
+  name: string;
+  /** Цена за месяц */
+  priceMonthly: number;
+  /** Цена за год */
+  priceYearly: number;
+  /** Список функций тарифа */
+  features: string[];
+  /** Рекомендуемый ли тариф */
+  recommended: boolean;
+}
+
