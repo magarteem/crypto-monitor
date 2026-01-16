@@ -7,7 +7,8 @@ import styles from "./page.module.css";
 import { useSubscriptionControllerGetTariffs } from "../shared/api/generated/subscription/subscription";
 import { useSession } from "next-auth/react";
 import { RouteNames } from "../shared/types";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import { useUserControllerUpdateProfile } from "../shared/api";
 
 type BillingPeriod = "monthly" | "yearly";
 
@@ -16,6 +17,7 @@ export default function TariffsPage() {
   const { data: session } = useSession();
   const [billingPeriod, setBillingPeriod] = useState<BillingPeriod>("monthly");
   const { data: tariffs, isLoading } = useSubscriptionControllerGetTariffs();
+  const { mutate: updateProfile } = useUserControllerUpdateProfile();
 
   if (isLoading || !tariffs) {
     return (
@@ -55,11 +57,16 @@ export default function TariffsPage() {
       router.push(RouteNames.AUTH);
     } else {
       // set api post tariffId
+      updateProfile({
+        data: {
+          selectedPlanId: tariff.id,
+        },
+      });
     }
   };
   return (
     <div className={styles.page}>
-      <GoBack />
+      <GoBack label="Главная" />
 
       <main className={styles.main}>
         <div className={styles.header}>

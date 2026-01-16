@@ -132,9 +132,9 @@ export interface TelegramAuthDto {
 
 export interface UpdateUserDto {
   /** Отображаемое имя пользователя */
-  name: string;
-  /** Email адрес пользователя */
-  email: string;
+  name?: string;
+  /** ID выбранного тарифного плана */
+  selectedPlanId?: string;
 }
 
 export interface ResetPasswordDto {
@@ -151,6 +151,8 @@ export interface NewPasswordDto {
 }
 
 export interface TariffResponseDto {
+  /** ID тарифного плана */
+  id: string;
   /** Название тарифа */
   name: string;
   /** Цена за месяц */

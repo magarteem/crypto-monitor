@@ -127,7 +127,7 @@ export function useUserControllerFindProfile<TData = Awaited<ReturnType<typeof u
 
 
 /**
- * Обновляет информацию профиля авторизованного пользователя (email и отображаемое имя)
+ * Обновляет информацию профиля авторизованного пользователя (отображаемое имя и выбранный тарифный план)
  * @summary Обновить профиль текущего пользователя
  */
 export const userControllerUpdateProfile = (

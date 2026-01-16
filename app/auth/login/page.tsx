@@ -12,16 +12,11 @@ import styles from "../page.module.css";
 import { EyeClosedIcon, EyeOpenIcon } from "@/public/img";
 import { RouteNames } from "@/app/shared/types";
 
-interface LoginFormProps {
-  onError: (error: string) => void;
-  globalError: string;
-}
-
-export function LoginForm({ onError, globalError }: LoginFormProps) {
+export default function LoginPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
-
+  const [globalError, setGlobalError] = useState("");
   const loginForm = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     mode: "onBlur",
@@ -36,7 +31,7 @@ export function LoginForm({ onError, globalError }: LoginFormProps) {
     e?: React.BaseSyntheticEvent
   ) => {
     e?.preventDefault();
-    onError("");
+    setGlobalError("");
     setIsLoggingIn(true);
 
     try {
@@ -48,7 +43,7 @@ export function LoginForm({ onError, globalError }: LoginFormProps) {
       });
 
       if (result?.error) {
-        onError("Неверный email или пароль");
+        setGlobalError("Неверный email или пароль");
       } else if (result?.ok) {
         // Получаем session и сохраняем токен в localStorage для axios interceptors
         const session = await getSession();
@@ -61,7 +56,7 @@ export function LoginForm({ onError, globalError }: LoginFormProps) {
       }
     } catch (error: any) {
       console.error("Login error:", error);
-      onError("Ошибка при входе. Попробуйте еще раз.");
+      setGlobalError("Ошибка при входе. Попробуйте еще раз.");
     } finally {
       setIsLoggingIn(false);
     }
@@ -121,6 +116,17 @@ export function LoginForm({ onError, globalError }: LoginFormProps) {
       >
         {isLoggingIn ? "Вход..." : "Войти"}
       </Button>
+
+      <div className={styles.registerLink}>
+        <span>Нет регистрации? </span>
+        <button
+          type="button"
+          className={styles.registerButton}
+          onClick={() => router.push(RouteNames.AUTH + "/registration")}
+        >
+          Зарегистрироваться
+        </button>
+      </div>
     </form>
   );
 }

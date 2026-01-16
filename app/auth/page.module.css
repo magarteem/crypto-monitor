@@ -198,6 +198,33 @@
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
+.registerLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.registerButton {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.registerButton:hover {
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
 .input {
   padding: 0.875rem 1rem;
   background: rgba(255, 255, 255, 0.2);

@@ -15,11 +15,6 @@ import { EyeClosedIcon, EyeOpenIcon } from "@/public/img";
 import { axiosInstance } from "@/app/shared/api/axios-instance";
 import { RouteNames } from "@/app/shared/types";
 
-interface RegisterFormProps {
-  onError: (error: string) => void;
-  globalError: string;
-}
-
 interface AuthResponse {
   user: {
     id: string;
@@ -32,13 +27,13 @@ interface AuthResponse {
   token: string;
 }
 
-export function RegisterForm({ onError, globalError }: RegisterFormProps) {
+export default function RegisterForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [globalError, setGlobalError] = useState("");
   const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   const registerForm = useForm<RegisterFormData>({
@@ -52,15 +47,15 @@ export function RegisterForm({ onError, globalError }: RegisterFormProps) {
   });
 
   const onRegisterSubmit = async (data: RegisterFormData) => {
-    onError("");
+    setGlobalError("");
 
     if (!recaptchaToken) {
-      onError("Пожалуйста, подтвердите что вы не робот");
+      setGlobalError("Пожалуйста, подтвердите что вы не робот");
       return;
     }
 
     if (data.password !== data.confirmPassword) {
-      onError("Пароли не совпадают");
+      setGlobalError("Пароли не совпадают");
       return;
     }
 
@@ -68,11 +63,14 @@ export function RegisterForm({ onError, globalError }: RegisterFormProps) {
 
     try {
       // Используем axios напрямую для получения ответа с user и token
-      const response = await axiosInstance.post<AuthResponse>("/api/auth/register", {
-        email: data.email,
-        password: data.password,
-        displayName: data.email.split("@")[0], // Используем часть email как имя
-      });
+      const response = await axiosInstance.post<AuthResponse>(
+        "/api/auth/register",
+        {
+          email: data.email,
+          password: data.password,
+          displayName: data.email.split("@")[0], // Используем часть email как имя
+        }
+      );
 
       const { token } = response.data;
 
@@ -89,7 +87,7 @@ export function RegisterForm({ onError, globalError }: RegisterFormProps) {
       });
 
       if (result?.error) {
-        onError("Ошибка авторизации после регистрации");
+        setGlobalError("Ошибка авторизации после регистрации");
       } else {
         router.push(RouteNames.HOME);
       }
@@ -98,7 +96,7 @@ export function RegisterForm({ onError, globalError }: RegisterFormProps) {
         error.response?.data?.message ||
         error.response?.data?.error ||
         "Ошибка регистрации";
-      onError(errorMessage);
+      setGlobalError(errorMessage);
       recaptchaRef.current?.reset();
       setRecaptchaToken(null);
     } finally {
@@ -175,6 +173,17 @@ export function RegisterForm({ onError, globalError }: RegisterFormProps) {
       >
         {isSubmitting ? "Регистрация..." : "Зарегистрироваться"}
       </Button>
+
+      <div className={styles.registerLink}>
+        <span>Уже зарегистрированы? </span>
+        <button
+          type="button"
+          className={styles.registerButton}
+          onClick={() => router.push(RouteNames.AUTH + "/login")}
+        >
+          Войти
+        </button>
+      </div>
     </form>
   );
 }
