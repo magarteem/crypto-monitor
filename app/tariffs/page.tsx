@@ -64,6 +64,7 @@ export default function TariffsPage() {
       });
     }
   };
+  
   return (
     <div className={styles.page}>
       <GoBack label="Главная" />
