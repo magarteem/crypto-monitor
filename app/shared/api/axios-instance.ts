@@ -36,7 +36,7 @@ axiosInstance.interceptors.response.use(
         // Удаляем токен
         localStorage.removeItem("auth_token");
         // Редирект на страницу логина
-        window.location.href = "/auth";
+        //window.location.href = "/auth";
       }
     }
 

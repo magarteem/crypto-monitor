@@ -25,7 +25,8 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  UpdateUserDto
+  UpdateUserDto,
+  UserResponseDto
 } from '../cryptoMonitorAPI.schemas';
 
 import { customAxiosInstance } from '../../axios-instance';
@@ -37,13 +38,13 @@ import { customAxiosInstance } from '../../axios-instance';
  * Возвращает информацию о профиле авторизованного пользователя
  * @summary Получить профиль текущего пользователя
  */
-export const userControllerFindProfile = (
+export const findProfile = (
     
  signal?: AbortSignal
 ) => {
       
       
-      return customAxiosInstance<void>(
+      return customAxiosInstance<UserResponseDto>(
       {url: `/api/user/profile`, method: 'GET', signal
     },
       );
@@ -52,69 +53,69 @@ export const userControllerFindProfile = (
 
 
 
-export const getUserControllerFindProfileQueryKey = () => {
+export const getFindProfileQueryKey = () => {
     return [
     `/api/user/profile`
     ] as const;
     }
 
     
-export const getUserControllerFindProfileQueryOptions = <TData = Awaited<ReturnType<typeof userControllerFindProfile>>, TError = void>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerFindProfile>>, TError, TData>>, }
+export const getFindProfileQueryOptions = <TData = Awaited<ReturnType<typeof findProfile>>, TError = void>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findProfile>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getUserControllerFindProfileQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getFindProfileQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof userControllerFindProfile>>> = ({ signal }) => userControllerFindProfile(signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof findProfile>>> = ({ signal }) => findProfile(signal);
 
       
 
       
 
-   return  { queryKey, queryFn,   staleTime: 10000, refetchOnWindowFocus: false,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof userControllerFindProfile>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn,   staleTime: 10000, refetchOnWindowFocus: false,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof findProfile>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type UserControllerFindProfileQueryResult = NonNullable<Awaited<ReturnType<typeof userControllerFindProfile>>>
-export type UserControllerFindProfileQueryError = void
+export type FindProfileQueryResult = NonNullable<Awaited<ReturnType<typeof findProfile>>>
+export type FindProfileQueryError = void
 
 
-export function useUserControllerFindProfile<TData = Awaited<ReturnType<typeof userControllerFindProfile>>, TError = void>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerFindProfile>>, TError, TData>> & Pick<
+export function useFindProfile<TData = Awaited<ReturnType<typeof findProfile>>, TError = void>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof findProfile>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof userControllerFindProfile>>,
+          Awaited<ReturnType<typeof findProfile>>,
           TError,
-          Awaited<ReturnType<typeof userControllerFindProfile>>
+          Awaited<ReturnType<typeof findProfile>>
         > , 'initialData'
       >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useUserControllerFindProfile<TData = Awaited<ReturnType<typeof userControllerFindProfile>>, TError = void>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerFindProfile>>, TError, TData>> & Pick<
+export function useFindProfile<TData = Awaited<ReturnType<typeof findProfile>>, TError = void>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findProfile>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof userControllerFindProfile>>,
+          Awaited<ReturnType<typeof findProfile>>,
           TError,
-          Awaited<ReturnType<typeof userControllerFindProfile>>
+          Awaited<ReturnType<typeof findProfile>>
         > , 'initialData'
       >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useUserControllerFindProfile<TData = Awaited<ReturnType<typeof userControllerFindProfile>>, TError = void>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerFindProfile>>, TError, TData>>, }
+export function useFindProfile<TData = Awaited<ReturnType<typeof findProfile>>, TError = void>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findProfile>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Получить профиль текущего пользователя
  */
 
-export function useUserControllerFindProfile<TData = Awaited<ReturnType<typeof userControllerFindProfile>>, TError = void>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerFindProfile>>, TError, TData>>, }
+export function useFindProfile<TData = Awaited<ReturnType<typeof findProfile>>, TError = void>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findProfile>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getUserControllerFindProfileQueryOptions(options)
+  const queryOptions = getFindProfileQueryOptions(options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -130,7 +131,7 @@ export function useUserControllerFindProfile<TData = Awaited<ReturnType<typeof u
  * Обновляет информацию профиля авторизованного пользователя (отображаемое имя и выбранный тарифный план)
  * @summary Обновить профиль текущего пользователя
  */
-export const userControllerUpdateProfile = (
+export const updateProfile = (
     updateUserDto: UpdateUserDto,
  ) => {
       
@@ -145,11 +146,11 @@ export const userControllerUpdateProfile = (
   
 
 
-export const getUserControllerUpdateProfileMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerUpdateProfile>>, TError,{data: UpdateUserDto}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof userControllerUpdateProfile>>, TError,{data: UpdateUserDto}, TContext> => {
+export const getUpdateProfileMutationOptions = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateProfile>>, TError,{data: UpdateUserDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updateProfile>>, TError,{data: UpdateUserDto}, TContext> => {
 
-const mutationKey = ['userControllerUpdateProfile'];
+const mutationKey = ['updateProfile'];
 const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -159,10 +160,10 @@ const {mutation: mutationOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof userControllerUpdateProfile>>, {data: UpdateUserDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateProfile>>, {data: UpdateUserDto}> = (props) => {
           const {data} = props ?? {};
 
-          return  userControllerUpdateProfile(data,)
+          return  updateProfile(data,)
         }
 
         
@@ -170,23 +171,23 @@ const {mutation: mutationOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type UserControllerUpdateProfileMutationResult = NonNullable<Awaited<ReturnType<typeof userControllerUpdateProfile>>>
-    export type UserControllerUpdateProfileMutationBody = UpdateUserDto
-    export type UserControllerUpdateProfileMutationError = void
+    export type UpdateProfileMutationResult = NonNullable<Awaited<ReturnType<typeof updateProfile>>>
+    export type UpdateProfileMutationBody = UpdateUserDto
+    export type UpdateProfileMutationError = void
 
     /**
  * @summary Обновить профиль текущего пользователя
  */
-export const useUserControllerUpdateProfile = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerUpdateProfile>>, TError,{data: UpdateUserDto}, TContext>, }
+export const useUpdateProfile = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateProfile>>, TError,{data: UpdateUserDto}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof userControllerUpdateProfile>>,
+        Awaited<ReturnType<typeof updateProfile>>,
         TError,
         {data: UpdateUserDto},
         TContext
       > => {
 
-      const mutationOptions = getUserControllerUpdateProfileMutationOptions(options);
+      const mutationOptions = getUpdateProfileMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }

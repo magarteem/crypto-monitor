@@ -32,7 +32,7 @@ import { customAxiosInstance } from '../../axios-instance';
  * Создает нового пользователя с email и паролем. Возвращает JWT токен для авторизации.
  * @summary Регистрация нового пользователя
  */
-export const authControllerRegister = (
+export const register = (
     registerDto: RegisterDto,
  signal?: AbortSignal
 ) => {
@@ -48,11 +48,11 @@ export const authControllerRegister = (
   
 
 
-export const getAuthControllerRegisterMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerRegister>>, TError,{data: RegisterDto}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof authControllerRegister>>, TError,{data: RegisterDto}, TContext> => {
+export const getRegisterMutationOptions = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof register>>, TError,{data: RegisterDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof register>>, TError,{data: RegisterDto}, TContext> => {
 
-const mutationKey = ['authControllerRegister'];
+const mutationKey = ['register'];
 const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -62,10 +62,10 @@ const {mutation: mutationOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerRegister>>, {data: RegisterDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof register>>, {data: RegisterDto}> = (props) => {
           const {data} = props ?? {};
 
-          return  authControllerRegister(data,)
+          return  register(data,)
         }
 
         
@@ -73,23 +73,23 @@ const {mutation: mutationOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type AuthControllerRegisterMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerRegister>>>
-    export type AuthControllerRegisterMutationBody = RegisterDto
-    export type AuthControllerRegisterMutationError = void
+    export type RegisterMutationResult = NonNullable<Awaited<ReturnType<typeof register>>>
+    export type RegisterMutationBody = RegisterDto
+    export type RegisterMutationError = void
 
     /**
  * @summary Регистрация нового пользователя
  */
-export const useAuthControllerRegister = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerRegister>>, TError,{data: RegisterDto}, TContext>, }
+export const useRegister = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof register>>, TError,{data: RegisterDto}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof authControllerRegister>>,
+        Awaited<ReturnType<typeof register>>,
         TError,
         {data: RegisterDto},
         TContext
       > => {
 
-      const mutationOptions = getAuthControllerRegisterMutationOptions(options);
+      const mutationOptions = getRegisterMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
@@ -97,7 +97,7 @@ export const useAuthControllerRegister = <TError = void,
  * Авторизация пользователя по email и паролю. Возвращает JWT токен.
  * @summary Вход пользователя
  */
-export const authControllerLogin = (
+export const login = (
     loginDto: LoginDto,
  signal?: AbortSignal
 ) => {
@@ -113,11 +113,11 @@ export const authControllerLogin = (
   
 
 
-export const getAuthControllerLoginMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerLogin>>, TError,{data: LoginDto}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof authControllerLogin>>, TError,{data: LoginDto}, TContext> => {
+export const getLoginMutationOptions = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: LoginDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: LoginDto}, TContext> => {
 
-const mutationKey = ['authControllerLogin'];
+const mutationKey = ['login'];
 const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -127,10 +127,10 @@ const {mutation: mutationOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerLogin>>, {data: LoginDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof login>>, {data: LoginDto}> = (props) => {
           const {data} = props ?? {};
 
-          return  authControllerLogin(data,)
+          return  login(data,)
         }
 
         
@@ -138,23 +138,23 @@ const {mutation: mutationOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type AuthControllerLoginMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerLogin>>>
-    export type AuthControllerLoginMutationBody = LoginDto
-    export type AuthControllerLoginMutationError = void
+    export type LoginMutationResult = NonNullable<Awaited<ReturnType<typeof login>>>
+    export type LoginMutationBody = LoginDto
+    export type LoginMutationError = void
 
     /**
  * @summary Вход пользователя
  */
-export const useAuthControllerLogin = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerLogin>>, TError,{data: LoginDto}, TContext>, }
+export const useLogin = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: LoginDto}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof authControllerLogin>>,
+        Awaited<ReturnType<typeof login>>,
         TError,
         {data: LoginDto},
         TContext
       > => {
 
-      const mutationOptions = getAuthControllerLoginMutationOptions(options);
+      const mutationOptions = getLoginMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
@@ -162,7 +162,7 @@ export const useAuthControllerLogin = <TError = void,
  * Создает или находит пользователя через Google OAuth данные от next-auth. Возвращает JWT токен.
  * @summary Авторизация через Google OAuth (от next-auth)
  */
-export const authControllerGoogleOAuth = (
+export const googleOAuth = (
     googleOAuthDto: GoogleOAuthDto,
  signal?: AbortSignal
 ) => {
@@ -178,11 +178,11 @@ export const authControllerGoogleOAuth = (
   
 
 
-export const getAuthControllerGoogleOAuthMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerGoogleOAuth>>, TError,{data: GoogleOAuthDto}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof authControllerGoogleOAuth>>, TError,{data: GoogleOAuthDto}, TContext> => {
+export const getGoogleOAuthMutationOptions = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof googleOAuth>>, TError,{data: GoogleOAuthDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof googleOAuth>>, TError,{data: GoogleOAuthDto}, TContext> => {
 
-const mutationKey = ['authControllerGoogleOAuth'];
+const mutationKey = ['googleOAuth'];
 const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -192,10 +192,10 @@ const {mutation: mutationOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerGoogleOAuth>>, {data: GoogleOAuthDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof googleOAuth>>, {data: GoogleOAuthDto}> = (props) => {
           const {data} = props ?? {};
 
-          return  authControllerGoogleOAuth(data,)
+          return  googleOAuth(data,)
         }
 
         
@@ -203,23 +203,23 @@ const {mutation: mutationOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type AuthControllerGoogleOAuthMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerGoogleOAuth>>>
-    export type AuthControllerGoogleOAuthMutationBody = GoogleOAuthDto
-    export type AuthControllerGoogleOAuthMutationError = void
+    export type GoogleOAuthMutationResult = NonNullable<Awaited<ReturnType<typeof googleOAuth>>>
+    export type GoogleOAuthMutationBody = GoogleOAuthDto
+    export type GoogleOAuthMutationError = void
 
     /**
  * @summary Авторизация через Google OAuth (от next-auth)
  */
-export const useAuthControllerGoogleOAuth = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerGoogleOAuth>>, TError,{data: GoogleOAuthDto}, TContext>, }
+export const useGoogleOAuth = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof googleOAuth>>, TError,{data: GoogleOAuthDto}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof authControllerGoogleOAuth>>,
+        Awaited<ReturnType<typeof googleOAuth>>,
         TError,
         {data: GoogleOAuthDto},
         TContext
       > => {
 
-      const mutationOptions = getAuthControllerGoogleOAuthMutationOptions(options);
+      const mutationOptions = getGoogleOAuthMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
@@ -227,7 +227,7 @@ export const useAuthControllerGoogleOAuth = <TError = void,
  * Авторизация пользователя через Telegram WebApp. Принимает данные, полученные из Telegram WebApp виджета.
  * @summary Авторизация через Telegram WebApp
  */
-export const authControllerTelegramAuth = (
+export const telegramAuth = (
     telegramAuthDto: TelegramAuthDto,
  signal?: AbortSignal
 ) => {
@@ -243,11 +243,11 @@ export const authControllerTelegramAuth = (
   
 
 
-export const getAuthControllerTelegramAuthMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerTelegramAuth>>, TError,{data: TelegramAuthDto}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof authControllerTelegramAuth>>, TError,{data: TelegramAuthDto}, TContext> => {
+export const getTelegramAuthMutationOptions = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof telegramAuth>>, TError,{data: TelegramAuthDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof telegramAuth>>, TError,{data: TelegramAuthDto}, TContext> => {
 
-const mutationKey = ['authControllerTelegramAuth'];
+const mutationKey = ['telegramAuth'];
 const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -257,10 +257,10 @@ const {mutation: mutationOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerTelegramAuth>>, {data: TelegramAuthDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof telegramAuth>>, {data: TelegramAuthDto}> = (props) => {
           const {data} = props ?? {};
 
-          return  authControllerTelegramAuth(data,)
+          return  telegramAuth(data,)
         }
 
         
@@ -268,23 +268,23 @@ const {mutation: mutationOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type AuthControllerTelegramAuthMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerTelegramAuth>>>
-    export type AuthControllerTelegramAuthMutationBody = TelegramAuthDto
-    export type AuthControllerTelegramAuthMutationError = void
+    export type TelegramAuthMutationResult = NonNullable<Awaited<ReturnType<typeof telegramAuth>>>
+    export type TelegramAuthMutationBody = TelegramAuthDto
+    export type TelegramAuthMutationError = void
 
     /**
  * @summary Авторизация через Telegram WebApp
  */
-export const useAuthControllerTelegramAuth = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerTelegramAuth>>, TError,{data: TelegramAuthDto}, TContext>, }
+export const useTelegramAuth = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof telegramAuth>>, TError,{data: TelegramAuthDto}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof authControllerTelegramAuth>>,
+        Awaited<ReturnType<typeof telegramAuth>>,
         TError,
         {data: TelegramAuthDto},
         TContext
       > => {
 
-      const mutationOptions = getAuthControllerTelegramAuthMutationOptions(options);
+      const mutationOptions = getTelegramAuthMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }

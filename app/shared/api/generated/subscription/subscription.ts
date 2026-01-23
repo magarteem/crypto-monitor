@@ -33,7 +33,7 @@ import { customAxiosInstance } from '../../axios-instance';
  * Возвращает список всех активных тарифных планов с ценами и функциями
  * @summary Получить список тарифных планов
  */
-export const subscriptionControllerGetTariffs = (
+export const getTariffs = (
     
  signal?: AbortSignal
 ) => {
@@ -48,69 +48,69 @@ export const subscriptionControllerGetTariffs = (
 
 
 
-export const getSubscriptionControllerGetTariffsQueryKey = () => {
+export const getGetTariffsQueryKey = () => {
     return [
     `/api/subscription/tariffs`
     ] as const;
     }
 
     
-export const getSubscriptionControllerGetTariffsQueryOptions = <TData = Awaited<ReturnType<typeof subscriptionControllerGetTariffs>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof subscriptionControllerGetTariffs>>, TError, TData>>, }
+export const getGetTariffsQueryOptions = <TData = Awaited<ReturnType<typeof getTariffs>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTariffs>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getSubscriptionControllerGetTariffsQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetTariffsQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof subscriptionControllerGetTariffs>>> = ({ signal }) => subscriptionControllerGetTariffs(signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTariffs>>> = ({ signal }) => getTariffs(signal);
 
       
 
       
 
-   return  { queryKey, queryFn,   staleTime: 10000, refetchOnWindowFocus: false,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof subscriptionControllerGetTariffs>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn,   staleTime: 10000, refetchOnWindowFocus: false,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTariffs>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type SubscriptionControllerGetTariffsQueryResult = NonNullable<Awaited<ReturnType<typeof subscriptionControllerGetTariffs>>>
-export type SubscriptionControllerGetTariffsQueryError = unknown
+export type GetTariffsQueryResult = NonNullable<Awaited<ReturnType<typeof getTariffs>>>
+export type GetTariffsQueryError = unknown
 
 
-export function useSubscriptionControllerGetTariffs<TData = Awaited<ReturnType<typeof subscriptionControllerGetTariffs>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof subscriptionControllerGetTariffs>>, TError, TData>> & Pick<
+export function useGetTariffs<TData = Awaited<ReturnType<typeof getTariffs>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTariffs>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof subscriptionControllerGetTariffs>>,
+          Awaited<ReturnType<typeof getTariffs>>,
           TError,
-          Awaited<ReturnType<typeof subscriptionControllerGetTariffs>>
+          Awaited<ReturnType<typeof getTariffs>>
         > , 'initialData'
       >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useSubscriptionControllerGetTariffs<TData = Awaited<ReturnType<typeof subscriptionControllerGetTariffs>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof subscriptionControllerGetTariffs>>, TError, TData>> & Pick<
+export function useGetTariffs<TData = Awaited<ReturnType<typeof getTariffs>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTariffs>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof subscriptionControllerGetTariffs>>,
+          Awaited<ReturnType<typeof getTariffs>>,
           TError,
-          Awaited<ReturnType<typeof subscriptionControllerGetTariffs>>
+          Awaited<ReturnType<typeof getTariffs>>
         > , 'initialData'
       >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useSubscriptionControllerGetTariffs<TData = Awaited<ReturnType<typeof subscriptionControllerGetTariffs>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof subscriptionControllerGetTariffs>>, TError, TData>>, }
+export function useGetTariffs<TData = Awaited<ReturnType<typeof getTariffs>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTariffs>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Получить список тарифных планов
  */
 
-export function useSubscriptionControllerGetTariffs<TData = Awaited<ReturnType<typeof subscriptionControllerGetTariffs>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof subscriptionControllerGetTariffs>>, TError, TData>>, }
+export function useGetTariffs<TData = Awaited<ReturnType<typeof getTariffs>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTariffs>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getSubscriptionControllerGetTariffsQueryOptions(options)
+  const queryOptions = getGetTariffsQueryOptions(options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

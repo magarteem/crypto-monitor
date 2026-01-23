@@ -25,7 +25,7 @@ import { customAxiosInstance } from '../../axios-instance';
 
 
 
-export const appControllerGetHello = (
+export const getHello = (
     
  signal?: AbortSignal
 ) => {
@@ -40,66 +40,66 @@ export const appControllerGetHello = (
 
 
 
-export const getAppControllerGetHelloQueryKey = () => {
+export const getGetHelloQueryKey = () => {
     return [
     `/api`
     ] as const;
     }
 
     
-export const getAppControllerGetHelloQueryOptions = <TData = Awaited<ReturnType<typeof appControllerGetHello>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof appControllerGetHello>>, TError, TData>>, }
+export const getGetHelloQueryOptions = <TData = Awaited<ReturnType<typeof getHello>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getHello>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getAppControllerGetHelloQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetHelloQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof appControllerGetHello>>> = ({ signal }) => appControllerGetHello(signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getHello>>> = ({ signal }) => getHello(signal);
 
       
 
       
 
-   return  { queryKey, queryFn,   staleTime: 10000, refetchOnWindowFocus: false,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof appControllerGetHello>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn,   staleTime: 10000, refetchOnWindowFocus: false,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getHello>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type AppControllerGetHelloQueryResult = NonNullable<Awaited<ReturnType<typeof appControllerGetHello>>>
-export type AppControllerGetHelloQueryError = unknown
+export type GetHelloQueryResult = NonNullable<Awaited<ReturnType<typeof getHello>>>
+export type GetHelloQueryError = unknown
 
 
-export function useAppControllerGetHello<TData = Awaited<ReturnType<typeof appControllerGetHello>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof appControllerGetHello>>, TError, TData>> & Pick<
+export function useGetHello<TData = Awaited<ReturnType<typeof getHello>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getHello>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof appControllerGetHello>>,
+          Awaited<ReturnType<typeof getHello>>,
           TError,
-          Awaited<ReturnType<typeof appControllerGetHello>>
+          Awaited<ReturnType<typeof getHello>>
         > , 'initialData'
       >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useAppControllerGetHello<TData = Awaited<ReturnType<typeof appControllerGetHello>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof appControllerGetHello>>, TError, TData>> & Pick<
+export function useGetHello<TData = Awaited<ReturnType<typeof getHello>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getHello>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof appControllerGetHello>>,
+          Awaited<ReturnType<typeof getHello>>,
           TError,
-          Awaited<ReturnType<typeof appControllerGetHello>>
+          Awaited<ReturnType<typeof getHello>>
         > , 'initialData'
       >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useAppControllerGetHello<TData = Awaited<ReturnType<typeof appControllerGetHello>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof appControllerGetHello>>, TError, TData>>, }
+export function useGetHello<TData = Awaited<ReturnType<typeof getHello>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getHello>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useAppControllerGetHello<TData = Awaited<ReturnType<typeof appControllerGetHello>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof appControllerGetHello>>, TError, TData>>, }
+export function useGetHello<TData = Awaited<ReturnType<typeof getHello>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getHello>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getAppControllerGetHelloQueryOptions(options)
+  const queryOptions = getGetHelloQueryOptions(options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

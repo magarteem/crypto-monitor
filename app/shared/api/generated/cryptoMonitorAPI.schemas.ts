@@ -18,31 +18,13 @@ export interface RegisterDto {
 }
 
 /**
- * Email пользователя
- * @nullable
- */
-export type UserResponseDtoEmail = { [key: string]: unknown } | null;
-
-/**
- * Отображаемое имя
- * @nullable
- */
-export type UserResponseDtoDisplayName = { [key: string]: unknown } | null;
-
-/**
- * URL аватара
- * @nullable
- */
-export type UserResponseDtoPicture = { [key: string]: unknown } | null;
-
-/**
  * Роль пользователя
  */
-export type UserResponseDtoRole = typeof UserResponseDtoRole[keyof typeof UserResponseDtoRole];
+export type AuthUserResponseDtoRole = typeof AuthUserResponseDtoRole[keyof typeof AuthUserResponseDtoRole];
 
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UserResponseDtoRole = {
+export const AuthUserResponseDtoRole = {
   REGULAR: 'REGULAR',
   ADMIN: 'ADMIN',
 } as const;
@@ -50,43 +32,55 @@ export const UserResponseDtoRole = {
 /**
  * Метод авторизации
  */
-export type UserResponseDtoMethod = typeof UserResponseDtoMethod[keyof typeof UserResponseDtoMethod];
+export type AuthUserResponseDtoMethod = typeof AuthUserResponseDtoMethod[keyof typeof AuthUserResponseDtoMethod];
 
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UserResponseDtoMethod = {
+export const AuthUserResponseDtoMethod = {
   CREDENTIALS: 'CREDENTIALS',
   GOOGLE: 'GOOGLE',
   TELEGRAM: 'TELEGRAM',
+  YANDEX: 'YANDEX',
 } as const;
 
-export interface UserResponseDto {
+export interface AuthUserResponseDto {
   /** ID пользователя */
   id: string;
   /**
    * Email пользователя
    * @nullable
    */
-  email: UserResponseDtoEmail;
+  email: string | null;
   /**
    * Отображаемое имя
    * @nullable
    */
-  displayName: UserResponseDtoDisplayName;
+  displayName: string | null;
   /**
    * URL аватара
    * @nullable
    */
-  picture: UserResponseDtoPicture;
+  picture: string | null;
   /** Роль пользователя */
-  role: UserResponseDtoRole;
+  role: AuthUserResponseDtoRole;
+  /** Проверен ли email пользователя */
+  isVerified: boolean;
   /** Метод авторизации */
-  method: UserResponseDtoMethod;
+  method: AuthUserResponseDtoMethod;
+  /**
+   * ID провайдера OAuth
+   * @nullable
+   */
+  providerId: string | null;
+  /** Дата создания */
+  createdAt: string;
+  /** Дата обновления */
+  updatedAt: string;
 }
 
 export interface AuthResponseDto {
   /** Данные пользователя */
-  user: UserResponseDto;
+  user: AuthUserResponseDto;
   /** JWT токен для авторизации */
   token: string;
 }
@@ -130,6 +124,93 @@ export interface TelegramAuthDto {
   email?: string;
 }
 
+export interface TariffResponseDto {
+  /** ID тарифного плана */
+  id: string;
+  /** Название тарифа */
+  name: string;
+  /** Цена за месяц */
+  priceMonthly: number;
+  /** Цена за год */
+  priceYearly: number;
+  /** Список функций тарифа */
+  features: string[];
+  /** Рекомендуемый ли тариф */
+  recommended: boolean;
+}
+
+/**
+ * Роль пользователя
+ */
+export type UserResponseDtoRole = typeof UserResponseDtoRole[keyof typeof UserResponseDtoRole];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UserResponseDtoRole = {
+  REGULAR: 'REGULAR',
+  ADMIN: 'ADMIN',
+} as const;
+
+/**
+ * Метод авторизации
+ */
+export type UserResponseDtoMethod = typeof UserResponseDtoMethod[keyof typeof UserResponseDtoMethod];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UserResponseDtoMethod = {
+  CREDENTIALS: 'CREDENTIALS',
+  GOOGLE: 'GOOGLE',
+  TELEGRAM: 'TELEGRAM',
+  YANDEX: 'YANDEX',
+} as const;
+
+/**
+ * Выбранный тарифный план
+ * @nullable
+ */
+export type UserResponseDtoSelectedPlan = TariffResponseDto | null;
+
+export interface UserResponseDto {
+  /** ID пользователя */
+  id: string;
+  /**
+   * Email пользователя
+   * @nullable
+   */
+  email: string | null;
+  /**
+   * Отображаемое имя
+   * @nullable
+   */
+  displayName: string | null;
+  /**
+   * URL аватара
+   * @nullable
+   */
+  picture: string | null;
+  /** Роль пользователя */
+  role: UserResponseDtoRole;
+  /** Проверен ли email пользователя */
+  isVerified: boolean;
+  /** Метод авторизации */
+  method: UserResponseDtoMethod;
+  /**
+   * ID провайдера OAuth
+   * @nullable
+   */
+  providerId: string | null;
+  /** Дата создания */
+  createdAt: string;
+  /** Дата обновления */
+  updatedAt: string;
+  /**
+   * Выбранный тарифный план
+   * @nullable
+   */
+  selectedPlan?: UserResponseDtoSelectedPlan;
+}
+
 export interface UpdateUserDto {
   /** Отображаемое имя пользователя */
   name?: string;
@@ -148,20 +229,5 @@ export interface NewPasswordDto {
    * @minLength 6
    */
   password: string;
-}
-
-export interface TariffResponseDto {
-  /** ID тарифного плана */
-  id: string;
-  /** Название тарифа */
-  name: string;
-  /** Цена за месяц */
-  priceMonthly: number;
-  /** Цена за год */
-  priceYearly: number;
-  /** Список функций тарифа */
-  features: string[];
-  /** Рекомендуемый ли тариф */
-  recommended: boolean;
 }
 

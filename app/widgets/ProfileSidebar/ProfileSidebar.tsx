@@ -21,6 +21,7 @@ import { useModal } from "@hooks/useModal";
 import { EditProfileModal } from "../modals/EditProfileModal";
 import { FeedbackModal } from "../modals/FeedbackModal";
 import { RouteNames } from "@sharedTypes/RouteNames";
+import { useFindProfile } from "@/app/shared/api/generated/user/user";
 
 interface ProfileSidebarProps {
   isOpen: boolean;
@@ -33,12 +34,16 @@ export const ProfileSidebar = ({ isOpen, onClose }: ProfileSidebarProps) => {
   const { openModal } = useModal();
   const [isSubscriptionExpanded, setIsSubscriptionExpanded] = useState(false);
   const [isStatisticsExpanded, setIsStatisticsExpanded] = useState(false);
+  const { data: userProfile } = useFindProfile({
+    //query: {
+    //  enabled: !!session?.user?.id,
+    //},
+  });
 
-  // Тариф пользователя (пока хардкодим FREE)
-  const userTariff = "FREE";
 
   const handleDisconnect = async () => {
     await signOut({ redirect: false });
+    localStorage.removeItem("auth_token");
     onClose();
     router.push("/");
   };
@@ -59,8 +64,8 @@ export const ProfileSidebar = ({ isOpen, onClose }: ProfileSidebarProps) => {
     setIsStatisticsExpanded((prev) => !prev);
   };
 
-  const userEmail = session?.user?.email || "Не авторизован";
-  const userName = session?.user?.name || "Пользователь";
+  const userEmail = userProfile?.email || "Не авторизован";
+  const userName = userProfile?.displayName || "Пользователь";
 
   return (
     <>
@@ -106,9 +111,8 @@ export const ProfileSidebar = ({ isOpen, onClose }: ProfileSidebarProps) => {
 
         {/* Subscription Management Accordion */}
         <Box
-          className={`${styles.accordionItem} ${
-            isSubscriptionExpanded ? styles.expanded : ""
-          }`}
+          className={`${styles.accordionItem} ${isSubscriptionExpanded ? styles.expanded : ""
+            }`}
         >
           <button
             type="button"
@@ -172,9 +176,8 @@ export const ProfileSidebar = ({ isOpen, onClose }: ProfileSidebarProps) => {
 
         {/* Statistics Accordion */}
         <Box
-          className={`${styles.accordionItem} ${
-            isStatisticsExpanded ? styles.expanded : ""
-          }`}
+          className={`${styles.accordionItem} ${isStatisticsExpanded ? styles.expanded : ""
+            }`}
         >
           <button
             type="button"

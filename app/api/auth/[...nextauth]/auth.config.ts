@@ -108,8 +108,6 @@ export const authOptions: AuthOptions = {
             const { user: apiUser, token: apiToken } = response.data;
             token.id = apiUser.id;
             token.email = apiUser.email || user.email || token.email;
-            token.name = apiUser.displayName || user.name || token.name;
-            token.picture = apiUser.picture || user.image || token.picture;
             token.accessToken = apiToken;
 
             // Помечаем, что запрос уже был отправлен
@@ -137,8 +135,6 @@ export const authOptions: AuthOptions = {
       if (session.user) {
         session.user.id = token.id as string;
         session.user.email = token.email as string;
-        session.user.name = token.name as string;
-        session.user.image = token.picture as string;
         // Добавляем токен API в session для доступа на клиенте
         if (token.accessToken) {
           (session as any).accessToken = token.accessToken;

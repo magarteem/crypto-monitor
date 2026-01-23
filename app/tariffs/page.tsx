@@ -4,11 +4,11 @@ import { useState } from "react";
 import { GoBack } from "@features/goBack";
 import { CheckmarkIcon } from "@/public/img";
 import styles from "./page.module.css";
-import { useSubscriptionControllerGetTariffs } from "../shared/api/generated/subscription/subscription";
 import { useSession } from "next-auth/react";
 import { RouteNames } from "../shared/types";
 import { useRouter } from "next/navigation";
-import { useUserControllerUpdateProfile } from "../shared/api";
+import { useGetTariffs } from "../shared/api/generated/subscription/subscription";
+import { useUpdateProfile } from "../shared/api/generated/user/user";
 
 type BillingPeriod = "monthly" | "yearly";
 
@@ -16,8 +16,8 @@ export default function TariffsPage() {
   const router = useRouter();
   const { data: session } = useSession();
   const [billingPeriod, setBillingPeriod] = useState<BillingPeriod>("monthly");
-  const { data: tariffs, isLoading } = useSubscriptionControllerGetTariffs();
-  const { mutate: updateProfile } = useUserControllerUpdateProfile();
+  const { data: tariffs, isLoading } = useGetTariffs();
+  const { mutate: updateProfile } = useUpdateProfile();
 
   if (isLoading || !tariffs) {
     return (
@@ -64,7 +64,7 @@ export default function TariffsPage() {
       });
     }
   };
-  
+
   return (
     <div className={styles.page}>
       <GoBack label="Главная" />
@@ -79,17 +79,15 @@ export default function TariffsPage() {
           {/* Billing Period Toggle */}
           <div className={styles.billingToggle}>
             <button
-              className={`${styles.toggleButton} ${
-                billingPeriod === "monthly" ? styles.active : ""
-              }`}
+              className={`${styles.toggleButton} ${billingPeriod === "monthly" ? styles.active : ""
+                }`}
               onClick={() => setBillingPeriod("monthly")}
             >
               Ежемесячно
             </button>
             <button
-              className={`${styles.toggleButton} ${
-                billingPeriod === "yearly" ? styles.active : ""
-              }`}
+              className={`${styles.toggleButton} ${billingPeriod === "yearly" ? styles.active : ""
+                }`}
               onClick={() => setBillingPeriod("yearly")}
             >
               Ежегодно
@@ -104,9 +102,8 @@ export default function TariffsPage() {
             return (
               <div
                 key={tariff.name}
-                className={`${styles.tariffCard} ${
-                  tariff.recommended ? styles.recommended : ""
-                }`}
+                className={`${styles.tariffCard} ${tariff.recommended ? styles.recommended : ""
+                  }`}
               >
                 {tariff.recommended && (
                   <div className={styles.badge}>Рекомендуем</div>

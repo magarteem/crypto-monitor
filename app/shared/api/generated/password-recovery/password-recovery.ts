@@ -29,7 +29,7 @@ import { customAxiosInstance } from '../../axios-instance';
  * Отправляет токен для сброса пароля на указанный email адрес. Требуется прохождение reCAPTCHA проверки.
  * @summary Запросить сброс пароля
  */
-export const passwordRecoveryControllerResetPassword = (
+export const resetPassword = (
     resetPasswordDto: ResetPasswordDto,
  signal?: AbortSignal
 ) => {
@@ -45,11 +45,11 @@ export const passwordRecoveryControllerResetPassword = (
   
 
 
-export const getPasswordRecoveryControllerResetPasswordMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof passwordRecoveryControllerResetPassword>>, TError,{data: ResetPasswordDto}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof passwordRecoveryControllerResetPassword>>, TError,{data: ResetPasswordDto}, TContext> => {
+export const getResetPasswordMutationOptions = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetPassword>>, TError,{data: ResetPasswordDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof resetPassword>>, TError,{data: ResetPasswordDto}, TContext> => {
 
-const mutationKey = ['passwordRecoveryControllerResetPassword'];
+const mutationKey = ['resetPassword'];
 const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -59,10 +59,10 @@ const {mutation: mutationOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof passwordRecoveryControllerResetPassword>>, {data: ResetPasswordDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof resetPassword>>, {data: ResetPasswordDto}> = (props) => {
           const {data} = props ?? {};
 
-          return  passwordRecoveryControllerResetPassword(data,)
+          return  resetPassword(data,)
         }
 
         
@@ -70,23 +70,23 @@ const {mutation: mutationOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PasswordRecoveryControllerResetPasswordMutationResult = NonNullable<Awaited<ReturnType<typeof passwordRecoveryControllerResetPassword>>>
-    export type PasswordRecoveryControllerResetPasswordMutationBody = ResetPasswordDto
-    export type PasswordRecoveryControllerResetPasswordMutationError = void
+    export type ResetPasswordMutationResult = NonNullable<Awaited<ReturnType<typeof resetPassword>>>
+    export type ResetPasswordMutationBody = ResetPasswordDto
+    export type ResetPasswordMutationError = void
 
     /**
  * @summary Запросить сброс пароля
  */
-export const usePasswordRecoveryControllerResetPassword = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof passwordRecoveryControllerResetPassword>>, TError,{data: ResetPasswordDto}, TContext>, }
+export const useResetPassword = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetPassword>>, TError,{data: ResetPasswordDto}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof passwordRecoveryControllerResetPassword>>,
+        Awaited<ReturnType<typeof resetPassword>>,
         TError,
         {data: ResetPasswordDto},
         TContext
       > => {
 
-      const mutationOptions = getPasswordRecoveryControllerResetPasswordMutationOptions(options);
+      const mutationOptions = getResetPasswordMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
@@ -94,7 +94,7 @@ export const usePasswordRecoveryControllerResetPassword = <TError = void,
  * Устанавливает новый пароль для пользователя по токену сброса пароля. Токен должен быть получен из письма, отправленного на email.
  * @summary Установить новый пароль
  */
-export const passwordRecoveryControllerNewPassword = (
+export const newPassword = (
     token: string,
     newPasswordDto: NewPasswordDto,
  signal?: AbortSignal
@@ -111,11 +111,11 @@ export const passwordRecoveryControllerNewPassword = (
   
 
 
-export const getPasswordRecoveryControllerNewPasswordMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof passwordRecoveryControllerNewPassword>>, TError,{token: string;data: NewPasswordDto}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof passwordRecoveryControllerNewPassword>>, TError,{token: string;data: NewPasswordDto}, TContext> => {
+export const getNewPasswordMutationOptions = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof newPassword>>, TError,{token: string;data: NewPasswordDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof newPassword>>, TError,{token: string;data: NewPasswordDto}, TContext> => {
 
-const mutationKey = ['passwordRecoveryControllerNewPassword'];
+const mutationKey = ['newPassword'];
 const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -125,10 +125,10 @@ const {mutation: mutationOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof passwordRecoveryControllerNewPassword>>, {token: string;data: NewPasswordDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof newPassword>>, {token: string;data: NewPasswordDto}> = (props) => {
           const {token,data} = props ?? {};
 
-          return  passwordRecoveryControllerNewPassword(token,data,)
+          return  newPassword(token,data,)
         }
 
         
@@ -136,23 +136,23 @@ const {mutation: mutationOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PasswordRecoveryControllerNewPasswordMutationResult = NonNullable<Awaited<ReturnType<typeof passwordRecoveryControllerNewPassword>>>
-    export type PasswordRecoveryControllerNewPasswordMutationBody = NewPasswordDto
-    export type PasswordRecoveryControllerNewPasswordMutationError = void
+    export type NewPasswordMutationResult = NonNullable<Awaited<ReturnType<typeof newPassword>>>
+    export type NewPasswordMutationBody = NewPasswordDto
+    export type NewPasswordMutationError = void
 
     /**
  * @summary Установить новый пароль
  */
-export const usePasswordRecoveryControllerNewPassword = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof passwordRecoveryControllerNewPassword>>, TError,{token: string;data: NewPasswordDto}, TContext>, }
+export const useNewPassword = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof newPassword>>, TError,{token: string;data: NewPasswordDto}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof passwordRecoveryControllerNewPassword>>,
+        Awaited<ReturnType<typeof newPassword>>,
         TError,
         {token: string;data: NewPasswordDto},
         TContext
       > => {
 
-      const mutationOptions = getPasswordRecoveryControllerNewPasswordMutationOptions(options);
+      const mutationOptions = getNewPasswordMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
