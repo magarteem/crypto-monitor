@@ -72,14 +72,7 @@ export default function RegisterForm() {
         }
       );
 
-      const { token } = response.data;
-
-      // Сохраняем токен
-      if (typeof window !== "undefined") {
-        localStorage.setItem("auth_token", token);
-      }
-
-      // Авторизуем через next-auth
+      // Авторизуем через next-auth (токен будет сохранен в session)
       const result = await signIn("credentials", {
         email: data.email,
         password: data.password,

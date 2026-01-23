@@ -1,4 +1,5 @@
-import axios, { AxiosRequestConfig, AxiosError } from "axios";
+import axios, { AxiosRequestConfig, AxiosError, InternalAxiosRequestConfig } from "axios";
+import { getSession } from "next-auth/react";
 
 // Создаём кастомный axios instance
 export const axiosInstance = axios.create({
@@ -9,14 +10,19 @@ export const axiosInstance = axios.create({
   timeout: 30000, // 30 секунд
 });
 
-// Request interceptor - добавляем токен авторизации
+// Request interceptor - добавляем токен авторизации из next-auth session
 axiosInstance.interceptors.request.use(
-  (config) => {
-    // Получаем токен из localStorage
+  async (config: InternalAxiosRequestConfig) => {
+    // Получаем токен из next-auth session
     if (typeof window !== "undefined") {
-      const token = localStorage.getItem("auth_token");
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+      try {
+        const session = await getSession();
+        if (session?.accessToken) {
+          config.headers.Authorization = `Bearer ${session.accessToken}`;
+        }
+      } catch (error) {
+        // Игнорируем ошибки получения session
+        console.warn("Failed to get session for axios request:", error);
       }
     }
     return config;
@@ -29,14 +35,12 @@ axiosInstance.interceptors.request.use(
 // Response interceptor - обработка ошибок
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error: AxiosError) => {
+  async (error: AxiosError) => {
     // Обработка ошибки 401 (Unauthorized)
     if (error.response?.status === 401) {
       if (typeof window !== "undefined") {
-        // Удаляем токен
-        localStorage.removeItem("auth_token");
-        // Редирект на страницу логина
-        //window.location.href = "/auth";
+        // Редирект на страницу логина можно добавить при необходимости
+        // window.location.href = "/auth";
       }
     }
 

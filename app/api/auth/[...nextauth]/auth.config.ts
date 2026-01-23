@@ -3,18 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import axios from "axios";
 import { axiosInstance } from "@/app/shared/api/axios-instance";
-
-interface AuthResponse {
-  user: {
-    id: string;
-    email: string | null;
-    displayName: string | null;
-    picture: string | null;
-    role: string;
-    method: string;
-  };
-  token: string;
-}
+import { AuthResponseDto } from "@/app/shared/api/generated/cryptoMonitorAPI.schemas";
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -37,7 +26,7 @@ export const authOptions: AuthOptions = {
         }
 
         try {
-          const response = await axiosInstance.post<AuthResponse>(
+          const response = await axiosInstance.post<AuthResponseDto>(
             "/api/auth/login",
             {
               email: credentials.email,
@@ -52,6 +41,8 @@ export const authOptions: AuthOptions = {
             email: user.email || credentials.email,
             name: user.displayName || user.email?.split("@")[0] || "User",
             image: user.picture || undefined,
+            method: user.method,
+            role: user.role,
             accessToken: token, // Сохраняем токен в объекте пользователя
           };
         } catch (error: any) {
@@ -74,6 +65,8 @@ export const authOptions: AuthOptions = {
         token.email = user.email || undefined;
         token.name = user.name || undefined;
         token.picture = user.image || undefined;
+        token.method = user.method;
+        token.role = user.role;
         // Сохраняем токен API, если он есть (для credentials провайдера)
         if ("accessToken" in user && user.accessToken) {
           token.accessToken = user.accessToken as string;
@@ -87,12 +80,10 @@ export const authOptions: AuthOptions = {
           try {
             const apiUrl =
               process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
-            const response = await axios.post<AuthResponse>(
+            const response = await axios.post<AuthResponseDto>(
               `${apiUrl}/api/auth/oauth/google`,
               {
                 email: user.email ?? "",
-                name: user.name ?? "",
-                picture: user.image ?? undefined,
                 googleId: account.providerAccountId,
                 accessToken: account.access_token ?? "",
                 refreshToken: account.refresh_token ?? undefined,
@@ -108,6 +99,10 @@ export const authOptions: AuthOptions = {
             const { user: apiUser, token: apiToken } = response.data;
             token.id = apiUser.id;
             token.email = apiUser.email || user.email || token.email;
+            token.name = apiUser.displayName || user.name || token.name;
+            token.picture = apiUser.picture || user.image || token.picture;
+            token.method = apiUser.method;
+            token.role = apiUser.role;
             token.accessToken = apiToken;
 
             // Помечаем, что запрос уже был отправлен
@@ -116,16 +111,13 @@ export const authOptions: AuthOptions = {
             console.error("Google OAuth error:", error);
             // Используем данные от next-auth, если запрос не удался
             token.id = user.id;
-            token.email = user.email || token.email;
-            token.name = user.name || token.name;
-            token.picture = user.image || token.picture;
+            token.email = user.email || token.email;                     
+
           }
         } else {
           // Если уже был отправлен, используем сохраненные данные
           token.id = token.id || user.id;
-          token.email = token.email || user.email || undefined;
-          token.name = token.name || user.name || undefined;
-          token.picture = token.picture || user.image || undefined;
+          token.email = token.email || user.email || undefined;        
         }
       }
 
@@ -135,9 +127,13 @@ export const authOptions: AuthOptions = {
       if (session.user) {
         session.user.id = token.id as string;
         session.user.email = token.email as string;
+        session.user.name = token.name as string;
+        session.user.image = token.picture as string;
+        session.user.method = token.method;
+        session.user.role = token.role;
         // Добавляем токен API в session для доступа на клиенте
         if (token.accessToken) {
-          (session as any).accessToken = token.accessToken;
+          session.accessToken = token.accessToken;
         }
       }
       return session;

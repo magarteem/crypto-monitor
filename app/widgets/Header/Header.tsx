@@ -10,13 +10,18 @@ import { useState, useEffect } from "react";
 import LogoIcon from "@/public/img/logo.svg";
 import { BellIcon } from "@/public/img";
 import { Tooltip } from "@/app/shared/components/toolTip/ToolTip";
+import { useFindProfile } from "@/app/shared/api/generated/user/user";
 
 export const Header = () => {
   const { data: session, status } = useSession();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-
+  //const { data: userProfile } = useFindProfile({
+  //  query: {
+  //    enabled: !!session?.user?.id,
+  //  },
+  //});
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -41,21 +46,9 @@ export const Header = () => {
 
           {/* Navigation */}
           <nav className={styles.nav}>
-            <Link href={RouteNames.HOME} className={styles.navLink}>
-              Crypto
-            </Link>
-            <Link href={RouteNames.DASHBOARD} className={styles.navLink}>
+            {session?.user && <Link href={RouteNames.DASHBOARD} className={styles.navLink}>
               Dashboard
-            </Link>
-            <Link href={RouteNames.EARN} className={styles.navLink}>
-              Earn
-            </Link>
-            <Link href={RouteNames.GOVERN} className={styles.navLink}>
-              Govern
-            </Link>
-            <Link href={RouteNames.LEARN} className={styles.navLink}>
-              Learn
-            </Link>
+            </Link>}
             <Link href={RouteNames.TARIFFS} className={styles.navLink}>
               Tariffs
             </Link>

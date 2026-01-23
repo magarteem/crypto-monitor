@@ -43,7 +43,6 @@ export const ProfileSidebar = ({ isOpen, onClose }: ProfileSidebarProps) => {
 
   const handleDisconnect = async () => {
     await signOut({ redirect: false });
-    localStorage.removeItem("auth_token");
     onClose();
     router.push("/");
   };

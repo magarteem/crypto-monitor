@@ -45,13 +45,7 @@ export default function LoginPage() {
       if (result?.error) {
         setGlobalError("Неверный email или пароль");
       } else if (result?.ok) {
-        // Получаем session и сохраняем токен в localStorage для axios interceptors
-        const session = await getSession();
-        if (session && (session as any).accessToken) {
-          if (typeof window !== "undefined") {
-            localStorage.setItem("auth_token", (session as any).accessToken);
-          }
-        }
+        // Токен уже сохранен в next-auth session, редиректим на главную
         router.push(RouteNames.HOME);
       }
     } catch (error: any) {
