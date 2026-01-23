@@ -29,3 +29,7 @@ export { default as FeedbackIcon } from "./feedback.svg";
 export { default as ChevronDownIcon } from "./chevron-down.svg";
 export { default as ChevronUpIcon } from "./chevron-up.svg";
 export { default as BellIcon } from "./bell.svg";
+export { default as MetaMaskIcon } from "./metamask.svg";
+export { default as WalletConnectIcon } from "./walletconnect.svg";
+export { default as FacebookIcon } from "./facebook.svg";
+export { default as XTwitterIcon } from "./x-twitter.svg";

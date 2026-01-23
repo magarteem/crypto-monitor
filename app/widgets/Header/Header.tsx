@@ -17,11 +17,13 @@ export const Header = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  //const { data: userProfile } = useFindProfile({
-  //  query: {
-  //    enabled: !!session?.user?.id,
-  //  },
-  //});
+  const { data: userProfile } = useFindProfile({
+    query: {
+      enabled: !!session?.user?.id,
+    },
+  });
+
+  console.log("userProfile ======", userProfile);
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -31,7 +33,6 @@ export const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  console.log("session", session);
   return (
     <>
       <header
@@ -71,15 +72,15 @@ export const Header = () => {
                   onClick={() => setIsProfileOpen(true)}
                 >
                   <span className={styles.profileEmail}>
-                    {session.user?.email?.substring(0, 15)}...
+                    {userProfile?.email}
                   </span>
                   |
                   <Tooltip
                     showArrow
-                    content="FREE"
+                    content={userProfile?.selectedPlan?.name || "FREE"}
                     contentProps={{ css: { "--tooltip-bg": "var(--success)" } }}
                   >
-                    <span className={styles.profileNetwork}>FREE</span>
+                    <span className={styles.profileNetwork}>{userProfile?.selectedPlan?.name || "FREE"}</span>
                   </Tooltip>
                 </button>
 

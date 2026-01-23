@@ -84,6 +84,7 @@ export const authOptions: AuthOptions = {
               `${apiUrl}/api/auth/oauth/google`,
               {
                 email: user.email ?? "",
+                name: user.name ?? "",
                 googleId: account.providerAccountId,
                 accessToken: account.access_token ?? "",
                 refreshToken: account.refresh_token ?? undefined,
@@ -111,13 +112,13 @@ export const authOptions: AuthOptions = {
             console.error("Google OAuth error:", error);
             // Используем данные от next-auth, если запрос не удался
             token.id = user.id;
-            token.email = user.email || token.email;                     
+            token.email = user.email || token.email;
 
           }
         } else {
           // Если уже был отправлен, используем сохраненные данные
           token.id = token.id || user.id;
-          token.email = token.email || user.email || undefined;        
+          token.email = token.email || user.email || undefined;
         }
       }
 

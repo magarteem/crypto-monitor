@@ -8,7 +8,8 @@ import { useSession } from "next-auth/react";
 import { RouteNames } from "../shared/types";
 import { useRouter } from "next/navigation";
 import { useGetTariffs } from "../shared/api/generated/subscription/subscription";
-import { useUpdateProfile } from "../shared/api/generated/user/user";
+import { getFindProfileQueryKey, useUpdateProfile } from "../shared/api/generated/user/user";
+import { useQueryClient } from "@tanstack/react-query";
 
 type BillingPeriod = "monthly" | "yearly";
 
@@ -18,7 +19,7 @@ export default function TariffsPage() {
   const [billingPeriod, setBillingPeriod] = useState<BillingPeriod>("monthly");
   const { data: tariffs, isLoading } = useGetTariffs();
   const { mutate: updateProfile } = useUpdateProfile();
-
+  const queryClient = useQueryClient();
   if (isLoading || !tariffs) {
     return (
       <div className={styles.page}>
@@ -61,6 +62,11 @@ export default function TariffsPage() {
         data: {
           selectedPlanId: tariff.id,
         },
+      }, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: getFindProfileQueryKey() });
+          router.push(RouteNames.HOME);
+        }
       });
     }
   };
