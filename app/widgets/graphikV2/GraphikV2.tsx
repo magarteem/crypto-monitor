@@ -233,7 +233,10 @@ export const GraphikV2 = ({
           })
         );
 
-        candlestickSeriesRef.current.setData(candles);
+        // Проверяем, что candlestickSeriesRef еще существует перед вызовом setData
+        if (candlestickSeriesRef.current) {
+          candlestickSeriesRef.current.setData(candles);
+        }
         candlesDataRef.current = candles;
         isLoadingMoreRef.current = false; // Сбрасываем флаг загрузки
 
@@ -307,8 +310,7 @@ export const GraphikV2 = ({
         const limit = timeframe === "1m" ? 500 : timeframe === "5m" ? 300 : 200;
 
         const response = await fetch(
-          `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${timeframe}&limit=${limit}&endTime=${
-            endTime * 1000
+          `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${timeframe}&limit=${limit}&endTime=${endTime * 1000
           }`
         );
 
@@ -349,7 +351,11 @@ export const GraphikV2 = ({
           ].sort((a, b) => (a.time as number) - (b.time as number));
 
           candlesDataRef.current = allCandles;
-          candlestickSeriesRef.current.setData(allCandles);
+
+          // Проверяем, что candlestickSeriesRef еще существует перед вызовом setData
+          if (candlestickSeriesRef.current) {
+            candlestickSeriesRef.current.setData(allCandles);
+          }
 
           // Восстанавливаем позицию прокрутки после добавления данных
           // Вычисляем новый from с учетом добавленных данных
@@ -608,8 +614,8 @@ export const GraphikV2 = ({
                 isPriceUp === null
                   ? "#ffffff"
                   : isPriceUp
-                  ? "#26a69a"
-                  : "#ef5350",
+                    ? "#26a69a"
+                    : "#ef5350",
             }}
           >
             {currentPrice !== null ? (
@@ -620,9 +626,8 @@ export const GraphikV2 = ({
                   maximumFractionDigits: currentPrice < 1 ? 6 : 2,
                 })}
                 <span
-                  className={`${styles.priceChange} ${
-                    priceChange >= 0 ? styles.positive : styles.negative
-                  }`}
+                  className={`${styles.priceChange} ${priceChange >= 0 ? styles.positive : styles.negative
+                    }`}
                 >
                   {priceChange >= 0 ? "+" : ""}
                   {priceChange.toFixed(2)}%
@@ -641,9 +646,8 @@ export const GraphikV2 = ({
                 key={tf.value}
                 type="button"
                 onClick={() => handleTimeframeChange(tf.value)}
-                className={`${styles.timeframeButton} ${
-                  timeframe === tf.value ? styles.active : ""
-                }`}
+                className={`${styles.timeframeButton} ${timeframe === tf.value ? styles.active : ""
+                  }`}
               >
                 {tf.label}
               </button>

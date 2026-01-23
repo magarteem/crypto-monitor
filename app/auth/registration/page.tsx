@@ -63,12 +63,11 @@ export default function RegisterForm() {
 
     try {
       // Используем axios напрямую для получения ответа с user и token
-      const response = await axiosInstance.post<AuthResponse>(
+      await axiosInstance.post<AuthResponse>(
         "/api/auth/register",
         {
           email: data.email,
           password: data.password,
-          displayName: data.email.split("@")[0], // Используем часть email как имя
         }
       );
 
@@ -82,7 +81,7 @@ export default function RegisterForm() {
       if (result?.error) {
         setGlobalError("Ошибка авторизации после регистрации");
       } else {
-        router.push(RouteNames.HOME);
+        //router.push(RouteNames.TARIFFS);
       }
     } catch (error: any) {
       const errorMessage =

@@ -13,8 +13,6 @@ export interface RegisterDto {
    * @minLength 6
    */
   password: string;
-  /** Отображаемое имя пользователя */
-  displayName?: string;
 }
 
 /**

@@ -77,6 +77,8 @@ export const authOptions: AuthOptions = {
       if (account?.provider === "google" && user) {
         // Отправляем данные на бэкенд только при первой авторизации
         if (!token.googleOAuthSent) {
+          console.log("user === ", user);
+          console.log("account === ", account);
           try {
             const apiUrl =
               process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
@@ -84,6 +86,7 @@ export const authOptions: AuthOptions = {
               `${apiUrl}/api/auth/oauth/google`,
               {
                 email: user.email ?? "",
+                name: user.name ?? "",
                 googleId: account.providerAccountId,
                 accessToken: account.access_token ?? "",
                 refreshToken: account.refresh_token ?? undefined,
@@ -94,7 +97,7 @@ export const authOptions: AuthOptions = {
                 },
               }
             );
-
+            console.log("response === ", response.data);
             // Сохраняем данные пользователя и токен от бэкенда
             const { user: apiUser, token: apiToken } = response.data;
             token.id = apiUser.id;
@@ -111,13 +114,13 @@ export const authOptions: AuthOptions = {
             console.error("Google OAuth error:", error);
             // Используем данные от next-auth, если запрос не удался
             token.id = user.id;
-            token.email = user.email || token.email;                     
+            token.email = user.email || token.email;
 
           }
         } else {
           // Если уже был отправлен, используем сохраненные данные
           token.id = token.id || user.id;
-          token.email = token.email || user.email || undefined;        
+          token.email = token.email || user.email || undefined;
         }
       }
 

@@ -1,6 +1,7 @@
 export enum RouteNames {
   HOME = "/",
   AUTH = "/auth",
+  AUTH_REGISTRATION = "/auth/registration",
   DASHBOARD = "/dashboard",
   EARN = "/dashboard/earn",
   GOVERN = "/dashboard/govern",

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useSession, signIn } from "next-auth/react";
 import { GoBack } from "@features/goBack";
 import { OAuthButtons } from "@features/oauthButtons";
@@ -13,6 +13,7 @@ interface AuthLayoutProps {
 }
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
+  const pathname = usePathname();
   const router = useRouter();
   const { status } = useSession();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -30,6 +31,11 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
   // Редирект на главную, если пользователь уже авторизован
   useEffect(() => {
     if (status === "authenticated") {
+
+      if (pathname === RouteNames.AUTH_REGISTRATION) {
+        router.push(RouteNames.TARIFFS);
+        return
+      }
       router.push(RouteNames.HOME);
     }
   }, [status, router]);
