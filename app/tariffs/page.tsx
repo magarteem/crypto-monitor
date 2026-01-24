@@ -20,7 +20,7 @@ export default function TariffsPage() {
   const [billingPeriod, setBillingPeriod] = useState<BillingPeriod>("monthly");
   const { data: tariffs, isLoading } = useGetTariffs();
   const { mutate: updateProfile } = useUpdateProfile();
-  const queryClient = useQueryClient();
+
   if (isLoading || !tariffs) {
     return (
       <div className={styles.page}>
