@@ -9,8 +9,8 @@ import { InputFormField } from "@/app/shared/formFields/inputFormField/InputForm
 import { Button } from "@ui/button";
 import { GoBack } from "@features/goBack";
 import { RouteNames } from "@/app/shared/types";
-import { usePasswordRecoveryControllerResetPassword } from "@/app/shared/api";
 import styles from "./page.module.css";
+import { useResetPassword } from "@/app/shared/api";
 
 // Schema валидации
 const passwordRecoverySchema = z.object({
@@ -36,9 +36,16 @@ export default function PasswordRecovery() {
   });
 
   // Используем сгенерированный хук для восстановления пароля
-  const { mutate: resetPassword, isPending } =
-    usePasswordRecoveryControllerResetPassword({
-      mutation: {
+  const { mutate: resetPassword, isPending } = useResetPassword();
+
+  const onSubmit = async (data: PasswordRecoveryFormData) => {
+    setGlobalError("");
+    setSuccessMessage("");
+
+    resetPassword({
+      data: { email: data.email },
+    },
+      {
         onSuccess: () => {
           setSuccessMessage(
             "Письмо с инструкциями по восстановлению пароля отправлено на ваш email"
@@ -50,20 +57,12 @@ export default function PasswordRecovery() {
           console.error("Password recovery error:", error);
           setGlobalError(
             error?.response?.data?.message ||
-              "Ошибка отправки письма восстановления"
+            "Ошибка отправки письма восстановления"
           );
           setSuccessMessage("");
         },
-      },
-    });
-
-  const onSubmit = async (data: PasswordRecoveryFormData) => {
-    setGlobalError("");
-    setSuccessMessage("");
-
-    resetPassword({
-      data: { email: data.email },
-    });
+      }
+    );
   };
 
   return (

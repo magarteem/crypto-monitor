@@ -9,9 +9,9 @@ import { InputFormField } from "@/app/shared/formFields/inputFormField/InputForm
 import { Button } from "@ui/button";
 import { GoBack } from "@features/goBack";
 import { RouteNames } from "@/app/shared/types";
-import { usePasswordRecoveryControllerNewPassword } from "@/app/shared/api";
 import { EyeClosedIcon, EyeOpenIcon } from "@/public/img";
 import styles from "./page.module.css";
+import { useNewPassword } from "@/app/shared/api";
 
 // Schema валидации для нового пароля
 const newPasswordSchema = z
@@ -56,7 +56,7 @@ function NewPasswordForm() {
 
   // Используем сгенерированный хук для установки нового пароля
   const { mutate: setNewPassword, isPending } =
-    usePasswordRecoveryControllerNewPassword({
+    useNewPassword({
       mutation: {
         onSuccess: () => {
           setSuccessMessage(
@@ -74,7 +74,7 @@ function NewPasswordForm() {
           console.error("Set new password error:", error);
           setGlobalError(
             error?.response?.data?.message ||
-              "Ошибка установки нового пароля. Возможно, токен недействителен или истёк."
+            "Ошибка установки нового пароля. Возможно, токен недействителен или истёк."
           );
           setSuccessMessage("");
         },

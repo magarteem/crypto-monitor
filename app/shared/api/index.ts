@@ -19,7 +19,6 @@ export type { ApiError } from "./axios-instance";
 
 // Сгенерированные Orval хуки и типы
 export * from "./generated/auth/auth";
-export * from "./generated/users/users";
 export * from "./generated/password-recovery/password-recovery";
 export * from "./generated/app/app";
 export * from "./generated/cryptoMonitorAPI.schemas";
