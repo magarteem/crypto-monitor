@@ -22,6 +22,11 @@ export const Header = () => {
       enabled: !!session?.user?.id,
     },
   });
+<<<<<<< HEAD
+=======
+
+  console.log("userProfile ======", userProfile);
+>>>>>>> tg
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -30,8 +35,12 @@ export const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+<<<<<<< HEAD
   console.log("userProfile", userProfile);
   console.log("session", session);
+=======
+
+>>>>>>> tg
   return (
     <>
       <header

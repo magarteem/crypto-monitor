@@ -48,6 +48,26 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
     }
   };
 
+  const handleFacebookAuth = () => {
+    // TODO: Интеграция с Facebook OAuth
+    setGlobalError("Facebook авторизация в разработке");
+  };
+
+  const handleMetaMaskAuth = () => {
+    // TODO: Интеграция с MetaMask
+    setGlobalError("MetaMask авторизация в разработке");
+  };
+
+  const handleWalletConnectAuth = () => {
+    // TODO: Интеграция с WalletConnect
+    setGlobalError("WalletConnect авторизация в разработке");
+  };
+
+  const handleXTwitterAuth = () => {
+    // TODO: Интеграция с X (Twitter) OAuth
+    setGlobalError("X (Twitter) авторизация в разработке");
+  };
+
   const handleTelegramAuth = () => {
     // TODO: Интеграция с Telegram OAuth
     setGlobalError("Telegram авторизация в разработке");
@@ -74,8 +94,13 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
         {/* Auth Card */}
         <div className={styles.card}>
           {/* OAuth Buttons */}
+          {globalError && <div className={styles.errorMessage}>{globalError}</div>}
           <OAuthButtons
             onGoogleClick={handleGoogleAuth}
+            onFacebookClick={handleFacebookAuth}
+            onXTwitterClick={handleXTwitterAuth}
+            onMetaMaskClick={handleMetaMaskAuth}
+            onWalletConnectClick={handleWalletConnectAuth}
             onTelegramClick={handleTelegramAuth}
           />
 
