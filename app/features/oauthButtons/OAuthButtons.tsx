@@ -29,8 +29,35 @@ export function OAuthButtons({
   onXTwitterClick,
   className,
 }: OAuthButtonsProps) {
+
+
+  const authTelegram = () => {
+    console.log("authTelegram");
+    window.Telegram.Login.auth(
+      {
+        //bot_username: "monitor_cra_bot",
+        //size: "large",
+        //auth_url: "https://53ef93b790e7.ngrok-free.app",
+        bot_id: "8540508074",
+        request_access: "write"
+      },
+      (user: any) => {
+        console.log("user", user);
+      }
+    );
+  };
   return (
     <div className={`${styles.oauthButtons} ${className || ""}`}>
+      <div id="telegram-login">
+        <script async
+          src="https://telegram.org/js/telegram-widget.js?22"
+        //data-telegram-login="monitor_cra_bot" data-size="large"
+        //data-auth-url="53ef93b790e7.ngrok-free.app"
+        //data-request-access="write"
+        ></script>
+        <div onClick={() => authTelegram()}>Click</div>
+      </div>
+
       <button
         type="button"
         className={styles.oauthButton}
