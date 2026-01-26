@@ -51,6 +51,64 @@ export const authOptions: AuthOptions = {
         }
       },
     }),
+
+    // Telegram OAuth Provider
+    CredentialsProvider({
+      id: "telegram",
+      name: "Telegram",
+      credentials: {
+        telegramData: { label: "Telegram Data", type: "text" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.telegramData) {
+          return null;
+        }
+
+        try {
+          // Парсим данные от Telegram
+          const telegramUser = JSON.parse(credentials.telegramData);
+
+          console.log("telegramUser === ", telegramUser);
+
+          // Отправляем данные на бэкенд для валидации и создания пользователя
+          const apiUrl =
+            process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+          const response = await axios.post<AuthResponseDto>(
+            `${apiUrl}/api/auth/oauth/telegram`,
+            {
+              id: telegramUser.id,
+              firstName: telegramUser.first_name,
+              lastName: telegramUser.last_name,
+              username: telegramUser.username,
+              photoUrl: telegramUser.photo_url,
+              authDate: telegramUser.auth_date,
+              hash: telegramUser.hash,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          const { user: apiUser, token: apiToken } = response.data;
+
+          return {
+            id: apiUser.id,
+            email: apiUser.email || `tg_${apiUser.id}@telegram.local`,
+            name: apiUser.displayName || telegramUser.first_name || "Telegram User",
+            image: apiUser.picture || telegramUser.photo_url || undefined,
+            method: apiUser.method,
+            role: apiUser.role,
+            accessToken: apiToken,
+            telegramId: telegramUser.id.toString(),
+          };
+        } catch (error: any) {
+          console.error("Telegram OAuth error:", error);
+          return null;
+        }
+      },
+    }),
   ],
 
   pages: {
@@ -121,6 +179,23 @@ export const authOptions: AuthOptions = {
           // Если уже был отправлен, используем сохраненные данные
           token.id = token.id || user.id;
           token.email = token.email || user.email || undefined;
+        }
+      }
+
+      // Для Telegram OAuth данные уже обработаны в authorize, просто сохраняем их
+      if (account?.provider === "telegram" && user) {
+        // Данные уже получены от бэкенда в authorize, просто сохраняем
+        token.id = user.id;
+        token.email = user.email || undefined;
+        token.name = user.name || undefined;
+        token.picture = user.image || undefined;
+        token.method = user.method;
+        token.role = user.role;
+        if ("accessToken" in user && user.accessToken) {
+          token.accessToken = user.accessToken as string;
+        }
+        if ("telegramId" in user && user.telegramId) {
+          token.telegramId = user.telegramId as string;
         }
       }
 
