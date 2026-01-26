@@ -4,6 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 import axios from "axios";
 import { axiosInstance } from "@/app/shared/api/axios-instance";
 import { AuthResponseDto } from "@/app/shared/api/generated/cryptoMonitorAPI.schemas";
+import { telegramAuth } from "@/app/shared/api";
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -68,30 +69,55 @@ export const authOptions: AuthOptions = {
           // Парсим данные от Telegram
           const telegramUser = JSON.parse(credentials.telegramData);
 
-          console.log("telegramUser === ", telegramUser);
 
           // Отправляем данные на бэкенд для валидации и создания пользователя
           const apiUrl =
             process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
-          const response = await axios.post<AuthResponseDto>(
-            `${apiUrl}/api/auth/oauth/telegram`,
-            {
-              id: telegramUser.id,
-              firstName: telegramUser.first_name,
-              lastName: telegramUser.last_name,
-              username: telegramUser.username,
-              photoUrl: telegramUser.photo_url,
-              authDate: telegramUser.auth_date,
-              hash: telegramUser.hash,
-            },
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
+          //const response = await axios.post<AuthResponseDto>(
+          //  `${apiUrl}/api/auth/telegram`,
+          //  {
+          //    id: telegramUser.id,
+          //    firstName: telegramUser.first_name,
+          //    lastName: telegramUser.last_name,
+          //    username: telegramUser.username,
+          //    photoUrl: telegramUser.photo_url,
+          //    authDate: telegramUser.auth_date,
+          //    hash: telegramUser.hash,
+          //  },
+          //  {
+          //    headers: {
+          //      "Content-Type": "application/json",
+          //    },
+          //  }
+          //);
+          // Формируем объект для отправки, исключая undefined значения
+          const telegramAuthData: {
+            id: number;
+            first_name?: string;
+            last_name?: string;
+            username?: string;
+            photo_url?: string;
+            hash: string;
+            auth_date: number;
+            email?: string;
+          } = {
+            id: telegramUser.id,
+            hash: telegramUser.hash,
+            auth_date: telegramUser.auth_date,
+          };
 
-          const { user: apiUser, token: apiToken } = response.data;
+          // Добавляем опциональные поля только если они есть
+          if (telegramUser.first_name) telegramAuthData.first_name = telegramUser.first_name;
+          if (telegramUser.last_name) telegramAuthData.last_name = telegramUser.last_name;
+          if (telegramUser.username) telegramAuthData.username = telegramUser.username;
+          if (telegramUser.photo_url) telegramAuthData.photo_url = telegramUser.photo_url;
+          if (telegramUser.email) telegramAuthData.email = telegramUser.email;
+
+          console.log("Telegram auth data:", telegramAuthData);
+          const response = await telegramAuth(telegramAuthData);
+
+          console.log("apiUrl === ", response);
+          const { user: apiUser, token: apiToken } = response;
 
           return {
             id: apiUser.id,
