@@ -48,7 +48,7 @@ export function OAuthButtons({
   };
   return (
     <div className={`${styles.oauthButtons} ${className || ""}`}>
-      <div id="telegram-login">
+      {/*<div id="telegram-login">
         <script async
           src="https://telegram.org/js/telegram-widget.js?22"
         //data-telegram-login="monitor_cra_bot" data-size="large"
@@ -56,8 +56,22 @@ export function OAuthButtons({
         //data-request-access="write"
         ></script>
         <div onClick={() => authTelegram()}>Click</div>
-      </div>
+      </div>*/}
 
+      <button
+        id="telegram-login"
+        type="button"
+        className={styles.oauthButton}
+        onClick={authTelegram}
+      > <script async
+        src="https://telegram.org/js/telegram-widget.js?22"
+      //data-telegram-login="monitor_cra_bot" data-size="large"
+      //data-auth-url="53ef93b790e7.ngrok-free.app"
+      //data-request-access="write"
+      ></script>
+
+        Telegram
+      </button>
       <button
         type="button"
         className={styles.oauthButton}
