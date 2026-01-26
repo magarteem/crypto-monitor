@@ -69,27 +69,6 @@ export const authOptions: AuthOptions = {
           // Парсим данные от Telegram
           const telegramUser = JSON.parse(credentials.telegramData);
 
-
-          // Отправляем данные на бэкенд для валидации и создания пользователя
-          const apiUrl =
-            process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
-          //const response = await axios.post<AuthResponseDto>(
-          //  `${apiUrl}/api/auth/telegram`,
-          //  {
-          //    id: telegramUser.id,
-          //    firstName: telegramUser.first_name,
-          //    lastName: telegramUser.last_name,
-          //    username: telegramUser.username,
-          //    photoUrl: telegramUser.photo_url,
-          //    authDate: telegramUser.auth_date,
-          //    hash: telegramUser.hash,
-          //  },
-          //  {
-          //    headers: {
-          //      "Content-Type": "application/json",
-          //    },
-          //  }
-          //);
           // Формируем объект для отправки, исключая undefined значения
           const telegramAuthData: {
             id: number;
