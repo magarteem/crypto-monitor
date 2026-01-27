@@ -1,4 +1,7 @@
+"use client";
+
 import { Header } from "@widgets/Header";
+import { ClientSocketConnection } from "@/app/shared/components/client-socket-connection/ClientSocketConnection";
 import styles from "./dashboard.module.css";
 
 export default function Dashboard() {
@@ -6,6 +9,9 @@ export default function Dashboard() {
     <div className={styles.page}>
       {/* Header */}
       <Header />
+
+      {/* WebSocket подключение для получения сообщений от сервера */}
+      <ClientSocketConnection />
 
       {/* Main Content */}
       <main className={styles.main}>

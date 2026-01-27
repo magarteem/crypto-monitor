@@ -319,6 +319,7 @@ export const GraphikV2 = ({
         }
 
         const data = await response.json();
+        console.log("data === ", data);
 
         if (!Array.isArray(data) || data.length === 0) {
           isLoadingMoreRef.current = false;

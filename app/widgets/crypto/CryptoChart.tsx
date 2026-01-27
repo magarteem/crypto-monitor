@@ -51,9 +51,8 @@ export const CryptoChart = () => {
                 key={num}
                 type="button"
                 onClick={() => setColumns(num)}
-                className={`${styles.columnsButton} ${
-                  columns === num ? styles.active : ""
-                }`}
+                className={`${styles.columnsButton} ${columns === num ? styles.active : ""
+                  }`}
                 title={`${num} колонок`}
                 aria-label={`${num} колонок`}
               >
@@ -77,6 +76,7 @@ export const CryptoChart = () => {
         }
       >
         {CRYPTO_COINS.map((coin) => {
+          console.log("coin === ", cryptoData);
           const data = cryptoData?.[coin.symbol];
           if (!data) return null;
 
@@ -84,12 +84,12 @@ export const CryptoChart = () => {
             columns === 1
               ? "600px"
               : columns === 2
-              ? "500px"
-              : columns === 3
-              ? "400px"
-              : columns === 4
-              ? "320px"
-              : "280px";
+                ? "500px"
+                : columns === 3
+                  ? "400px"
+                  : columns === 4
+                    ? "320px"
+                    : "280px";
 
           return (
             <div key={coin.symbol} className={styles.chartItem}>
