@@ -49,7 +49,7 @@ export const GraphikV2 = ({
   const candlesDataRef = useRef<CandlestickData<UTCTimestamp>[]>([]);
   const isLoadingMoreRef = useRef<boolean>(false);
   const unsubscribeRef = useRef<(() => void) | null>(null);
-  
+
   const { subscribeToCandle, getHistoricalKlines } = useSocket();
 
   const [timeframe, setTimeframe] = useState<Timeframe>("1h");
