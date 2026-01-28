@@ -12,6 +12,7 @@ import {
 import { useModal } from "@hooks/useModal";
 import { CoinNotificationModal } from "../modals/CoinNotificationModal";
 import { BellIcon } from "@/public/img";
+import { useSocket } from "@/app/shared/components/client-socket-connection/ClientSocketConnection";
 import styles from "./GraphikV2.module.css";
 
 type Timeframe = "1m" | "5m" | "15m" | "1h" | "4h" | "1d";
@@ -43,12 +44,13 @@ export const GraphikV2 = ({
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const candlestickSeriesRef = useRef<any>(null);
-  const wsRef = useRef<WebSocket | null>(null);
-  const wsUrlRef = useRef<string | null>(null);
   const handleResizeRef = useRef<(() => void) | null>(null);
   const resizeObserverRef = useRef<ResizeObserver | null>(null);
   const candlesDataRef = useRef<CandlestickData<UTCTimestamp>[]>([]);
   const isLoadingMoreRef = useRef<boolean>(false);
+  const unsubscribeRef = useRef<(() => void) | null>(null);
+  
+  const { subscribeToCandle, getHistoricalKlines } = useSocket();
 
   const [timeframe, setTimeframe] = useState<Timeframe>("1h");
   const [currentPrice, setCurrentPrice] = useState<number | null>(
@@ -199,7 +201,7 @@ export const GraphikV2 = ({
     };
   }, []);
 
-  // Загрузка исторических данных
+  // Загрузка исторических данных через Socket.IO
   useEffect(() => {
     if (!chartReady || !candlestickSeriesRef.current || !symbol) return;
 
@@ -209,27 +211,19 @@ export const GraphikV2 = ({
 
       try {
         const limit = timeframe === "1m" ? 500 : timeframe === "5m" ? 300 : 200;
-        const response = await fetch(
-          `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${timeframe}&limit=${limit}`
-        );
+        const response = await getHistoricalKlines(symbol, timeframe, limit);
 
-        if (!response.ok) {
-          throw new Error("Не удалось загрузить данные");
-        }
-
-        const data = await response.json();
-
-        if (!Array.isArray(data) || data.length === 0) {
+        if (!response.data || response.data.length === 0) {
           throw new Error("Получены пустые данные");
         }
 
-        const candles: CandlestickData<UTCTimestamp>[] = data.map(
-          (item: any[]) => ({
-            time: Math.floor(item[0] / 1000) as UTCTimestamp,
-            open: parseFloat(item[1]),
-            high: parseFloat(item[2]),
-            low: parseFloat(item[3]),
-            close: parseFloat(item[4]),
+        const candles: CandlestickData<UTCTimestamp>[] = response.data.map(
+          (item) => ({
+            time: item.time as UTCTimestamp,
+            open: item.open,
+            high: item.high,
+            low: item.low,
+            close: item.close,
           })
         );
 
@@ -265,7 +259,7 @@ export const GraphikV2 = ({
     };
 
     fetchHistoricalData();
-  }, [timeframe, chartReady, symbol, propCurrentPrice, propChange]);
+  }, [timeframe, chartReady, symbol, propCurrentPrice, propChange, getHistoricalKlines]);
 
   // Обновление размера графика при изменении высоты
   useEffect(() => {
@@ -309,30 +303,25 @@ export const GraphikV2 = ({
 
         const limit = timeframe === "1m" ? 500 : timeframe === "5m" ? 300 : 200;
 
-        const response = await fetch(
-          `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${timeframe}&limit=${limit}&endTime=${endTime * 1000
-          }`
+        const response = await getHistoricalKlines(
+          symbol,
+          timeframe,
+          limit,
+          endTime * 1000
         );
 
-        if (!response.ok) {
-          throw new Error("Не удалось загрузить данные");
-        }
-
-        const data = await response.json();
-        console.log("data === ", data);
-
-        if (!Array.isArray(data) || data.length === 0) {
+        if (!response.data || response.data.length === 0) {
           isLoadingMoreRef.current = false;
           return;
         }
 
-        const newCandles: CandlestickData<UTCTimestamp>[] = data.map(
-          (item: any[]) => ({
-            time: Math.floor(item[0] / 1000) as UTCTimestamp,
-            open: parseFloat(item[1]),
-            high: parseFloat(item[2]),
-            low: parseFloat(item[3]),
-            close: parseFloat(item[4]),
+        const newCandles: CandlestickData<UTCTimestamp>[] = response.data.map(
+          (item) => ({
+            time: item.time as UTCTimestamp,
+            open: item.open,
+            high: item.high,
+            low: item.low,
+            close: item.close,
           })
         );
 
@@ -418,178 +407,75 @@ export const GraphikV2 = ({
         }
       }
     });
-  }, [timeframe, chartReady, symbol, propChange]);
+  }, [timeframe, chartReady, symbol, propChange, getHistoricalKlines]);
 
-  // WebSocket для обновления в реальном времени
-  // Переподключается только при изменении symbol или timeframe, но не при изменении пропсов
+  // Подписка на обновления свечей через Socket.IO
   useEffect(() => {
     if (!chartReady || !candlestickSeriesRef.current || !symbol) return;
 
-    const wsUrl = `wss://stream.binance.com:9443/ws/${symbol.toLowerCase()}@kline_${timeframe}`;
-
-    // Если соединение уже существует и активно для того же URL, не переподключаемся
-    if (wsRef.current && wsUrlRef.current === wsUrl) {
-      const readyState = wsRef.current.readyState;
-      // Если соединение открыто или устанавливается, оставляем его как есть
-      if (
-        readyState === WebSocket.OPEN ||
-        readyState === WebSocket.CONNECTING
-      ) {
-        return; // Соединение активно, не трогаем его
-      }
-      // Если соединение закрыто, переподключимся ниже
+    // Отписываемся от предыдущей подписки
+    if (unsubscribeRef.current) {
+      unsubscribeRef.current();
+      unsubscribeRef.current = null;
     }
 
-    // Закрываем предыдущее соединение только если оно существует и для другого символа/таймфрейма
-    if (wsRef.current && wsUrlRef.current !== wsUrl) {
-      const oldWs = wsRef.current;
-      // Удаляем все обработчики перед закрытием
-      oldWs.onmessage = null;
-      oldWs.onerror = null;
-      oldWs.onclose = null;
+    // Подписываемся на обновления свечей
+    const unsubscribe = subscribeToCandle(symbol, timeframe, (data) => {
+      if (!candlestickSeriesRef.current) return;
 
-      // Закрываем соединение с кодом нормального закрытия
-      if (
-        oldWs.readyState === WebSocket.OPEN ||
-        oldWs.readyState === WebSocket.CONNECTING
-      ) {
-        oldWs.close(1000, "Switching symbol or timeframe");
-      }
-      wsRef.current = null;
-      wsUrlRef.current = null;
-    }
-
-    // Небольшая задержка перед созданием нового соединения (только если нужно)
-    const connectTimeout = setTimeout(() => {
-      // Проверяем еще раз, может соединение уже установлено
-      if (
-        wsRef.current &&
-        wsUrlRef.current === wsUrl &&
-        wsRef.current.readyState === WebSocket.OPEN
-      ) {
-        return;
-      }
-
-      const ws = new WebSocket(wsUrl);
-      wsUrlRef.current = wsUrl;
-
-      ws.onopen = () => {
-        console.log(`WebSocket connected for ${symbol}@${timeframe}`);
+      const candleTime = data.time as UTCTimestamp;
+      const candle: CandlestickData<UTCTimestamp> = {
+        time: candleTime,
+        open: data.open,
+        high: data.high,
+        low: data.low,
+        close: data.close,
       };
 
-      ws.onmessage = (event: MessageEvent) => {
-        try {
-          const message = JSON.parse(event.data);
-          const kline = message.k;
+      // Обновляем свечу на графике
+      candlestickSeriesRef.current.update(candle);
 
-          if (kline && candlestickSeriesRef.current) {
-            const candleTime = Math.floor(kline.t / 1000) as UTCTimestamp;
-            const candle: CandlestickData<UTCTimestamp> = {
-              time: candleTime,
-              open: parseFloat(kline.o),
-              high: parseFloat(kline.h),
-              low: parseFloat(kline.l),
-              close: parseFloat(kline.c),
-            };
-
-            // Обновляем свечу на графике
-            candlestickSeriesRef.current.update(candle);
-
-            // Обновляем данные в рефе
-            if (candlesDataRef.current.length > 0) {
-              const lastCandle =
-                candlesDataRef.current[candlesDataRef.current.length - 1];
-              if (lastCandle.time === candleTime) {
-                // Если это та же свеча, обновляем её
-                candlesDataRef.current[candlesDataRef.current.length - 1] =
-                  candle;
-              } else {
-                // Если новая свеча, добавляем её
-                candlesDataRef.current = [...candlesDataRef.current, candle];
-              }
-            }
-
-            // Обновляем направление изменения цены
-            if (previousPriceRef.current !== null) {
-              setIsPriceUp(candle.close > previousPriceRef.current);
-            }
-            previousPriceRef.current = candle.close;
-
-            // Всегда обновляем текущую цену при получении данных через WebSocket
-            // Это гарантирует, что цена в шапке синхронизирована с графиком
-            setCurrentPrice(candle.close);
-
-            // Обновляем процент изменения при получении новых данных
-            if (propChange === undefined && candlesDataRef.current.length > 0) {
-              const firstCandle = candlesDataRef.current[0];
-              const change =
-                ((candle.close - firstCandle.open) / firstCandle.open) * 100;
-              setPriceChange(change);
-            }
-          }
-        } catch (err) {
-          console.error("Error parsing WebSocket message:", err);
-        }
-      };
-
-      ws.onerror = (event: Event) => {
-        console.error("WebSocket error:", event);
-      };
-
-      ws.onclose = (event: CloseEvent) => {
-        // Автоматическое переподключение при неожиданном закрытии
-        if (event.code !== 1000 && event.code !== 1001) {
-          console.log(
-            `WebSocket closed unexpectedly: ${event.code} ${event.reason}, reconnecting...`
-          );
-          // Очищаем рефы для переподключения
-          wsUrlRef.current = null;
-          // Переподключаемся через 3 секунды, только если компонент все еще монтирован
-          setTimeout(() => {
-            if (
-              chartReady &&
-              candlestickSeriesRef.current &&
-              symbol &&
-              wsUrlRef.current !== wsUrl
-            ) {
-              wsRef.current = null;
-              // Эффект перезапустится автоматически из-за зависимостей
-            }
-          }, 3000);
+      // Обновляем данные в рефе
+      if (candlesDataRef.current.length > 0) {
+        const lastCandle =
+          candlesDataRef.current[candlesDataRef.current.length - 1];
+        if (lastCandle.time === candleTime) {
+          // Если это та же свеча, обновляем её
+          candlesDataRef.current[candlesDataRef.current.length - 1] = candle;
         } else {
-          // Нормальное закрытие - очищаем реф
-          wsUrlRef.current = null;
+          // Если новая свеча, добавляем её
+          candlesDataRef.current = [...candlesDataRef.current, candle];
         }
-      };
+      }
 
-      wsRef.current = ws;
-    }, 100);
+      // Обновляем направление изменения цены
+      if (previousPriceRef.current !== null) {
+        setIsPriceUp(candle.close > previousPriceRef.current);
+      }
+      previousPriceRef.current = candle.close;
+
+      // Всегда обновляем текущую цену при получении данных через WebSocket
+      // Это гарантирует, что цена в шапке синхронизирована с графиком
+      setCurrentPrice(candle.close);
+
+      // Обновляем процент изменения при получении новых данных
+      if (propChange === undefined && candlesDataRef.current.length > 0) {
+        const firstCandle = candlesDataRef.current[0];
+        const change =
+          ((candle.close - firstCandle.open) / firstCandle.open) * 100;
+        setPriceChange(change);
+      }
+    });
+
+    unsubscribeRef.current = unsubscribe;
 
     return () => {
-      clearTimeout(connectTimeout);
-      // Закрываем соединение только при размонтировании компонента или смене symbol/timeframe
-      // Не закрываем при изменении пропсов или других зависимостей
-      // Проверяем, что URL действительно изменился или компонент размонтируется
-      if (wsRef.current && wsUrlRef.current !== wsUrl) {
-        const ws = wsRef.current;
-        // Удаляем все обработчики перед закрытием
-        ws.onmessage = null;
-        ws.onerror = null;
-        ws.onclose = null;
-
-        // Закрываем соединение с кодом нормального закрытия
-        if (
-          ws.readyState === WebSocket.OPEN ||
-          ws.readyState === WebSocket.CONNECTING
-        ) {
-          ws.close(1000, "Changing symbol or timeframe");
-        }
-        wsRef.current = null;
-        wsUrlRef.current = null;
+      if (unsubscribeRef.current) {
+        unsubscribeRef.current();
+        unsubscribeRef.current = null;
       }
-      // Если URL совпадает, соединение остается активным и не закрывается
     };
-  }, [timeframe, chartReady, symbol]); // Убрали propCurrentPrice и propChange - соединение не переподключается при их изменении
+  }, [timeframe, chartReady, symbol, propChange, subscribeToCandle]);
 
   const handleTimeframeChange = (newTimeframe: Timeframe) => {
     setTimeframe(newTimeframe);

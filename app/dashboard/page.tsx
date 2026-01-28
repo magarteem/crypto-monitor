@@ -6,12 +6,10 @@ import styles from "./dashboard.module.css";
 
 export default function Dashboard() {
   return (
-    <div className={styles.page}>
-      {/* Header */}
-      <Header />
-
-      {/* WebSocket подключение для получения сообщений от сервера */}
-      <ClientSocketConnection />
+    <ClientSocketConnection>
+      <div className={styles.page}>
+        {/* Header */}
+        <Header />
 
       {/* Main Content */}
       <main className={styles.main}>
@@ -140,6 +138,7 @@ export default function Dashboard() {
           </linearGradient>
         </defs>
       </svg>
-    </div>
+      </div>
+    </ClientSocketConnection>
   );
 }
