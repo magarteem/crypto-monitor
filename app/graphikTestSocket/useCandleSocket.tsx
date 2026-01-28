@@ -32,6 +32,7 @@ type UseCandleSocketOptions = {
   autoConnect?: boolean;
 };
 
+// Хук для работы с WebSocket‑свечами и диагностикой пула на сервере
 export function useCandleSocket(options: UseCandleSocketOptions = {}) {
   const { url = "http://localhost:4000", autoConnect = true } = options;
 
@@ -43,10 +44,12 @@ export function useCandleSocket(options: UseCandleSocketOptions = {}) {
   const [lastCandle, setLastCandle] = useState<CandleUpdate | null>(null);
   const [poolStats, setPoolStats] = useState<PoolStats | null>(null);
 
+  // Приводим символ + таймфрейм к единому формату ключа для подписок
   const makeKey = useCallback((s: SubscribePayload) => {
     return `${s.symbol.trim().toLowerCase()}_${s.timeframe.trim().toLowerCase()}`;
   }, []);
 
+  // Устанавливаем соединение с сервером и навешиваем все обработчики событий
   const connect = useCallback(() => {
     if (socketRef.current) return socketRef.current;
 
@@ -84,6 +87,7 @@ export function useCandleSocket(options: UseCandleSocketOptions = {}) {
     return socket;
   }, [url]);
 
+  // Полностью разрываем соединение и очищаем все подписки
   const disconnect = useCallback(() => {
     const socket = socketRef.current;
     if (!socket) return;
@@ -102,6 +106,7 @@ export function useCandleSocket(options: UseCandleSocketOptions = {}) {
     setSocketId(null);
   }, []);
 
+  // Подписка на обновление свечей по символу и таймфрейму
   const subscribe = useCallback(
     (payload: SubscribePayload) => {
       const socket = socketRef.current ?? connect();
@@ -112,6 +117,7 @@ export function useCandleSocket(options: UseCandleSocketOptions = {}) {
     [connect, makeKey],
   );
 
+  // Отписка от обновления свечей по символу и таймфрейму
   const unsubscribe = useCallback(
     (payload: SubscribePayload) => {
       const socket = socketRef.current;
@@ -122,6 +128,7 @@ export function useCandleSocket(options: UseCandleSocketOptions = {}) {
     [makeKey],
   );
 
+  // Запрос актуальной статистики пула подписок на сервере
   const requestPoolStats = useCallback(() => {
     const socket = socketRef.current ?? connect();
     socket.emit("binance-pool-stats");
@@ -133,6 +140,7 @@ export function useCandleSocket(options: UseCandleSocketOptions = {}) {
     return () => disconnect();
   }, [autoConnect, connect, disconnect]);
 
+  // Мемоизируем возвращаемый из хука API, чтобы не создавать новые ссылки без необходимости
   return useMemo(
     () => ({
       connected,
