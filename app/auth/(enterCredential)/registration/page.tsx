@@ -9,11 +9,11 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { InputFormField } from "@/app/shared/formFields/inputFormField/InputFormField";
 import { Button } from "@ui/button";
 import { ReCaptcha } from "@features/recaptcha";
-import { registerSchema, type RegisterFormData } from "../schemas";
-import styles from "../page.module.css";
+import { registerSchema, type RegisterFormData } from "@/app/auth/schemas";
 import { EyeClosedIcon, EyeOpenIcon } from "@/public/img";
 import { axiosInstance } from "@/app/shared/api/axios-instance";
 import { RouteNames } from "@/app/shared/types";
+import styles from '../auth.module.scss'
 
 interface AuthResponse {
   user: {

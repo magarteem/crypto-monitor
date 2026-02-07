@@ -1,16 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { InputFormField } from "@/app/shared/formFields/inputFormField/InputFormField";
 import { Button } from "@ui/button";
-import { GoBack } from "@features/goBack";
-import { RouteNames } from "@/app/shared/types";
-import styles from "./page.module.css";
+import styles from "../passwordRecovery.module.scss";
 import { useResetPassword } from "@/app/shared/api";
+import { PageTitle } from "@/app/shared/components/pageTitle/PageTitle";
+import { AuthFormLayout } from "@/app/shared/layouts/authFormLayout/AuthFormLayout";
 
 // Schema валидации
 const passwordRecoverySchema = z.object({
@@ -23,7 +22,6 @@ const passwordRecoverySchema = z.object({
 type PasswordRecoveryFormData = z.infer<typeof passwordRecoverySchema>;
 
 export default function PasswordRecovery() {
-  const router = useRouter();
   const [globalError, setGlobalError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -66,55 +64,39 @@ export default function PasswordRecovery() {
   };
 
   return (
-    <div className={styles.page}>
-      <GoBack />
-      <main className={styles.main}>
-        {/* Header Section */}
-        <div className={styles.header}>
-          <h1 className={styles.title}>Восстановление пароля</h1>
-          <p className={styles.subtitle}>
-            Введите email, указанный при регистрации
-          </p>
-        </div>
+    <>
+      {/* Header Section */}
+      <PageTitle title="Восстановление пароля" subtitle="Введите email, указанный при регистрации" />
 
-        {/* Recovery Card */}
-        <div className={styles.card}>
-          <form className={styles.form} onSubmit={form.handleSubmit(onSubmit)}>
-            <InputFormField
-              form={form}
-              name="email"
-              title="Email"
-              placeholder="ivan@example.com"
-              type="email"
-            />
+      {/*Recovery Card*/}
+      <AuthFormLayout>
+        <form className={styles.form} onSubmit={form.handleSubmit(onSubmit)}>
+          <InputFormField
+            form={form}
+            name="email"
+            title="Email"
+            placeholder="ivan@example.com"
+            type="email"
+          />
 
-            {globalError && (
-              <div className={styles.errorMessage}>{globalError}</div>
-            )}
+          {globalError && (
+            <div className={styles.errorMessage}>{globalError}</div>
+          )}
 
-            {successMessage && (
-              <div className={styles.successMessage}>{successMessage}</div>
-            )}
+          {successMessage && (
+            <div className={styles.successMessage}>{successMessage}</div>
+          )}
 
-            <Button
-              type="submit"
-              variant="primary"
-              disabled={isPending}
-              width="100%"
-            >
-              {isPending ? "Отправка..." : "Отправить письмо"}
-            </Button>
-
-            <button
-              type="button"
-              className={styles.backToLogin}
-              onClick={() => router.push(RouteNames.HOME)}
-            >
-              Вернуться к входу
-            </button>
-          </form>
-        </div>
-      </main>
-    </div>
+          <Button
+            type="submit"
+            variant="primary"
+            disabled={isPending}
+            width="100%"
+          >
+            {isPending ? "Отправка..." : "Отправить письмо"}
+          </Button>
+        </form>
+      </AuthFormLayout>
+    </>
   );
 }
