@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { OAuthButtons } from "@features/oauthButtons";
-import styles from "../page.module.css";
+import styles from "./auth.module.scss";
 import { RouteNames } from "@sharedTypes/RouteNames";
 import { PageTitle } from "@/app/shared/components/pageTitle/PageTitle";
 import { AuthFormLayout } from "@/app/shared/layouts/authFormLayout/AuthFormLayout";

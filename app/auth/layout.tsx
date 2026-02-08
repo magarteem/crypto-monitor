@@ -16,7 +16,6 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
   const router = useRouter();
   const { status } = useSession();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [globalError, setGlobalError] = useState("");
 
   // Параллакс эффект
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
