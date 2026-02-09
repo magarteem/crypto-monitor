@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { useLocale } from "@hooks/useLocale";
 import { Box, VStack, HStack, Text, Flex } from "@chakra-ui/react";
 import styles from "./SettingsSidebar.module.css";
 import { CRYPTO_COINS } from "@const/cryptoConst";
@@ -66,6 +68,8 @@ export const SettingsSidebar = ({
   onClose,
   onSettingsChange,
 }: SettingsSidebarProps) => {
+  const t = useTranslations("settings");
+  const { locale: currentLocale, setLocale } = useLocale();
   const [settings, setSettings] = useState<SettingsData>(DEFAULT_SETTINGS);
   const [expandedSection, setExpandedSection] = useState<
     "notifications" | "coins" | "app" | null
@@ -91,14 +95,15 @@ export const SettingsSidebar = ({
             maxCoinsForTariff
           );
         }
-        setSettings({
+        const loadedSettings = {
           ...DEFAULT_SETTINGS,
           ...parsed,
           notifications: {
             ...DEFAULT_SETTINGS.notifications,
             ...parsed.notifications,
           },
-        });
+        };
+        setSettings(loadedSettings);
       } catch (e) {
         console.error("Error loading settings:", e);
       }
@@ -111,7 +116,13 @@ export const SettingsSidebar = ({
     onClose();
 
     // Показываем уведомление
-    alert("✅ Настройки сохранены! Перезагрузите страницу для применения.");
+    alert(t("saveSuccess"));
+  };
+
+  // Функция для смены языка
+  const handleLocaleChange = (newLocale: "ru" | "en") => {
+    setSettings((prev) => ({ ...prev, locale: newLocale }));
+    setLocale(newLocale);
   };
 
   const toggleSection = (section: "notifications" | "coins" | "app") => {
@@ -179,7 +190,7 @@ export const SettingsSidebar = ({
               height="24"
               className={styles.headerIcon}
             />
-            <Text className={styles.title}>Настройки</Text>
+            <Text className={styles.title}>{t("title")}</Text>
           </HStack>
           <button
             className={styles.closeButton}
@@ -211,7 +222,7 @@ export const SettingsSidebar = ({
                   className={styles.sectionIcon}
                 />
                 <Text className={styles.accordionTitle}>
-                  Мэнеджер уведомлений
+                  {t("notifications.title")}
                 </Text>
               </HStack>
               {expandedSection === "notifications" ? (
@@ -224,7 +235,7 @@ export const SettingsSidebar = ({
               {expandedSection === "notifications" && (
                 <Box className={styles.accordionContentInner}>
                   <Text className={styles.notificationsTitle}>
-                    Получать уведомления на:
+                    {t("notifications.subtitle")}
                   </Text>
                   <VStack gap="0.75rem" align="stretch" mt="1rem">
                     <label className={styles.notificationCheckbox}>
@@ -241,7 +252,7 @@ export const SettingsSidebar = ({
                           }))
                         }
                       />
-                      <span>Telegram Bot</span>
+                      <span>{t("notifications.telegram")}</span>
                     </label>
                     <label className={styles.notificationCheckbox}>
                       <input
@@ -257,7 +268,7 @@ export const SettingsSidebar = ({
                           }))
                         }
                       />
-                      <span>Push Notification this device</span>
+                      <span>{t("notifications.push")}</span>
                     </label>
                     <label className={styles.notificationCheckbox}>
                       <input
@@ -273,7 +284,7 @@ export const SettingsSidebar = ({
                           }))
                         }
                       />
-                      <span>WhatsApp</span>
+                      <span>{t("notifications.whatsapp")}</span>
                     </label>
                     <label className={styles.notificationCheckbox}>
                       <input
@@ -289,7 +300,7 @@ export const SettingsSidebar = ({
                           }))
                         }
                       />
-                      <span>Email</span>
+                      <span>{t("notifications.email")}</span>
                     </label>
                   </VStack>
                 </Box>
@@ -315,7 +326,7 @@ export const SettingsSidebar = ({
                   className={styles.sectionIcon}
                 />
                 <Text className={styles.accordionTitle}>
-                  Отслеживаемые монеты
+                  {t("coins.title")}
                 </Text>
               </HStack>
               {expandedSection === "coins" ? (
@@ -336,14 +347,14 @@ export const SettingsSidebar = ({
                           onClick={selectAllCoins}
                           type="button"
                         >
-                          Выбрать все
+                          {t("coins.selectAll")}
                         </button>
                         <button
                           className={styles.selectButton}
                           onClick={deselectAllCoins}
                           type="button"
                         >
-                          Снять все
+                          {t("coins.deselectAll")}
                         </button>
                       </HStack>
                     </VStack>
@@ -352,14 +363,15 @@ export const SettingsSidebar = ({
                       settings.selectedCoins.length >= maxCoinsForTariff && (
                         <Box className={styles.tariffWarning} mb="0.75rem">
                           <Text className={styles.tariffWarningText}>
-                            Достигнут лимит для FREE тарифа. maximum{" "}
-                            {maxCoinsForTariff} tokens.
+                            {t("coins.tariffWarning", {
+                              count: maxCoinsForTariff.toString(),
+                            })}
                           </Text>
                           <Link
                             href={RouteNames.TARIFFS}
                             className={styles.upgradeButton}
                           >
-                            Upgrade plan
+                            {t("coins.upgradePlan")}
                           </Link>
                         </Box>
                       )}
@@ -408,13 +420,13 @@ export const SettingsSidebar = ({
                           className={styles.sectionIcon}
                         />
                         <Text as="span" fontWeight="700" fontSize="1.05rem">
-                          Интервал обновления
+                          {t("coins.interval.title")}
                         </Text>
                       </HStack>
                     </HStack>
                     <VStack align="stretch" gap="0.875rem" mt="1.25rem">
                       <Text className={styles.label}>
-                        Как часто проверять цены (минуты)
+                        {t("coins.interval.label")}
                       </Text>
                       <HStack gap="1rem" align="center">
                         <Box flex="1" width="100%">
@@ -439,12 +451,13 @@ export const SettingsSidebar = ({
                           minW="70px"
                           textAlign="right"
                         >
-                          {intervalInMinutes} мин
+                          {t("coins.interval.value", {
+                            value: intervalInMinutes.toString(),
+                          })}
                         </Text>
                       </HStack>
                       <Text className={styles.hint}>
-                        Рекомендуется: 5-15 минут. Меньше = чаще проверяет, но
-                        больше запросов к API
+                        {t("coins.interval.hint")}
                       </Text>
                     </VStack>
                   </Box>
@@ -462,7 +475,7 @@ export const SettingsSidebar = ({
                           className={styles.sectionIcon}
                         />
                         <Text as="span" fontWeight="700" fontSize="1.05rem">
-                          Алерт при падении
+                          {t("coins.drop.title")}
                         </Text>
                       </HStack>
                       <label className={styles.toggleSwitch}>
@@ -480,7 +493,9 @@ export const SettingsSidebar = ({
                       </label>
                     </HStack>
                     <VStack align="stretch" gap="0.875rem" mt="1.25rem">
-                      <Text className={styles.label}>Процент падения цены</Text>
+                      <Text className={styles.label}>
+                        {t("coins.drop.label")}
+                      </Text>
                       <HStack gap="1rem" align="center">
                         <Box flex="1" width="100%">
                           <input
@@ -504,13 +519,15 @@ export const SettingsSidebar = ({
                           minW="70px"
                           textAlign="right"
                         >
-                          -{settings.priceDropThreshold}%
+                          {t("coins.drop.value", {
+                            value: settings.priceDropThreshold.toString(),
+                          })}
                         </Text>
                       </HStack>
                       <Text className={styles.hint}>
                         {settings.trackDrop
-                          ? "Уведомление придет, если цена упадет на этот процент или больше"
-                          : "Отслеживание падения отключено"}
+                          ? t("coins.drop.hintEnabled")
+                          : t("coins.drop.hintDisabled")}
                       </Text>
                     </VStack>
                   </Box>
@@ -528,7 +545,7 @@ export const SettingsSidebar = ({
                           className={styles.sectionIcon}
                         />
                         <Text as="span" fontWeight="700" fontSize="1.05rem">
-                          Алерт при росте
+                          {t("coins.growth.title")}
                         </Text>
                       </HStack>
                       <label className={styles.toggleSwitch}>
@@ -546,7 +563,9 @@ export const SettingsSidebar = ({
                       </label>
                     </HStack>
                     <VStack align="stretch" gap="0.875rem" mt="1.25rem">
-                      <Text className={styles.label}>Процент роста цены</Text>
+                      <Text className={styles.label}>
+                        {t("coins.growth.label")}
+                      </Text>
                       <HStack gap="1rem" align="center">
                         <Box flex="1" width="100%">
                           <input
@@ -572,13 +591,15 @@ export const SettingsSidebar = ({
                           minW="70px"
                           textAlign="right"
                         >
-                          +{settings.priceGrowthThreshold}%
+                          {t("coins.growth.value", {
+                            value: settings.priceGrowthThreshold.toString(),
+                          })}
                         </Text>
                       </HStack>
                       <Text className={styles.hint}>
                         {settings.trackGrowth
-                          ? "Уведомление придет, если цена вырастет на этот процент или больше"
-                          : "Отслеживание роста отключено"}
+                          ? t("coins.growth.hintEnabled")
+                          : t("coins.growth.hintDisabled")}
                       </Text>
                     </VStack>
                   </Box>
@@ -605,7 +626,7 @@ export const SettingsSidebar = ({
                   className={styles.sectionIcon}
                 />
                 <Text className={styles.accordionTitle}>
-                  Настройки приложения
+                  {t("app.title")}
                 </Text>
               </HStack>
               {expandedSection === "app" ? (
@@ -624,7 +645,7 @@ export const SettingsSidebar = ({
                       justify="space-between"
                     >
                       <Text as="span" fontWeight="700" fontSize="1.05rem">
-                        Тема
+                        {t("app.theme.title")}
                       </Text>
                     </HStack>
                     <VStack align="stretch" gap="0.875rem" mt="1.25rem">
@@ -638,7 +659,7 @@ export const SettingsSidebar = ({
                             setSettings((prev) => ({ ...prev, theme: "light" }))
                           }
                         >
-                          Светлая
+                          {t("app.theme.light")}
                         </button>
                         <button
                           type="button"
@@ -649,7 +670,7 @@ export const SettingsSidebar = ({
                             setSettings((prev) => ({ ...prev, theme: "dark" }))
                           }
                         >
-                          Темная
+                          {t("app.theme.dark")}
                         </button>
                       </HStack>
                     </VStack>
@@ -662,7 +683,7 @@ export const SettingsSidebar = ({
                       justify="space-between"
                     >
                       <Text as="span" fontWeight="700" fontSize="1.05rem">
-                        Локализация
+                        {t("app.locale.title")}
                       </Text>
                     </HStack>
                     <VStack align="stretch" gap="0.875rem" mt="1.25rem">
@@ -670,24 +691,20 @@ export const SettingsSidebar = ({
                         <button
                           type="button"
                           className={`${styles.themeButton} ${
-                            settings.locale === "ru" ? styles.active : ""
+                            currentLocale === "ru" ? styles.active : ""
                           }`}
-                          onClick={() =>
-                            setSettings((prev) => ({ ...prev, locale: "ru" }))
-                          }
+                          onClick={() => handleLocaleChange("ru")}
                         >
-                          Русский
+                          {t("app.locale.ru")}
                         </button>
                         <button
                           type="button"
                           className={`${styles.themeButton} ${
-                            settings.locale === "en" ? styles.active : ""
+                            currentLocale === "en" ? styles.active : ""
                           }`}
-                          onClick={() =>
-                            setSettings((prev) => ({ ...prev, locale: "en" }))
-                          }
+                          onClick={() => handleLocaleChange("en")}
                         >
-                          English
+                          {t("app.locale.en")}
                         </button>
                       </HStack>
                     </VStack>
@@ -704,11 +721,11 @@ export const SettingsSidebar = ({
             type="button"
           >
             <SaveIcon width="18" height="18" />
-            Сохранить настройки
+            {t("save")}
           </button>
 
           {/* Версия приложения */}
-          <Text className={styles.appVersion}>v0.1.0</Text>
+          <Text className={styles.appVersion}>{t("version")}</Text>
         </VStack>
       </Box>
     </>

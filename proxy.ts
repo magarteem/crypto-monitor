@@ -1,5 +1,4 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
 export async function proxy(request: NextRequest) {
@@ -25,5 +24,6 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
+  // Матчер для защищенных маршрутов
   matcher: ["/dashboard/:path*"],
 };
