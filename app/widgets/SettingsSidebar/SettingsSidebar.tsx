@@ -206,9 +206,8 @@ export const SettingsSidebar = ({
         <VStack className={styles.content} gap="1rem" align="stretch">
           {/* 1. Мэнеджер уведомлений */}
           <Box
-            className={`${styles.accordionItem} ${
-              expandedSection === "notifications" ? styles.expanded : ""
-            }`}
+            className={`${styles.accordionItem} ${expandedSection === "notifications" ? styles.expanded : ""
+              }`}
           >
             <button
               type="button"
@@ -310,9 +309,8 @@ export const SettingsSidebar = ({
 
           {/* 2. Отслеживаемые монеты */}
           <Box
-            className={`${styles.accordionItem} ${
-              expandedSection === "coins" ? styles.expanded : ""
-            }`}
+            className={`${styles.accordionItem} ${expandedSection === "coins" ? styles.expanded : ""
+              }`}
           >
             <button
               type="button"
@@ -388,9 +386,8 @@ export const SettingsSidebar = ({
                         return (
                           <label
                             key={coin}
-                            className={`${styles.coinCheckbox} ${
-                              isDisabled ? styles.disabled : ""
-                            }`}
+                            className={`${styles.coinCheckbox} ${isDisabled ? styles.disabled : ""
+                              }`}
                           >
                             <input
                               type="checkbox"
@@ -610,9 +607,8 @@ export const SettingsSidebar = ({
 
           {/* 3. Настройки приложения */}
           <Box
-            className={`${styles.accordionItem} ${
-              expandedSection === "app" ? styles.expanded : ""
-            }`}
+            className={`${styles.accordionItem} ${expandedSection === "app" ? styles.expanded : ""
+              }`}
           >
             <button
               type="button"
@@ -652,9 +648,8 @@ export const SettingsSidebar = ({
                       <HStack gap="0.5rem">
                         <button
                           type="button"
-                          className={`${styles.themeButton} ${
-                            settings.theme === "light" ? styles.active : ""
-                          }`}
+                          className={`${styles.themeButton} ${settings.theme === "light" ? styles.active : ""
+                            }`}
                           onClick={() =>
                             setSettings((prev) => ({ ...prev, theme: "light" }))
                           }
@@ -663,9 +658,8 @@ export const SettingsSidebar = ({
                         </button>
                         <button
                           type="button"
-                          className={`${styles.themeButton} ${
-                            settings.theme === "dark" ? styles.active : ""
-                          }`}
+                          className={`${styles.themeButton} ${settings.theme === "dark" ? styles.active : ""
+                            }`}
                           onClick={() =>
                             setSettings((prev) => ({ ...prev, theme: "dark" }))
                           }
@@ -690,18 +684,16 @@ export const SettingsSidebar = ({
                       <HStack gap="0.5rem">
                         <button
                           type="button"
-                          className={`${styles.themeButton} ${
-                            currentLocale === "ru" ? styles.active : ""
-                          }`}
+                          className={`${styles.themeButton} ${currentLocale === "ru" ? styles.active : ""
+                            }`}
                           onClick={() => handleLocaleChange("ru")}
                         >
                           {t("app.locale.ru")}
                         </button>
                         <button
                           type="button"
-                          className={`${styles.themeButton} ${
-                            currentLocale === "en" ? styles.active : ""
-                          }`}
+                          className={`${styles.themeButton} ${currentLocale === "en" ? styles.active : ""
+                            }`}
                           onClick={() => handleLocaleChange("en")}
                         >
                           {t("app.locale.en")}
