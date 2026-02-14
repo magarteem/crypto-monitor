@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { cookies } from "next/headers";
 import "./globals.css";
 import { AppProvider } from "@providers/AppProvider";
 
@@ -45,15 +46,25 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Получаем локаль из cookies или используем дефолтную
+  const cookieStore = await cookies();
+  const locale = (cookieStore.get("NEXT_LOCALE")?.value || "ru") as "ru" | "en";
+
+  // Загружаем переводы для текущей локали
+  const messages = (await import(`./shared/i18n/dictionaries/${locale}.json`))
+    .default;
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <AppProvider>{children}</AppProvider>
+        <AppProvider locale={locale} messages={messages}>
+          {children}
+        </AppProvider>
       </body>
     </html>
   );

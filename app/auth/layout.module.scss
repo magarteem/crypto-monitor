@@ -1,0 +1,28 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #0a0e27 url("/img/bg_1.webp") center/cover no-repeat fixed;
+  position: relative;
+  overflow: hidden;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem 1rem;
+  gap: 2rem;
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  z-index: 10;
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: 2rem 1rem;
+  }
+}

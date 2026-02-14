@@ -58,7 +58,7 @@ export const Header = () => {
           </nav>
 
           {/* Action Buttons */}
-          <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+          <div className={styles.sideBarBtn}>
             {status === "loading" ? (
               <div className={styles.loader} aria-label="Загрузка">
                 <div className={styles.spinner} />

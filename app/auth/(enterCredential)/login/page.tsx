@@ -7,10 +7,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn, getSession } from "next-auth/react";
 import { InputFormField } from "@/app/shared/formFields/inputFormField/InputFormField";
 import { Button } from "@ui/button";
-import { loginSchema, type LoginFormData } from "../schemas";
-import styles from "../page.module.css";
+import { loginSchema, type LoginFormData } from "@/app/auth/schemas";
 import { EyeClosedIcon, EyeOpenIcon } from "@/public/img";
 import { RouteNames } from "@/app/shared/types";
+import styles from '../auth.module.scss'
 
 export default function LoginPage() {
   const router = useRouter();

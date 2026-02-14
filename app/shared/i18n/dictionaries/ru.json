@@ -1,0 +1,56 @@
+{
+  "settings": {
+    "title": "Настройки",
+    "save": "Сохранить настройки",
+    "saveSuccess": "✅ Настройки сохранены! Перезагрузите страницу для применения.",
+    "notifications": {
+      "title": "Мэнеджер уведомлений",
+      "subtitle": "Получать уведомления на:",
+      "telegram": "Telegram Bot",
+      "push": "Push Notification this device",
+      "whatsapp": "WhatsApp",
+      "email": "Email"
+    },
+    "coins": {
+      "title": "Отслеживаемые монеты",
+      "selectAll": "Выбрать все",
+      "deselectAll": "Снять все",
+      "tariffWarning": "Достигнут лимит для FREE тарифа. maximum {count} tokens.",
+      "upgradePlan": "Upgrade plan",
+      "interval": {
+        "title": "Интервал обновления",
+        "label": "Как часто проверять цены (минуты)",
+        "value": "{value} мин",
+        "hint": "Рекомендуется: 5-15 минут. Меньше = чаще проверяет, но больше запросов к API"
+      },
+      "drop": {
+        "title": "Алерт при падении",
+        "label": "Процент падения цены",
+        "value": "-{value}%",
+        "hintEnabled": "Уведомление придет, если цена упадет на этот процент или больше",
+        "hintDisabled": "Отслеживание падения отключено"
+      },
+      "growth": {
+        "title": "Алерт при росте",
+        "label": "Процент роста цены",
+        "value": "+{value}%",
+        "hintEnabled": "Уведомление придет, если цена вырастет на этот процент или больше",
+        "hintDisabled": "Отслеживание роста отключено"
+      }
+    },
+    "app": {
+      "title": "Настройки приложения",
+      "theme": {
+        "title": "Тема",
+        "light": "Светлая",
+        "dark": "Темная"
+      },
+      "locale": {
+        "title": "Локализация",
+        "ru": "Русский",
+        "en": "English"
+      }
+    },
+    "version": "v0.1.0"
+  }
+}

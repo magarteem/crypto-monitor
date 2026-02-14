@@ -1,0 +1,56 @@
+{
+  "settings": {
+    "title": "Settings",
+    "save": "Save Settings",
+    "saveSuccess": "✅ Settings saved! Reload the page to apply changes.",
+    "notifications": {
+      "title": "Notification Manager",
+      "subtitle": "Receive notifications via:",
+      "telegram": "Telegram Bot",
+      "push": "Push Notification this device",
+      "whatsapp": "WhatsApp",
+      "email": "Email"
+    },
+    "coins": {
+      "title": "Tracked Coins",
+      "selectAll": "Select All",
+      "deselectAll": "Deselect All",
+      "tariffWarning": "FREE tariff limit reached. Maximum {count} tokens.",
+      "upgradePlan": "Upgrade plan",
+      "interval": {
+        "title": "Update Interval",
+        "label": "How often to check prices (minutes)",
+        "value": "{value} min",
+        "hint": "Recommended: 5-15 minutes. Less = more frequent checks, but more API requests"
+      },
+      "drop": {
+        "title": "Drop Alert",
+        "label": "Price drop percentage",
+        "value": "-{value}%",
+        "hintEnabled": "You will receive a notification if the price drops by this percentage or more",
+        "hintDisabled": "Drop tracking is disabled"
+      },
+      "growth": {
+        "title": "Growth Alert",
+        "label": "Price growth percentage",
+        "value": "+{value}%",
+        "hintEnabled": "You will receive a notification if the price grows by this percentage or more",
+        "hintDisabled": "Growth tracking is disabled"
+      }
+    },
+    "app": {
+      "title": "App Settings",
+      "theme": {
+        "title": "Theme",
+        "light": "Light",
+        "dark": "Dark"
+      },
+      "locale": {
+        "title": "Localization",
+        "ru": "Русский",
+        "en": "English"
+      }
+    },
+    "version": "v0.1.0"
+  }
+}
