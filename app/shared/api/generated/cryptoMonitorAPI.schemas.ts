@@ -120,6 +120,8 @@ export interface TelegramAuthDto {
   hash: string;
   /** Email пользователя (если доступен) */
   email?: string;
+  /** Дата авторизации (Unix timestamp) */
+  auth_date: number;
 }
 
 export interface TariffResponseDto {
@@ -228,4 +230,24 @@ export interface NewPasswordDto {
    */
   password: string;
 }
+
+export interface CoinPriceDto {
+  /** Символ криптовалюты */
+  symbol: string;
+  /** Текущая цена */
+  price: string;
+  /** Временная метка получения цены */
+  timestamp: number;
+}
+
+export type GetStatus200 = {
+  connected?: boolean;
+};
+
+export type GetBatchPricesParams = {
+/**
+ * Список символов через запятую
+ */
+symbols: string;
+};
 

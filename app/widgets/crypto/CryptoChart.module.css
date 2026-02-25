@@ -105,7 +105,8 @@
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
@@ -204,6 +205,123 @@
   .chartsGrid {
     padding: 0.75rem;
     gap: 0.75rem;
+    border-radius: 12px;
+  }
+}
+
+/* Empty State */
+.emptyState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 2rem;
+}
+
+.emptyStateContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+  max-width: 500px;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.emptyStateTitle {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.selectCoinsButton {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(
+    135deg,
+    rgba(122, 92, 255, 0.9),
+    rgba(122, 92, 255, 0.7)
+  );
+  border: 1px solid rgba(122, 92, 255, 0.3);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 4px 16px rgba(122, 92, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.selectCoinsButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.selectCoinsButton:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 24px rgba(122, 92, 255, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  background: linear-gradient(
+    135deg,
+    rgba(122, 92, 255, 1),
+    rgba(122, 92, 255, 0.8)
+  );
+}
+
+.selectCoinsButton:hover::before {
+  left: 100%;
+}
+
+.selectCoinsButton:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(122, 92, 255, 0.4);
+}
+
+@media (max-width: 768px) {
+  .emptyStateTitle {
+    font-size: 1.5rem;
+  }
+
+  .selectCoinsButton {
+    padding: 0.875rem 1.75rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .emptyState {
+    min-height: 50vh;
+    padding: 1rem;
+  }
+
+  .emptyStateContent {
+    gap: 1.25rem;
+  }
+
+  .emptyStateTitle {
+    font-size: 1.3rem;
+  }
+
+  .selectCoinsButton {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
     border-radius: 12px;
   }
 }

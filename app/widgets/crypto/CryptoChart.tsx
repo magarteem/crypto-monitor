@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import styles from "./CryptoChart.module.css";
 import { useTickers24hr } from "@api/hooks";
-import { CRYPTO_COINS } from "@/app/shared/const/cryptoConst";
+import { CryptoCoins } from "@/app/shared/const/cryptoConst";
 import GraphikV2Wrapper from "../graphikV2/GraphikV2Wrapper";
 import {
   Columns1Icon,
@@ -12,12 +12,23 @@ import {
   Columns4Icon,
   Columns5Icon,
 } from "@/public/img";
+import { useReadLocalStorage } from "usehooks-ts";
+
+
+
+const DEFAULT_SELECTED_COINS: CryptoCoins = [
+  { symbol: "BTCUSDT", name: "BTC/USDT" },
+  { symbol: "ETHUSDT", name: "ETH/USDT" },
+  { symbol: "BNBUSDT", name: "BNB/USDT" },
+  { symbol: "SOLUSDT", name: "SOL/USDT" },
+]
 
 export const CryptoChart = () => {
+  const selectedCoins = useReadLocalStorage<CryptoCoins>("selected-coins") ?? DEFAULT_SELECTED_COINS;
   const [columns, setColumns] = useState<number>(3);
 
   // Получаем символы всех монет
-  const symbols = useMemo(() => CRYPTO_COINS.map((coin) => coin.symbol), []);
+  const symbols = useMemo(() => selectedCoins?.map((coin) => coin.symbol) ?? [], []);
 
   // Загружаем данные всех монет одним запросом
   const { data: cryptoData, isLoading } = useTickers24hr(symbols);
@@ -42,68 +53,84 @@ export const CryptoChart = () => {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.controls}>
-        <div className={styles.columnsSelector}>
-          {[1, 2, 3, 4, 5].map((num) => {
-            const IconComponent = columnIcons[num as keyof typeof columnIcons];
-            return (
-              <button
-                key={num}
-                type="button"
-                onClick={() => setColumns(num)}
-                className={`${styles.columnsButton} ${columns === num ? styles.active : ""
-                  }`}
-                title={`${num} колонок`}
-                aria-label={`${num} колонок`}
-              >
-                <IconComponent width="20" height="20" />
+
+      {
+        !selectedCoins?.length ? (
+          <div className={styles.emptyState}>
+            <div className={styles.emptyStateContent}>
+              <h3 className={styles.emptyStateTitle}> Выберите криптовалюты, которые хотите отслеживать</h3>
+
+              <button className={styles.selectCoinsButton}>
+                Выбрать монеты
               </button>
-            );
-          })}
-        </div>
-      </div>
-
-      <div
-        className={styles.chartsGrid}
-        style={
-          {
-            "--columns": columns,
-            "--grid-gap":
-              columns >= 5 ? "0.75rem" : columns >= 4 ? "1rem" : "2rem",
-            "--grid-padding":
-              columns >= 5 ? "0.75rem" : columns >= 4 ? "1rem" : "2rem",
-          } as React.CSSProperties
-        }
-      >
-        {CRYPTO_COINS.map((coin) => {
-          console.log("coin === ", cryptoData);
-          const data = cryptoData?.[coin.symbol];
-          if (!data) return null;
-
-          const chartHeight =
-            columns === 1
-              ? "600px"
-              : columns === 2
-                ? "500px"
-                : columns === 3
-                  ? "400px"
-                  : columns === 4
-                    ? "320px"
-                    : "280px";
-
-          return (
-            <div key={coin.symbol} className={styles.chartItem}>
-              <GraphikV2Wrapper
-                symbol={coin.symbol}
-                name={coin.name}
-                currentPrice={data.currentPrice}
-                change={data.change}
-                chartHeight={chartHeight}
-              />
             </div>
-          );
-        })}
-      </div>
+          </div>
+        ) : (
+          <>
+            <div className={styles.controls}>
+              <div className={styles.columnsSelector}>
+                {[1, 2, 3, 4, 5].map((num) => {
+                  const IconComponent = columnIcons[num as keyof typeof columnIcons];
+                  return (
+                    <button
+                      key={num}
+                      type="button"
+                      onClick={() => setColumns(num)}
+                      className={`${styles.columnsButton} ${columns === num ? styles.active : ""
+                        }`}
+                      title={`${num} колонок`}
+                      aria-label={`${num} колонок`}
+                    >
+                      <IconComponent width="20" height="20" />
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div
+              className={styles.chartsGrid}
+              style={
+                {
+                  "--columns": columns,
+                  "--grid-gap":
+                    columns >= 5 ? "0.75rem" : columns >= 4 ? "1rem" : "2rem",
+                  "--grid-padding":
+                    columns >= 5 ? "0.75rem" : columns >= 4 ? "1rem" : "2rem",
+                } as React.CSSProperties
+              }
+            >
+              {selectedCoins.map((coin) => {
+                const data = cryptoData?.[coin.symbol];
+                if (!data) return null;
+
+                const chartHeight =
+                  columns === 1
+                    ? "600px"
+                    : columns === 2
+                      ? "500px"
+                      : columns === 3
+                        ? "400px"
+                        : columns === 4
+                          ? "320px"
+                          : "280px";
+
+                return (
+                  <div key={coin.symbol} className={styles.chartItem}>
+                    <GraphikV2Wrapper
+                      symbol={coin.symbol}
+                      name={coin.name}
+                      currentPrice={data.currentPrice}
+                      change={data.change}
+                      chartHeight={chartHeight}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )
+      }
     </div>
   );
 };

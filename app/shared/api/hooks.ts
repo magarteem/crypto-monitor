@@ -28,6 +28,7 @@ export function useTickers24hr(symbols: readonly string[]) {
     queryFn: () => fetchTickers24hr(symbols),
     refetchInterval: 30000, // Обновление каждые 30 секунд
     staleTime: 25000, // Данные считаются свежими 25 секунд
+    enabled: symbols.length > 0,
   });
 }
 
