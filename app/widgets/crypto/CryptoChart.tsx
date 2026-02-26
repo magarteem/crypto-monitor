@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import styles from "./CryptoChart.module.css";
 import { useTickers24hr } from "@api/hooks";
-import { CryptoCoins } from "@/app/shared/const/cryptoConst";
+import { CryptoCoins, type CryptoCoin } from "@/app/shared/const/cryptoConst";
 import GraphikV2Wrapper from "../graphikV2/GraphikV2Wrapper";
 import {
   Columns1Icon,
@@ -12,28 +12,49 @@ import {
   Columns4Icon,
   Columns5Icon,
 } from "@/public/img";
-import { useReadLocalStorage } from "usehooks-ts";
-
-
-
-const DEFAULT_SELECTED_COINS: CryptoCoins = [
-  { symbol: "BTCUSDT", name: "BTC/USDT" },
-  { symbol: "ETHUSDT", name: "ETH/USDT" },
-  { symbol: "BNBUSDT", name: "BNB/USDT" },
-  { symbol: "SOLUSDT", name: "SOL/USDT" },
-]
+import { CoinSelectorModal } from "../modals/CoinSelectorModal";
 
 export const CryptoChart = () => {
-  const selectedCoins = useReadLocalStorage<CryptoCoins>("selected-coins") ?? DEFAULT_SELECTED_COINS;
+  const [selectedCoins, setSelectedCoins] = useState<CryptoCoins>([]);
   const [columns, setColumns] = useState<number>(3);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  // Инициализация на клиенте
+  useEffect(() => {
+    setIsClient(true);
+    const stored = localStorage.getItem("selected-coins");
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored) as CryptoCoins;
+        setSelectedCoins(parsed);
+      } catch (e) {
+        console.error("Error parsing selected coins:", e);
+      }
+    }
+  }, []);
+
+  // Сохранение выбранных монет
+  const handleSaveCoins = (coins: CryptoCoin[]) => {
+    localStorage.setItem("selected-coins", JSON.stringify(coins));
+    setSelectedCoins(coins as CryptoCoins);
+  };
+
+  // Удаление монеты из списка
+  const handleRemoveCoin = (symbolToRemove: string) => {
+    const updatedCoins = selectedCoins.filter((coin) => coin.symbol !== symbolToRemove);
+    localStorage.setItem("selected-coins", JSON.stringify(updatedCoins));
+    setSelectedCoins(updatedCoins as CryptoCoins);
+  };
 
   // Получаем символы всех монет
-  const symbols = useMemo(() => selectedCoins?.map((coin) => coin.symbol) ?? [], []);
+  const symbols = useMemo(() => selectedCoins?.map((coin) => coin.symbol) ?? [], [selectedCoins]);
 
   // Загружаем данные всех монет одним запросом
   const { data: cryptoData, isLoading } = useTickers24hr(symbols);
 
-  if (isLoading) {
+  // Показываем загрузку пока не инициализировались на клиенте
+  if (!isClient || isLoading) {
     return (
       <div className={styles.loading}>
         <div className={styles.spinner} />
@@ -60,7 +81,10 @@ export const CryptoChart = () => {
             <div className={styles.emptyStateContent}>
               <h3 className={styles.emptyStateTitle}> Выберите криптовалюты, которые хотите отслеживать</h3>
 
-              <button className={styles.selectCoinsButton}>
+              <button
+                className={styles.selectCoinsButton}
+                onClick={() => setIsModalOpen(true)}
+              >
                 Выбрать монеты
               </button>
             </div>
@@ -68,6 +92,17 @@ export const CryptoChart = () => {
         ) : (
           <>
             <div className={styles.controls}>
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+                className={styles.addCoinButton}
+                title="Добавить монеты"
+                aria-label="Добавить монеты"
+              >
+                <span className={styles.addIcon}>+</span>
+                Добавить
+              </button>
+
               <div className={styles.columnsSelector}>
                 {[1, 2, 3, 4, 5].map((num) => {
                   const IconComponent = columnIcons[num as keyof typeof columnIcons];
@@ -123,6 +158,7 @@ export const CryptoChart = () => {
                       currentPrice={data.currentPrice}
                       change={data.change}
                       chartHeight={chartHeight}
+                      onRemove={handleRemoveCoin}
                     />
                   </div>
                 );
@@ -131,6 +167,14 @@ export const CryptoChart = () => {
           </>
         )
       }
+
+      {/* Модалка выбора монет */}
+      <CoinSelectorModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        selectedCoins={[...selectedCoins]}
+        onSave={handleSaveCoins}
+      />
     </div>
   );
 };

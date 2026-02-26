@@ -4,6 +4,8 @@ import {
   fetchTickers24hr,
   fetchKlines,
   fetchCurrentPrice,
+  fetchAllUSDTSymbols,
+  type BinanceSymbolInfo,
 } from "./binance";
 import type { CryptoPriceData, Candle } from "@sharedTypes/api";
 
@@ -57,5 +59,17 @@ export function useCurrentPrice(symbol: string) {
     queryFn: () => fetchCurrentPrice(symbol),
     //refetchInterval: 5000, // Обновление каждые 5 секунд
     //staleTime: 4000, // Данные считаются свежими 4 секунды
+  });
+}
+
+/**
+ * Хук для получения всех доступных USDT торговых пар
+ */
+export function useAllUSDTSymbols() {
+  return useQuery<BinanceSymbolInfo[]>({
+    queryKey: ["allUSDTSymbols"],
+    queryFn: fetchAllUSDTSymbols,
+    staleTime: 3600000, // Данные считаются свежими 1 час
+    gcTime: 7200000, // Кэш хранится 2 часа
   });
 }

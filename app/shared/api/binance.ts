@@ -115,3 +115,32 @@ export async function fetchCurrentPrice(
     return null;
   }
 }
+
+/**
+ * Интерфейс для информации о торговой паре
+ */
+export interface BinanceSymbolInfo {
+  symbol: string;
+  baseAsset: string;
+  quoteAsset: string;
+  status: string;
+}
+
+/**
+ * Получает список всех доступных торговых пар USDT с Binance
+ */
+export async function fetchAllUSDTSymbols(): Promise<BinanceSymbolInfo[]> {
+  try {
+    const { data } = await axios.get<{ symbols: BinanceSymbolInfo[] }>(
+      `${BINANCE_API_BASE_URL}/exchangeInfo`
+    );
+    
+    // Фильтруем только активные USDT пары
+    return data.symbols.filter(
+      (s) => s.quoteAsset === "USDT" && s.status === "TRADING"
+    );
+  } catch (error) {
+    console.error("Error fetching exchange info:", error);
+    return [];
+  }
+}

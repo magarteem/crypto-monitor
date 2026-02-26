@@ -16,10 +16,13 @@ interface GraphikV2WrapperProps {
   currentPrice?: number;
   change?: string;
   chartHeight?: string;
+  onRemove?: (symbol: string) => void;
 }
 
 export default function GraphikV2Wrapper({
   chartHeight,
+  symbol,
+  onRemove,
   ...props
 }: GraphikV2WrapperProps) {
   // Определяем размеры в зависимости от высоты графика
@@ -58,10 +61,57 @@ export default function GraphikV2Wrapper({
           width: "100%",
           maxWidth: "100%",
           minWidth: 0,
+          position: "relative",
         } as React.CSSProperties
       }
     >
-      <GraphikV2 {...props} chartHeight={chartHeight} />
+      {onRemove && symbol && (
+        <button
+          type="button"
+          onClick={() => onRemove(symbol)}
+          className="remove-chart-button"
+          title="Удалить график"
+          aria-label="Удалить график"
+        >
+          ✕
+        </button>
+      )}
+      <GraphikV2 {...props} symbol={symbol} chartHeight={chartHeight} />
+      
+      <style jsx>{`
+        .remove-chart-button {
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          z-index: 10;
+          width: 22px;
+          height: 22px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(128, 128, 128, 0.3);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 4px;
+          color: rgba(255, 255, 255, 0.5);
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          opacity: 0.6;
+        }
+        
+        .remove-chart-button:hover {
+          background: rgba(239, 83, 80, 0.8);
+          border-color: rgba(239, 83, 80, 0.3);
+          color: white;
+          opacity: 1;
+          box-shadow: 0 2px 6px rgba(239, 83, 80, 0.3);
+        }
+        
+        .remove-chart-button:active {
+          transform: scale(0.95);
+        }
+      `}</style>
     </div>
   );
 }
