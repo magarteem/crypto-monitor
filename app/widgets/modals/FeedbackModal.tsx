@@ -7,6 +7,7 @@ import { Box, VStack, Text } from "@chakra-ui/react";
 import { Modal } from "@ui/modal";
 import { Button } from "@ui/button";
 import { useSession } from "next-auth/react";
+import { FeedbackIcon } from "@/public/img";
 import { feedbackSchema, type FeedbackFormData } from "./schemas";
 import styles from "./FeedbackModal.module.css";
 
@@ -26,7 +27,6 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
     },
   });
 
-  // Обновляем email при изменении session
   useEffect(() => {
     if (session?.user?.email && isOpen) {
       form.reset({
@@ -37,27 +37,11 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
   }, [session?.user?.email, isOpen, form]);
 
   const onSubmit = (data: FeedbackFormData) => {
-    // Заглушка: выводим данные в консоль
     console.log("Feedback data:", {
       email: data.email,
       message: data.message,
       timestamp: new Date().toISOString(),
     });
-
-    // Заглушка для отправки на email
-    console.log("Sending email to: admin@example.com");
-    console.log("Email content:", {
-      from: data.email,
-      subject: "Обратная связь от пользователя",
-      body: data.message,
-    });
-
-    // Заглушка для отправки в Telegram
-    console.log("Sending to Telegram bot");
-    console.log("Telegram message:", {
-      text: `Обратная связь от ${data.email}:\n\n${data.message}`,
-    });
-
     onClose();
   };
 
@@ -78,8 +62,17 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
         </>
       }
     >
+      <div className={styles.headerBlock}>
+        <div className={styles.iconWrapper}>
+          <FeedbackIcon width="28" height="28" />
+        </div>
+        <p className={styles.subtitle}>
+          Ваше мнение важно для нас. Опишите проблему или предложение — мы
+          ответим в ближайшее время.
+        </p>
+      </div>
+
       <VStack gap="1.5rem" align="stretch">
-        {/* Email Field (Read-only if logged in) */}
         <Box>
           <Text className={styles.label}>Email</Text>
           <input
@@ -98,14 +91,13 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
           )}
         </Box>
 
-        {/* Message Field */}
         <Box>
           <Text className={styles.label}>Сообщение</Text>
           <textarea
             {...form.register("message")}
             className={styles.textarea}
             placeholder="Введите ваше сообщение..."
-            rows={6}
+            rows={5}
           />
           {form.formState.errors.message && (
             <Text className={styles.errorText}>

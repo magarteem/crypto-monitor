@@ -48,11 +48,17 @@ export const ProfileSidebar = ({ isOpen, onClose }: ProfileSidebarProps) => {
   };
 
   const handleEditProfile = () => {
-    openModal("edit-profile", EditProfileModal);
+    onClose();
+    setTimeout(() => {
+      openModal("edit-profile", EditProfileModal);
+    }, 350);
   };
 
   const handleFeedback = () => {
-    openModal("feedback", FeedbackModal);
+    onClose();
+    setTimeout(() => {
+      openModal("feedback", FeedbackModal);
+    }, 350);
   };
 
   const toggleSubscription = () => {

@@ -75,6 +75,7 @@ export const Header = () => {
             <div className={styles.mobileMenu}>
               <div className={styles.mobileMenuOverlay} onClick={() => setIsMobileMenuOpen(false)} />
               <div className={styles.mobileMenuContent}>
+                <div className={styles.mobileMenuTitle}>Меню</div>
                 {session?.user && (
                   <Link href={RouteNames.DASHBOARD} className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>
                     Dashboard

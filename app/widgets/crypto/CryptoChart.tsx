@@ -14,13 +14,15 @@ import {
 } from "@/public/img";
 import { CoinSelectorModal } from "../modals/CoinSelectorModal";
 
+const MOBILE_BREAKPOINT = 768;
+
 export const CryptoChart = () => {
   const [selectedCoins, setSelectedCoins] = useState<CryptoCoins>([]);
   const [columns, setColumns] = useState<number>(3);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Инициализация на клиенте
   useEffect(() => {
     setIsClient(true);
     const stored = localStorage.getItem("selected-coins");
@@ -32,6 +34,13 @@ export const CryptoChart = () => {
         console.error("Error parsing selected coins:", e);
       }
     }
+  }, []);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   // Сохранение выбранных монет
@@ -91,7 +100,7 @@ export const CryptoChart = () => {
           </div>
         ) : (
           <>
-            <div className={styles.controls}>
+            <div className={`${styles.controls} ${isMobile ? styles.controlsMobile : ""}`}>
               <button
                 type="button"
                 onClick={() => setIsModalOpen(true)}
@@ -103,35 +112,49 @@ export const CryptoChart = () => {
                 Добавить
               </button>
 
-              <div className={styles.columnsSelector}>
-                {[1, 2, 3, 4, 5].map((num) => {
-                  const IconComponent = columnIcons[num as keyof typeof columnIcons];
-                  return (
-                    <button
-                      key={num}
-                      type="button"
-                      onClick={() => setColumns(num)}
-                      className={`${styles.columnsButton} ${columns === num ? styles.active : ""
-                        }`}
-                      title={`${num} колонок`}
-                      aria-label={`${num} колонок`}
-                    >
-                      <IconComponent width="20" height="20" />
-                    </button>
-                  );
-                })}
-              </div>
+              {!isMobile && (
+                <div className={styles.columnsSelector}>
+                  {[1, 2, 3, 4, 5].map((num) => {
+                    const IconComponent = columnIcons[num as keyof typeof columnIcons];
+                    return (
+                      <button
+                        key={num}
+                        type="button"
+                        onClick={() => setColumns(num)}
+                        className={`${styles.columnsButton} ${columns === num ? styles.active : ""
+                          }`}
+                        title={`${num} колонок`}
+                        aria-label={`${num} колонок`}
+                      >
+                        <IconComponent width="20" height="20" />
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             <div
               className={styles.chartsGrid}
               style={
                 {
-                  "--columns": columns,
+                  "--columns": isMobile ? 1 : columns,
                   "--grid-gap":
-                    columns >= 5 ? "0.75rem" : columns >= 4 ? "1rem" : "2rem",
+                    isMobile
+                      ? "0.75rem"
+                      : columns >= 5
+                        ? "0.75rem"
+                        : columns >= 4
+                          ? "1rem"
+                          : "2rem",
                   "--grid-padding":
-                    columns >= 5 ? "0.75rem" : columns >= 4 ? "1rem" : "2rem",
+                    isMobile
+                      ? "0.75rem"
+                      : columns >= 5
+                        ? "0.75rem"
+                        : columns >= 4
+                          ? "1rem"
+                          : "2rem",
                 } as React.CSSProperties
               }
             >
@@ -139,8 +162,9 @@ export const CryptoChart = () => {
                 const data = cryptoData?.[coin.symbol];
                 if (!data) return null;
 
-                const chartHeight =
-                  columns === 1
+                const chartHeight = isMobile
+                  ? "280px"
+                  : columns === 1
                     ? "600px"
                     : columns === 2
                       ? "500px"
