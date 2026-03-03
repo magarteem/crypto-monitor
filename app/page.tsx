@@ -5,7 +5,6 @@ import { CryptoChart } from "@widgets/crypto/CryptoChart";
 import { ThemeToggle } from "./features/ThemeToggle";
 import { ClientSocketConnection } from "@/app/shared/components/client-socket-connection/ClientSocketConnection";
 import styles from "./page.module.css";
-import GraphikV2Wrapper from "./widgets/graphikV2/GraphikV2Wrapper";
 
 export default function CryptoPage() {
   return (

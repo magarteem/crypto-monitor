@@ -33,3 +33,4 @@ export { default as MetaMaskIcon } from "./metamask.svg";
 export { default as WalletConnectIcon } from "./walletconnect.svg";
 export { default as FacebookIcon } from "./facebook.svg";
 export { default as XTwitterIcon } from "./x-twitter.svg";
+export { default as ExternalLinkIcon } from "./external-link.svg";

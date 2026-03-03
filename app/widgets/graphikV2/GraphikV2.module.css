@@ -116,6 +116,50 @@
   max-width: 100%;
 }
 
+.chartActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.externalLinkButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: rgba(15, 20, 55, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.65);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.externalLinkButton:hover {
+  background: rgba(89, 240, 185, 0.12);
+  border-color: rgba(89, 240, 185, 0.35);
+  color: rgb(89, 240, 185);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(89, 240, 185, 0.15);
+}
+
+.externalLinkButton:active {
+  transform: translateY(0);
+}
+
+.externalLinkButton svg {
+  transition: transform 0.2s ease;
+}
+
+.externalLinkButton:hover svg {
+  transform: scale(1.1);
+}
+
 .notificationButton {
   display: flex;
   align-items: center;

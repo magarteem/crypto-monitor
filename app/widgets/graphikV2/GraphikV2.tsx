@@ -9,9 +9,10 @@ import {
   type CandlestickData,
   type UTCTimestamp,
 } from "lightweight-charts";
+import Link from "next/link";
 import { useModal } from "@hooks/useModal";
 import { CoinNotificationModal } from "../modals/CoinNotificationModal";
-import { BellIcon } from "@/public/img";
+import { BellIcon, ExternalLinkIcon } from "@/public/img";
 import { useSocket } from "@/app/shared/components/client-socket-connection/ClientSocketConnection";
 import styles from "./GraphikV2.module.css";
 
@@ -591,15 +592,27 @@ export const GraphikV2 = ({
               </button>
             ))}
           </div>
-          <button
-            type="button"
-            className={styles.notificationButton}
-            onClick={handleNotificationSettings}
-            aria-label="Настройки уведомлений"
-            title="Настройки уведомлений"
-          >
-            <BellIcon width="18" height="18" />
-          </button>
+          <div className={styles.chartActions}>
+            <Link
+              href={`/chart/${symbol}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.externalLinkButton}
+              aria-label="Открыть график в новой вкладке"
+              title="Открыть в новой вкладке"
+            >
+              <ExternalLinkIcon width="18" height="18" />
+            </Link>
+            <button
+              type="button"
+              className={styles.notificationButton}
+              onClick={handleNotificationSettings}
+              aria-label="Настройки уведомлений"
+              title="Настройки уведомлений"
+            >
+              <BellIcon width="18" height="18" />
+            </button>
+          </div>
         </div>
       </div>
 
