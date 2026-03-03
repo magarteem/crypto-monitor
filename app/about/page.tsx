@@ -14,6 +14,8 @@ import styles from "./page.module.css";
 export default function AboutPage() {
   return (
     <div className={styles.page}>
+      <div className={styles.bgBase} aria-hidden />
+      <div className={`${styles.grid3dWave} grid-3d-wave`} aria-hidden />
       <Header />
 
       <main className={styles.main}>
@@ -28,9 +30,9 @@ export default function AboutPage() {
           {/* Основное описание */}
           <section className={styles.section}>
             <div className={styles.card}>
-              <h2 className={styles.sectionTitle}>Что такое Crypto Monitor?</h2>
+              <h2 className={styles.sectionTitle}>Что такое Avantim?</h2>
               <p className={styles.text}>
-                Crypto Monitor — это современная платформа для мониторинга и
+                Avantim — это современная платформа для мониторинга и
                 анализа криптовалютных рынков в режиме реального времени. Мы
                 предоставляем профессиональные инструменты для отслеживания цен,
                 анализа графиков и принятия обоснованных торговых решений.
@@ -123,7 +125,7 @@ export default function AboutPage() {
             <div className={styles.card}>
               <h2 className={styles.sectionTitle}>Технологии</h2>
               <p className={styles.text}>
-                Crypto Monitor построен на современных технологиях
+                Avantim построен на современных технологиях
                 веб-разработки:
               </p>
               <ul className={styles.techList}>

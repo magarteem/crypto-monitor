@@ -110,9 +110,11 @@ export function CoinNotificationModal({
         {/* Интервал обновления */}
         <Box className={styles.section}>
           <HStack className={styles.sectionTitle} justify="space-between">
-            <HStack gap="0.625rem">
-              <ClockIcon width="20" height="20" className={styles.sectionIcon} />
-              <Text as="span" fontWeight="700" fontSize="1.05rem">
+            <HStack gap="0.75rem">
+              <span className={`${styles.sectionIconWrapper} ${styles.iconClock}`}>
+                <ClockIcon width="18" height="18" className={styles.sectionIcon} />
+              </span>
+              <Text className={styles.sectionHeading}>
                 Интервал обновления
               </Text>
             </HStack>
@@ -138,11 +140,7 @@ export function CoinNotificationModal({
                   className={styles.rangeInput}
                 />
               </Box>
-              <Text
-                className={styles.rangeValue}
-                minW="70px"
-                textAlign="right"
-              >
+              <Text className={styles.rangeValue}>
                 {intervalInMinutes} мин
               </Text>
             </HStack>
@@ -154,15 +152,17 @@ export function CoinNotificationModal({
         </Box>
 
         {/* Алерт при падении */}
-        <Box className={styles.section}>
+        <Box className={`${styles.section} ${styles.sectionDrop}`}>
           <HStack className={styles.sectionTitle} justify="space-between">
-            <HStack gap="0.625rem">
-              <TrendDownIcon
-                width="20"
-                height="20"
-                className={styles.sectionIcon}
-              />
-              <Text as="span" fontWeight="700" fontSize="1.05rem">
+            <HStack gap="0.75rem">
+              <span className={`${styles.sectionIconWrapper} ${styles.iconDrop}`}>
+                <TrendDownIcon
+                  width="18"
+                  height="18"
+                  className={styles.sectionIconDrop}
+                />
+              </span>
+              <Text className={styles.sectionHeading}>
                 Алерт при падении
               </Text>
             </HStack>
@@ -200,11 +200,7 @@ export function CoinNotificationModal({
                   className={styles.rangeInput}
                 />
               </Box>
-              <Text
-                className={styles.rangeValue}
-                minW="70px"
-                textAlign="right"
-              >
+              <Text className={`${styles.rangeValue} ${styles.rangeValueDrop}`}>
                 -{settings.priceDropThreshold}%
               </Text>
             </HStack>
@@ -217,15 +213,17 @@ export function CoinNotificationModal({
         </Box>
 
         {/* Алерт при росте */}
-        <Box className={styles.section}>
+        <Box className={`${styles.section} ${styles.sectionGrowth}`}>
           <HStack className={styles.sectionTitle} justify="space-between">
-            <HStack gap="0.625rem">
-              <TrendUpIcon
-                width="20"
-                height="20"
-                className={styles.sectionIcon}
-              />
-              <Text as="span" fontWeight="700" fontSize="1.05rem">
+            <HStack gap="0.75rem">
+              <span className={`${styles.sectionIconWrapper} ${styles.iconGrowth}`}>
+                <TrendUpIcon
+                  width="18"
+                  height="18"
+                  className={styles.sectionIconGrowth}
+                />
+              </span>
+              <Text className={styles.sectionHeading}>
                 Алерт при росте
               </Text>
             </HStack>
@@ -263,11 +261,7 @@ export function CoinNotificationModal({
                   className={styles.rangeInput}
                 />
               </Box>
-              <Text
-                className={styles.rangeValue}
-                minW="70px"
-                textAlign="right"
-              >
+              <Text className={`${styles.rangeValue} ${styles.rangeValueGrowth}`}>
                 +{settings.priceGrowthThreshold}%
               </Text>
             </HStack>

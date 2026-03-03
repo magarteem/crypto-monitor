@@ -1,14 +1,17 @@
 /* Warning */
 .warning {
-  padding: 1rem;
-  background: rgba(255, 193, 7, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 193, 7, 0.3);
+  padding: 1rem 1.25rem;
+  background: rgba(251, 146, 60, 0.07);
+  backdrop-filter: blur(12px);
+  border-radius: 14px;
+  border-top: 1px solid rgba(251, 146, 60, 0.2);
+  border-right: 1px solid rgba(251, 146, 60, 0.2);
+  border-bottom: 1px solid rgba(251, 146, 60, 0.2);
+  border-left: 4px solid rgba(251, 146, 60, 0.7);
 }
 
 .warningIcon {
-  color: rgba(255, 193, 7, 0.9);
+  color: #fb923c;
   flex-shrink: 0;
   margin-top: 2px;
 }
@@ -24,7 +27,7 @@
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(89, 240, 185, 0.5);
   pointer-events: none;
   z-index: 1;
 }
@@ -32,23 +35,29 @@
 .searchInput {
   width: 100%;
   padding: 0.875rem 1rem 0.875rem 3rem;
-  background: rgba(0, 10, 30, 0.4);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(
+    160deg,
+    rgba(10, 5, 35, 0.7) 0%,
+    rgba(15, 20, 55, 0.65) 100%
+  );
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(89, 240, 185, 0.18);
   border-radius: 12px;
-  color: #ffffff;
+  color: var(--foreground);
   font-size: 1rem;
   transition: all 0.3s ease;
   outline: none;
 }
 
 .searchInput:focus {
-  border-color: rgba(122, 92, 255, 0.5);
-  box-shadow: 0 0 0 3px rgba(122, 92, 255, 0.1);
+  border-color: rgba(89, 240, 185, 0.55);
+  box-shadow:
+    0 0 0 3px rgba(89, 240, 185, 0.1),
+    0 4px 16px rgba(89, 240, 185, 0.08);
 }
 
 .searchInput::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.35);
 }
 
 /* Loading */
@@ -64,8 +73,8 @@
 .spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid rgba(122, 92, 255, 0.2);
-  border-top-color: rgba(122, 92, 255, 0.9);
+  border: 3px solid rgba(89, 240, 185, 0.15);
+  border-top-color: rgb(89, 240, 185);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -84,85 +93,109 @@
 }
 
 .coinsContainer::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 .coinsContainer::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(89, 240, 185, 0.04);
   border-radius: 4px;
 }
 
 .coinsContainer::-webkit-scrollbar-thumb {
-  background: rgba(122, 92, 255, 0.4);
+  background: rgba(89, 240, 185, 0.3);
   border-radius: 4px;
   transition: background 0.3s ease;
 }
 
 .coinsContainer::-webkit-scrollbar-thumb:hover {
-  background: rgba(122, 92, 255, 0.6);
+  background: rgba(89, 240, 185, 0.55);
 }
 
 /* Coin Item */
 .coinItem {
   width: 100%;
-  padding: 1rem;
-  background: rgba(0, 10, 30, 0.4);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.875rem 1.25rem;
+  background: linear-gradient(
+    160deg,
+    rgba(10, 5, 35, 0.6) 0%,
+    rgba(15, 20, 55, 0.55) 100%
+  );
+  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  border-left: 3px solid rgba(89, 240, 185, 0.15);
   border-radius: 12px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition:
+    transform 0.2s ease,
+    border-left-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
   text-align: left;
   outline: none;
 }
 
 .coinItem:hover {
-  background: rgba(0, 10, 30, 0.6);
-  border-color: rgba(122, 92, 255, 0.3);
-  transform: translateX(4px);
+  transform: translateX(3px);
+  border-left-color: rgba(89, 240, 185, 0.65);
+  background: linear-gradient(
+    160deg,
+    rgba(10, 5, 35, 0.75) 0%,
+    rgba(15, 20, 55, 0.7) 100%
+  );
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.2),
+    -2px 0 10px rgba(89, 240, 185, 0.07);
 }
 
 .coinItem.selected {
-  background: rgba(122, 92, 255, 0.15);
-  border-color: rgba(122, 92, 255, 0.5);
-  box-shadow: 0 2px 8px rgba(122, 92, 255, 0.2);
+  background: linear-gradient(
+    160deg,
+    rgba(89, 240, 185, 0.1) 0%,
+    rgba(0, 85, 255, 0.06) 100%
+  );
+  border-left-color: rgba(89, 240, 185, 0.8);
+  border-top-color: rgba(89, 240, 185, 0.15);
+  border-right-color: rgba(89, 240, 185, 0.15);
+  border-bottom-color: rgba(89, 240, 185, 0.15);
+  box-shadow:
+    0 0 0 0 transparent,
+    -3px 0 14px rgba(89, 240, 185, 0.1);
 }
 
 .coinItem.selected:hover {
-  background: rgba(122, 92, 255, 0.2);
-  border-color: rgba(122, 92, 255, 0.6);
+  transform: translateX(3px);
+  border-left-color: rgba(89, 240, 185, 1);
+  box-shadow:
+    0 4px 16px rgba(89, 240, 185, 0.12),
+    -3px 0 14px rgba(89, 240, 185, 0.14);
 }
 
 /* Checkbox */
 .checkbox {
   width: 24px;
   height: 24px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.25);
   border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
   flex-shrink: 0;
 }
 
 .coinItem.selected .checkbox {
-  background: linear-gradient(135deg, rgba(122, 92, 255, 0.9), rgba(122, 92, 255, 0.7));
-  border-color: rgba(122, 92, 255, 0.9);
+  background: linear-gradient(134deg, rgb(89, 240, 185), rgb(0, 85, 255));
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(89, 240, 185, 0.35);
 }
 
 .checkmark {
   width: 12px;
   height: 12px;
-  background: white;
-  clip-path: polygon(
-    14% 44%,
-    0 65%,
-    50% 100%,
-    100% 16%,
-    80% 0%,
-    43% 62%
-  );
+  background: #0a0a1f;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
 }
 
 /* Loading More */
@@ -187,7 +220,7 @@
   }
 
   .coinItem {
-    padding: 0.875rem;
+    padding: 0.75rem 1rem;
   }
 
   .searchInput {
@@ -206,6 +239,6 @@
   }
 
   .coinItem {
-    padding: 0.75rem;
+    padding: 0.625rem 0.875rem;
   }
 }

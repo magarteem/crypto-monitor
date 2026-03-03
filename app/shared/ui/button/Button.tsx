@@ -32,54 +32,55 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       },
     };
 
-    // Стили для варианта "primary" (submit кнопки)
+    // Стили для варианта "primary" (submit кнопки) - LLMStart style
     const primaryStyles = {
-      px: "1rem",
+      px: "1.5rem",
       py: "1rem",
       bg: "var(--primary-gradient)",
       borderRadius: "12px",
-      color: "white",
+      color: "#0a0a0f",
       fontSize: "1rem",
       fontWeight: "700",
       transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-      boxShadow: "0 4px 12px rgba(99, 102, 241, 0.25)",
+      boxShadow: "0 4px 20px rgba(6, 255, 165, 0.3)",
       position: "relative" as const,
       overflow: "hidden",
+      border: "1px solid rgba(6, 255, 165, 0.2)",
       _hover: {
-        transform: "translateY(-2px)",
-        boxShadow: "0 8px 20px rgba(99, 102, 241, 0.35)",
+        transform: "translateY(-2px) scale(1.02)",
+        boxShadow: "0 8px 30px rgba(6, 255, 165, 0.4)",
       },
       _active: {
         transform: "translateY(0)",
-        boxShadow: "0 2px 8px rgba(99, 102, 241, 0.25)",
+        boxShadow: "0 2px 12px rgba(6, 255, 165, 0.25)",
       },
       _disabled: {
         opacity: 0.6,
         cursor: "not-allowed",
         transform: "none",
-        boxShadow: "0 2px 8px rgba(99, 102, 241, 0.15)",
+        boxShadow: "0 2px 8px rgba(6, 255, 165, 0.15)",
         _hover: {
           transform: "none",
-          boxShadow: "0 2px 8px rgba(99, 102, 241, 0.15)",
+          boxShadow: "0 2px 8px rgba(6, 255, 165, 0.15)",
         },
       },
     };
 
-    // Стили для варианта "outline"
+    // Стили для варианта "outline" - LLMStart style
     const outlineStyles = {
       px: "1rem",
       py: "0.75rem",
       bg: "transparent",
-      border: "1px solid var(--border-color)",
+      border: "1px solid var(--card-border)",
       borderRadius: "12px",
       color: "var(--foreground)",
       fontSize: "0.95rem",
       fontWeight: "600",
-      transition: "all 0.2s ease",
+      transition: "all 0.3s ease",
       _hover: {
-        bg: "var(--input-bg)",
-        borderColor: "var(--primary)",
-        color: "var(--primary)",
+        bg: "var(--accent-muted)",
+        borderColor: "var(--accent-border)",
+        color: "var(--accent)",
       },
     };
 

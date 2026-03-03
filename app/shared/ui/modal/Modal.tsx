@@ -63,14 +63,14 @@ export function Modal({
       }
     }}>
       <Portal>
-        <Dialog.Backdrop 
+        <Dialog.Backdrop
           className={styles.backdrop}
           onClick={closeOnOverlayClick ? onClose : undefined}
         />
-        <Dialog.Positioner 
+        <Dialog.Positioner
           className={`${styles.positioner} ${styles[placement]}`}
         >
-          <Dialog.Content 
+          <Dialog.Content
             className={`${styles.modal} ${styles[size]} ${className || ""}`}
             onClick={(e) => e.stopPropagation()}
           >

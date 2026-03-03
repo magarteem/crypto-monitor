@@ -24,6 +24,8 @@ export default function TariffsPage() {
   if (isLoading || !tariffs) {
     return (
       <div className={styles.page}>
+        <div className={styles.bgBase} aria-hidden />
+        <div className={`${styles.grid3dWave} grid-3d-wave`} aria-hidden />
         <div className={styles.loadingContainer}>
           <div className={styles.spinner}></div>
           <p className={styles.loadingText}>Загрузка тарифов...</p>
@@ -72,6 +74,8 @@ export default function TariffsPage() {
 
   return (
     <div className={styles.page}>
+      <div className={styles.bgBase} aria-hidden />
+      <div className={`${styles.grid3dWave} grid-3d-wave`} aria-hidden />
       <GoBack label="Главная" />
 
       <main className={styles.main}>
@@ -102,13 +106,20 @@ export default function TariffsPage() {
         </div>
 
         <div className={styles.tariffsGrid}>
-          {tariffs?.map((tariff) => {
+          {tariffs?.map((tariff, index) => {
             const savings = getSavings(tariff);
+            const variant =
+              tariff.recommended
+                ? "variantOrange"
+                : index % 3 === 0
+                  ? "variantTeal"
+                  : index % 3 === 1
+                    ? "variantOrange"
+                    : "variantPurple";
             return (
               <div
                 key={tariff.name}
-                className={`${styles.tariffCard} ${tariff.recommended ? styles.recommended : ""
-                  }`}
+                className={`${styles.tariffCard} ${styles[variant]} ${tariff.recommended ? styles.recommended : ""}`}
               >
                 {tariff.recommended && (
                   <div className={styles.badge}>Рекомендуем</div>
@@ -136,11 +147,13 @@ export default function TariffsPage() {
                 </ul>
 
                 <button
-                  className={styles.selectButton}
+                  className={`${styles.selectButton} ${tariff.priceMonthly === 0 ? styles.selectButtonFree : ""}`}
                   onClick={() => handleSelectTariff(tariff)}
                 >
                   {tariff.priceMonthly === 0
                     ? "Начать бесплатно"
+                    : tariff.recommended
+                    ? "Купить"
                     : "Выбрать план"}
                 </button>
               </div>

@@ -8,6 +8,8 @@ export default function Dashboard() {
   return (
     <ClientSocketConnection>
       <div className={styles.page}>
+        <div className={styles.bgBase} aria-hidden />
+        <div className={`${styles.grid3dWave} grid-3d-wave`} aria-hidden />
         {/* Header */}
         <Header />
 
@@ -16,7 +18,7 @@ export default function Dashboard() {
           {/* Hero Section */}
           <section className={styles.hero}>
             <div className={styles.heroContent}>
-              <h1 className={styles.heroTitle}>Crypto Monitor</h1>
+              <h1 className={styles.heroTitle}>Avantim</h1>
               <p className={styles.heroSubtitle}>
                 Fair, Community Driven, Cryptocurrency Lottery
               </p>

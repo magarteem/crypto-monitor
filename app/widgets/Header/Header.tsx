@@ -41,7 +41,7 @@ export const Header = () => {
           {/* Logo */}
           <Link href="/" className={styles.logo}>
             <LogoIcon width="40" height="40" className={styles.logoIcon} />
-            <span className={styles.logoText}>Crypto Monitor</span>
+            <span className={styles.logoText}>Avantim</span>
           </Link>
 
           {/* Navigation */}

@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   margin: 1.75rem 0;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(89, 240, 185, 0.6);
 }
 
 .divider::before,
@@ -14,7 +14,7 @@
   background: linear-gradient(
     to right,
     transparent,
-    rgba(255, 255, 255, 0.3),
+    rgba(89, 240, 185, 0.25),
     transparent
   );
 }
@@ -25,6 +25,7 @@
   font-weight: 500;
   text-transform: lowercase;
   letter-spacing: 0.5px;
+  color: rgba(89, 240, 185, 0.6);
 }
 
 .errorMessage {
@@ -54,18 +55,19 @@
   .forgotPassword {
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.9);
+    background: linear-gradient(134deg, rgb(89, 240, 185), rgb(0, 85, 255));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     font-size: 0.8rem;
     cursor: pointer;
     font-weight: 600;
-    transition: all 0.2s;
+    transition: filter 0.2s ease;
     padding: 0;
   }
 
   .forgotPassword:hover {
-    color: #ffffff;
-    text-decoration: underline;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    filter: brightness(1.3) drop-shadow(0 0 6px rgba(89, 240, 185, 0.4));
   }
 
   .eyeButton {
@@ -78,14 +80,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s;
-    color: rgba(255, 255, 255, 0.7);
-    border-radius: 6px;
+    transition: all 0.2s ease;
+    color: rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
   }
 
   .eyeButton:hover {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.2);
+    color: rgb(89, 240, 185);
+    background: rgba(89, 240, 185, 0.1);
   }
 
   .eyeButton svg {
@@ -100,23 +102,27 @@
     gap: 0.5rem;
     margin-top: 1rem;
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.6);
   }
 
   .registerButton {
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.9);
+    background: linear-gradient(134deg, rgb(89, 240, 185), rgb(0, 85, 255));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     font-size: 0.9rem;
     cursor: pointer;
-    font-weight: 600;
-    transition: all 0.2s;
+    font-weight: 700;
+    transition: filter 0.2s ease;
     padding: 0;
     text-decoration: underline;
+    text-decoration-color: rgba(89, 240, 185, 0.5);
+    text-underline-offset: 3px;
   }
 
   .registerButton:hover {
-    color: #ffffff;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    filter: brightness(1.25) drop-shadow(0 0 6px rgba(89, 240, 185, 0.4));
   }
 }

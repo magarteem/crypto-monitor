@@ -41,6 +41,8 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
 
   return (
     <div className={styles.page} onMouseMove={handleMouseMove}>
+      <div className={styles.bgBase} aria-hidden />
+      <div className={`${styles.grid3dWave} grid-3d-wave`} aria-hidden />
       <GoBack />
       <main
         className={styles.main}

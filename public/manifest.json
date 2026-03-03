@@ -1,7 +1,7 @@
 {
-  "name": "Crypto Monitor",
-  "short_name": "CryptoMon",
-  "description": "Progressive Web Application for cryptocurrency monitoring",
+  "name": "Avantim",
+  "short_name": "Avantim",
+  "description": "Avantim — мониторинг криптовалют в реальном времени",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -45,13 +45,13 @@
       "sizes": "1920x1080",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Crypto Monitor Desktop View"
+      "label": "Avantim Desktop View"
     },
     {
       "src": "screenshots/mobile.png",
       "sizes": "390x844",
       "type": "image/png",
-      "label": "Crypto Monitor Mobile View"
+      "label": "Avantim Mobile View"
     }
   ]
 }

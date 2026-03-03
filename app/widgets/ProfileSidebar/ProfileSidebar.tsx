@@ -110,20 +110,21 @@ export const ProfileSidebar = ({ isOpen, onClose }: ProfileSidebarProps) => {
 
         {/* Subscription Management Accordion */}
         <Box
-          className={`${styles.accordionItem} ${isSubscriptionExpanded ? styles.expanded : ""
-            }`}
+          className={`${styles.accordionItem} ${styles.accordionSubscription} ${isSubscriptionExpanded ? styles.expanded : ""}`}
         >
           <button
             type="button"
             className={styles.accordionHeader}
             onClick={toggleSubscription}
           >
-            <HStack gap="0.625rem">
-              <SettingsIcon
-                width="20"
-                height="20"
-                className={styles.sectionIcon}
-              />
+            <HStack gap="0.75rem">
+              <span className={`${styles.sectionIconWrapper} ${styles.iconSubscription}`}>
+                <SettingsIcon
+                  width="18"
+                  height="18"
+                  className={styles.sectionIcon}
+                />
+              </span>
               <Text className={styles.accordionTitle}>
                 Управление подпиской
               </Text>
@@ -175,20 +176,21 @@ export const ProfileSidebar = ({ isOpen, onClose }: ProfileSidebarProps) => {
 
         {/* Statistics Accordion */}
         <Box
-          className={`${styles.accordionItem} ${isStatisticsExpanded ? styles.expanded : ""
-            }`}
+          className={`${styles.accordionItem} ${styles.accordionStatistics} ${isStatisticsExpanded ? styles.expanded : ""}`}
         >
           <button
             type="button"
             className={styles.accordionHeader}
             onClick={toggleStatistics}
           >
-            <HStack gap="0.625rem">
-              <ChartBarIcon
-                width="20"
-                height="20"
-                className={styles.sectionIcon}
-              />
+            <HStack gap="0.75rem">
+              <span className={`${styles.sectionIconWrapper} ${styles.iconStatistics}`}>
+                <ChartBarIcon
+                  width="18"
+                  height="18"
+                  className={styles.sectionIcon}
+                />
+              </span>
               <Text className={styles.accordionTitle}>Статистика</Text>
             </HStack>
             {isStatisticsExpanded ? (

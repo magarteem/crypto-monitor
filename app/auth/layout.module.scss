@@ -2,9 +2,22 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #0a0e27 url("/img/bg_1.webp") center/cover no-repeat fixed;
   position: relative;
   overflow: hidden;
+}
+
+/* LLMStart background */
+.bgBase {
+  position: fixed;
+  inset: 0;
+  background: var(--background);
+  z-index: 0;
+}
+
+.grid3dWave {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
 }
 
 .main {

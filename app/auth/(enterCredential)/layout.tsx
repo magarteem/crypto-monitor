@@ -51,7 +51,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <>
       {/* Header Section */}
-      <PageTitle title="Crypto Monitor" subtitle="Отслеживание криптовалют в реальном времени" />
+      <PageTitle title="Avantim" subtitle="Отслеживание криптовалют в реальном времени" />
 
       {/* Auth Card */}
       <AuthFormLayout>

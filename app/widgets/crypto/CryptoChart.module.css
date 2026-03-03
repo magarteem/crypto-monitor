@@ -21,24 +21,31 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 8px 16px;
-  background: rgba(20, 20, 20, 0.85);
+  padding: 8px 18px;
+  background: rgba(10, 5, 35, 0.8);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(59, 130, 246, 0.3);
+  border: 1px solid rgba(89, 240, 185, 0.3);
   border-radius: 12px;
-  color: rgba(59, 130, 246, 0.9);
+  color: rgb(89, 240, 185);
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
 }
 
 .addCoinButton:hover {
-  background: rgba(59, 130, 246, 0.15);
-  border-color: rgba(59, 130, 246, 0.5);
-  color: rgba(96, 165, 250, 1);
-  box-shadow: 0 2px 12px rgba(59, 130, 246, 0.3);
+  background: rgba(89, 240, 185, 0.1);
+  border-color: rgba(89, 240, 185, 0.55);
+  color: rgb(89, 240, 185);
+  box-shadow:
+    0 4px 16px rgba(89, 240, 185, 0.15),
+    0 2px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.addCoinButton:active {
+  transform: translateY(0);
 }
 
 .addIcon {
@@ -50,12 +57,12 @@
 .columnsSelector {
   display: flex;
   gap: 0.5rem;
-  background: rgba(20, 20, 20, 0.85);
+  background: rgba(10, 5, 35, 0.8);
   backdrop-filter: blur(10px);
   padding: 6px;
   border-radius: 12px;
-  border: 1px solid rgba(122, 92, 255, 0.2);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(89, 240, 185, 0.15);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
 }
 
 .columnsButton {
@@ -81,12 +88,12 @@
 
 .columnsButton.active {
   background: linear-gradient(
-    135deg,
-    rgba(122, 92, 255, 0.8),
-    rgba(122, 92, 255, 0.6)
+    134deg,
+    rgba(89, 240, 185, 0.22),
+    rgba(0, 85, 255, 0.28)
   );
-  color: #ffffff;
-  box-shadow: 0 2px 8px rgba(122, 92, 255, 0.4);
+  color: rgb(89, 240, 185);
+  box-shadow: 0 2px 8px rgba(89, 240, 185, 0.2);
 }
 
 /* Loading */
@@ -130,16 +137,42 @@
   max-width: 100%;
   box-sizing: border-box;
   overflow-x: hidden;
+  position: relative;
 
-  /* Glassmorphism эффект матового стекла */
-  background: rgba(0, 10, 30, 0.4);
+  background: linear-gradient(
+    160deg,
+    rgba(8, 4, 28, 0.75) 0%,
+    rgba(12, 16, 45, 0.7) 40%,
+    rgba(6, 22, 40, 0.72) 100%
+  );
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 1px solid rgba(89, 240, 185, 0.15);
   border-radius: 24px;
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 8px 40px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    -4px 0 20px rgba(89, 240, 185, 0.04);
+}
+
+.chartsGrid::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(
+    circle,
+    rgba(89, 240, 185, 0.04) 0%,
+    rgba(0, 85, 255, 0.03) 50%,
+    transparent 70%
+  );
+  pointer-events: none;
+  border-radius: 24px;
 }
 
 .chartItem {
@@ -152,6 +185,7 @@
   box-sizing: border-box;
   overflow: hidden;
   position: relative;
+  border-radius: 16px;
 }
 
 /* Ограничиваем размеры элементов внутри для предотвращения переполнения */

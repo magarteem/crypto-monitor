@@ -49,6 +49,9 @@ export const GraphikV2 = ({
   const candlesDataRef = useRef<CandlestickData<UTCTimestamp>[]>([]);
   const isLoadingMoreRef = useRef<boolean>(false);
   const unsubscribeRef = useRef<(() => void) | null>(null);
+  const currentPriceRef = useRef<number | null>(null);
+  const hoverLineRef = useRef<HTMLDivElement>(null);
+  const hoverBadgeRef = useRef<HTMLSpanElement>(null);
 
   const { subscribeToCandle, getHistoricalKlines } = useSocket();
 
@@ -84,6 +87,11 @@ export const GraphikV2 = ({
       }
     );
   };
+
+  // Синхронизация ref с текущей ценой для использования в замыканиях
+  useEffect(() => {
+    currentPriceRef.current = currentPrice;
+  }, [currentPrice]);
 
   // Обновление цены и изменения из пропсов только при первой загрузке
   // После этого цена обновляется только через WebSocket
@@ -122,22 +130,28 @@ export const GraphikV2 = ({
 
       const chartOptions = {
         layout: {
-          textColor: "white",
-          background: { type: ColorType.Solid as const, color: "black" },
+          textColor: "rgba(255, 255, 255, 0.75)",
+          background: { type: ColorType.Solid as const, color: "rgba(8, 12, 35, 1)" },
         },
         width: containerWidth,
         height: containerHeight,
         grid: {
-          vertLines: { color: "rgba(42, 46, 57, 0.5)" },
-          horzLines: { color: "rgba(42, 46, 57, 0.5)" },
+          vertLines: { color: "rgba(89, 240, 185, 0.06)" },
+          horzLines: { color: "rgba(89, 240, 185, 0.06)" },
         },
         rightPriceScale: {
-          borderColor: "rgba(197, 203, 206, 0.4)",
+          borderColor: "rgba(89, 240, 185, 0.2)",
         },
         timeScale: {
-          borderColor: "rgba(197, 203, 206, 0.4)",
+          borderColor: "rgba(89, 240, 185, 0.2)",
           timeVisible: true,
           secondsVisible: false,
+        },
+        crosshair: {
+          horzLine: {
+            visible: false,
+            labelVisible: false,
+          },
         },
       };
 
@@ -154,6 +168,43 @@ export const GraphikV2 = ({
       chartRef.current = chart;
       candlestickSeriesRef.current = candlestickSeries;
       setChartReady(true);
+
+      // Hover line — пунктирная линия с % изменением от текущей цены
+      chart.subscribeCrosshairMove((param) => {
+        const hoverLine = hoverLineRef.current;
+        const hoverBadge = hoverBadgeRef.current;
+
+        if (!hoverLine || !param.point || param.point.y === undefined) {
+          if (hoverLine) hoverLine.style.display = "none";
+          return;
+        }
+
+        const price = candlestickSeries.coordinateToPrice(param.point.y);
+        const cp = currentPriceRef.current;
+
+        if (price === null || cp === null || cp === 0) {
+          hoverLine.style.display = "none";
+          return;
+        }
+
+        const percent = ((price - cp) / cp) * 100;
+        const sign = percent >= 0 ? "+" : "";
+        const isUp = percent >= 0;
+
+        hoverLine.style.display = "block";
+        hoverLine.style.top = `${param.point.y}px`;
+
+        if (hoverBadge) {
+          hoverBadge.textContent = `${sign}${percent.toFixed(2)}%`;
+          hoverBadge.style.color = isUp ? "rgb(89, 240, 185)" : "#ef5350";
+          hoverBadge.style.borderColor = isUp
+            ? "rgba(89, 240, 185, 0.4)"
+            : "rgba(239, 83, 80, 0.4)";
+          hoverBadge.style.boxShadow = isUp
+            ? "0 2px 8px rgba(89, 240, 185, 0.15)"
+            : "0 2px 8px rgba(239, 83, 80, 0.15)";
+        }
+      });
 
       const handleResize = () => {
         if (chartContainerRef.current && chartRef.current) {
@@ -553,6 +604,9 @@ export const GraphikV2 = ({
       </div>
 
       <div ref={chartContainerRef} className={styles.chartContainer}>
+        <div ref={hoverLineRef} className={styles.hoverLine} style={{ display: "none" }}>
+          <span ref={hoverBadgeRef} className={styles.hoverBadge} />
+        </div>
         {loading && (
           <div
             style={{

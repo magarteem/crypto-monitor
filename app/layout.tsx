@@ -1,27 +1,27 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { cookies } from "next/headers";
 import "./globals.css";
 import { AppProvider } from "@providers/AppProvider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin", "cyrillic"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin", "cyrillic"],
 });
 
 export const metadata: Metadata = {
-  title: "My App",
-  description: "Progressive Web Application built with Next.js and Serwist",
+  title: "Avantim",
+  description: "Avantim — мониторинг криптовалют в реальном времени",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "My App",
+    title: "Avantim",
   },
   icons: {
     icon: [
@@ -60,8 +60,8 @@ export default async function RootLayout({
     .default;
 
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang={locale} data-theme="dark" suppressHydrationWarning>
+      <body className={`${inter.variable} ${jetbrainsMono.variable}`}>
         <AppProvider locale={locale} messages={messages}>
           {children}
         </AppProvider>

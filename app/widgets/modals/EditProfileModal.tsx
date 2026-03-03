@@ -123,12 +123,23 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
         <Box className={styles.avatarSection}>
           <Text className={styles.avatarLabel}>Аватар</Text>
           <div className={styles.avatarContainer}>
-            <div className={styles.avatarPreview}>
+            <div
+              className={styles.avatarPreview}
+              onClick={() => fileInputRef.current?.click()}
+              role="button"
+              tabIndex={0}
+              aria-label="Загрузить аватар"
+              onKeyDown={(e) => e.key === "Enter" && fileInputRef.current?.click()}
+            >
               {avatarPreview ? (
                 <img src={avatarPreview} alt="Avatar preview" />
               ) : (
                 <UserIcon width="48" height="48" />
               )}
+              <div className={styles.avatarOverlay}>
+                <span className={styles.avatarOverlayIcon}>📷</span>
+                <span className={styles.avatarOverlayText}>Загрузить</span>
+              </div>
             </div>
             <div className={styles.avatarActions}>
               <input

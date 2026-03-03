@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 252 52" width="252" height="52" fill="none">
+  <defs>
+    <!-- Icon gradient: mint (bottom) ’ blue (top-right) -->
+    <linearGradient id="iconGrad" x1="4" y1="50" x2="72" y2="8" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#59F0B9"/>
+      <stop offset="1" stop-color="#0055FF"/>
+    </linearGradient>
+
+    <!-- Text gradient: white ’ mint ’ blue -->
+    <linearGradient id="textGrad" x1="82" y1="0" x2="252" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff"/>
+      <stop offset="0.48" stop-color="#59F0B9"/>
+      <stop offset="1" stop-color="#0055FF"/>
+    </linearGradient>
+
+    <!-- Glow for the dot -->
+    <filter id="dotGlow" x="-120%" y="-120%" width="340%" height="340%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Subtle glow for lines -->
+    <filter id="lineGlow" x="-10%" y="-30%" width="120%" height="160%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- PP ICON MARK PP -->
+
+  <!-- Left leg of A -->
+  <line x1="5" y1="48" x2="24" y2="5"
+    stroke="url(#iconGrad)" stroke-width="3.5" stroke-linecap="round"
+    filter="url(#lineGlow)"/>
+
+  <!-- Right leg of A -->
+  <line x1="43" y1="48" x2="24" y2="5"
+    stroke="url(#iconGrad)" stroke-width="3.5" stroke-linecap="round"
+    filter="url(#lineGlow)"/>
+
+  <!-- Crossbar ’ trend sparkline (A-crossbar that rises as an uptrend) -->
+  <polyline
+    points="13,31 36,31 47,20 58,24 68,12"
+    stroke="url(#iconGrad)" stroke-width="2.5"
+    stroke-linecap="round" stroke-linejoin="round"
+    filter="url(#lineGlow)"
+  />
+
+  <!-- Glowing dot at trend peak -->
+  <circle cx="68" cy="12" r="4" fill="#59F0B9" filter="url(#dotGlow)"/>
+
+  <!-- PP WORDMARK PP -->
+  <text
+    x="82" y="36"
+    font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Helvetica, Arial, sans-serif"
+    font-size="28"
+    font-weight="800"
+    fill="url(#textGrad)"
+    letter-spacing="-0.4"
+  >Avantim</text>
+</svg>

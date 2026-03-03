@@ -206,20 +206,21 @@ export const SettingsSidebar = ({
         <VStack className={styles.content} gap="1rem" align="stretch">
           {/* 1. Мэнеджер уведомлений */}
           <Box
-            className={`${styles.accordionItem} ${expandedSection === "notifications" ? styles.expanded : ""
-              }`}
+            className={`${styles.accordionItem} ${styles.accordionNotifications} ${expandedSection === "notifications" ? styles.expanded : ""}`}
           >
             <button
               type="button"
               className={styles.accordionHeader}
               onClick={() => toggleSection("notifications")}
             >
-              <HStack gap="0.625rem">
-                <SettingsIcon
-                  width="20"
-                  height="20"
-                  className={styles.sectionIcon}
-                />
+              <HStack gap="0.75rem">
+                <span className={`${styles.sectionIconWrapper} ${styles.iconNotifications}`}>
+                  <SettingsIcon
+                    width="18"
+                    height="18"
+                    className={styles.sectionIcon}
+                  />
+                </span>
                 <Text className={styles.accordionTitle}>
                   {t("notifications.title")}
                 </Text>
@@ -309,20 +310,21 @@ export const SettingsSidebar = ({
 
           {/* 2. Отслеживаемые монеты */}
           <Box
-            className={`${styles.accordionItem} ${expandedSection === "coins" ? styles.expanded : ""
-              }`}
+            className={`${styles.accordionItem} ${styles.accordionCoins} ${expandedSection === "coins" ? styles.expanded : ""}`}
           >
             <button
               type="button"
               className={styles.accordionHeader}
               onClick={() => toggleSection("coins")}
             >
-              <HStack gap="0.625rem">
-                <CoinsIcon
-                  width="20"
-                  height="20"
-                  className={styles.sectionIcon}
-                />
+              <HStack gap="0.75rem">
+                <span className={`${styles.sectionIconWrapper} ${styles.iconCoins}`}>
+                  <CoinsIcon
+                    width="18"
+                    height="18"
+                    className={styles.sectionIcon}
+                  />
+                </span>
                 <Text className={styles.accordionTitle}>
                   {t("coins.title")}
                 </Text>
@@ -607,20 +609,21 @@ export const SettingsSidebar = ({
 
           {/* 3. Настройки приложения */}
           <Box
-            className={`${styles.accordionItem} ${expandedSection === "app" ? styles.expanded : ""
-              }`}
+            className={`${styles.accordionItem} ${styles.accordionApp} ${expandedSection === "app" ? styles.expanded : ""}`}
           >
             <button
               type="button"
               className={styles.accordionHeader}
               onClick={() => toggleSection("app")}
             >
-              <HStack gap="0.625rem">
-                <SettingsIcon
-                  width="20"
-                  height="20"
-                  className={styles.sectionIcon}
-                />
+              <HStack gap="0.75rem">
+                <span className={`${styles.sectionIconWrapper} ${styles.iconApp}`}>
+                  <SettingsIcon
+                    width="18"
+                    height="18"
+                    className={styles.sectionIcon}
+                  />
+                </span>
                 <Text className={styles.accordionTitle}>
                   {t("app.title")}
                 </Text>
