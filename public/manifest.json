@@ -4,8 +4,8 @@
   "description": "Avantim — мониторинг криптовалют в реальном времени",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "background_color": "#050318",
+  "theme_color": "#59F0B9",
   "orientation": "portrait-primary",
   "icons": [
     {
@@ -42,16 +42,17 @@
   "screenshots": [
     {
       "src": "screenshots/desktop.png",
-      "sizes": "1920x1080",
+      "sizes": "1376x768",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Avantim Desktop View"
+      "label": "Avantim — мониторинг графиков криптовалют в реальном времени"
     },
     {
       "src": "screenshots/mobile.png",
-      "sizes": "390x844",
+      "sizes": "1376x768",
       "type": "image/png",
-      "label": "Avantim Mobile View"
+      "form_factor": "wide",
+      "label": "Avantim — мобильное приложение для трейдеров"
     }
   ]
 }
