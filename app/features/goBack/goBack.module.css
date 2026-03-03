@@ -1,7 +1,9 @@
 .backButton {
   position: fixed;
   top: 1.5rem;
+  top: max(1.5rem, env(safe-area-inset-top));
   left: 1.5rem;
+  left: max(1.5rem, env(safe-area-inset-left));
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -36,4 +38,13 @@
 
 .backButton:hover svg {
   transform: translateX(-3px);
+}
+
+@media (max-width: 480px) {
+  .backButton {
+    top: max(1rem, env(safe-area-inset-top));
+    left: max(1rem, env(safe-area-inset-left));
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
 }

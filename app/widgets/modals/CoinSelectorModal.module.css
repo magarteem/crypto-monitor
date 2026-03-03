@@ -231,7 +231,7 @@
 
 @media (max-width: 480px) {
   .coinsContainer {
-    max-height: 300px;
+    max-height: min(300px, 50vh);
   }
 
   .warning {

@@ -3,7 +3,7 @@
   margin-bottom: 1rem;
 
   .title {
-    font-size: 3rem;
+    font-size: clamp(1.75rem, 5vw, 3rem);
     font-weight: 800;
     background: linear-gradient(134deg, rgb(255, 255, 255), rgb(89, 240, 185) 50%, rgb(0, 85, 255));
     -webkit-background-clip: text;
@@ -15,7 +15,7 @@
   }
 
   .subtitle {
-    font-size: 0.95rem;
+    font-size: clamp(0.85rem, 2.5vw, 0.95rem);
     color: rgba(89, 240, 185, 0.75);
     font-weight: 400;
     line-height: 1.5;

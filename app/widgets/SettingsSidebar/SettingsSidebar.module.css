@@ -4,6 +4,7 @@
   right: -420px;
   width: 420px;
   height: 100vh;
+  height: 100dvh;
   background: linear-gradient(
     160deg,
     rgba(10, 5, 35, 0.92) 0%,
@@ -161,9 +162,12 @@
   padding: 1.5rem;
   background: transparent;
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
   z-index: 1;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Section */
@@ -381,6 +385,10 @@
   background: rgba(0, 10, 30, 0.3);
   backdrop-filter: blur(10px);
   border-radius: 12px;
+  max-height: 280px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 .coinsGrid::-webkit-scrollbar {

@@ -193,6 +193,10 @@
   color: var(--success);
 }
 
+.profileIcon {
+  display: none;
+}
+
 /* Loader */
 .loader {
   display: flex;
@@ -230,6 +234,11 @@
   }
 }
 
+/* Mobile menu button - hidden on desktop */
+.mobileMenuButton {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 0 1rem;
@@ -237,6 +246,101 @@
 
   .nav {
     display: none;
+  }
+
+  .mobileMenuButton {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: var(--accent-muted);
+    border: 1px solid var(--accent-border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .mobileMenuButton:hover {
+    background: rgba(6, 255, 165, 0.2);
+  }
+
+  .hamburger {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .mobileMenuButton.mobileMenuOpen .hamburger:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .mobileMenuButton.mobileMenuOpen .hamburger:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobileMenuButton.mobileMenuOpen .hamburger:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .mobileMenu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .mobileMenuOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+  }
+
+  .mobileMenuContent {
+    position: relative;
+    width: min(280px, 85vw);
+    padding: 5rem 1.5rem 2rem;
+    background: var(--card-bg);
+    border-left: 1px solid var(--card-border);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    animation: slideIn 0.3s ease;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  .mobileNavLink {
+    padding: 1rem 1.25rem;
+    color: var(--foreground-secondary);
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+  }
+
+  .mobileNavLink:hover {
+    background: var(--accent-muted);
+    color: var(--accent);
   }
 
   .logoText {
@@ -257,8 +361,16 @@
     display: none;
   }
 
+  .profileSeparator {
+    display: none;
+  }
+
   .profileNetwork {
     display: none;
+  }
+
+  .profileIcon {
+    display: inline;
   }
 
   .loginButton {
@@ -283,7 +395,7 @@
 
 @media (max-width: 480px) {
   .container {
-    padding: 0 0.75rem;
+    padding: 0 max(0.75rem, env(safe-area-inset-left));
   }
 
   .logoText {
@@ -297,6 +409,7 @@
 
   .header {
     padding: 8px 0;
+    padding-top: max(8px, env(safe-area-inset-top));
   }
 
   .profileButton {

@@ -227,7 +227,8 @@
 @media (max-width: 480px) {
   .modal {
     border-radius: 16px;
-    max-height: 98vh;
+    max-height: min(98vh, 98dvh);
+    margin: 0.5rem;
   }
 
   .header {
@@ -236,13 +237,18 @@
 
   .title {
     font-size: 1.1rem;
+    line-height: 1.3;
+    word-break: break-word;
   }
 
   .body {
     padding: 1.25rem;
+    min-height: 0;
   }
 
   .footer {
     padding: 1rem 1.25rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
 }

@@ -8,7 +8,7 @@ import { ProfileSidebar } from "../ProfileSidebar";
 import { SettingsSidebar } from "../SettingsSidebar";
 import { useState, useEffect } from "react";
 import LogoIcon from "@/public/img/logo.svg";
-import { BellIcon } from "@/public/img";
+import { BellIcon, UserIcon } from "@/public/img";
 import { Tooltip } from "@/app/shared/components/toolTip/ToolTip";
 import { useFindProfile } from "@/app/shared/api/generated/user/user";
 
@@ -16,6 +16,7 @@ export const Header = () => {
   const { data: session, status } = useSession();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { data: userProfile } = useFindProfile({
     query: {
@@ -23,7 +24,6 @@ export const Header = () => {
     },
   });
 
-  console.log("userProfile ======", userProfile);
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -57,6 +57,39 @@ export const Header = () => {
             </Link>
           </nav>
 
+          {/* Mobile menu button */}
+          <button
+            type="button"
+            className={`${styles.mobileMenuButton} ${isMobileMenuOpen ? styles.mobileMenuOpen : ""}`}
+            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+            aria-label={isMobileMenuOpen ? "Закрыть меню" : "Открыть меню"}
+            aria-expanded={isMobileMenuOpen}
+          >
+            <span className={styles.hamburger} />
+            <span className={styles.hamburger} />
+            <span className={styles.hamburger} />
+          </button>
+
+          {/* Mobile menu dropdown */}
+          {isMobileMenuOpen && (
+            <div className={styles.mobileMenu}>
+              <div className={styles.mobileMenuOverlay} onClick={() => setIsMobileMenuOpen(false)} />
+              <div className={styles.mobileMenuContent}>
+                {session?.user && (
+                  <Link href={RouteNames.DASHBOARD} className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>
+                    Dashboard
+                  </Link>
+                )}
+                <Link href={RouteNames.TARIFFS} className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>
+                  Tariffs
+                </Link>
+                <Link href={RouteNames.ABOUT} className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>
+                  About
+                </Link>
+              </div>
+            </div>
+          )}
+
           {/* Action Buttons */}
           <div className={styles.sideBarBtn}>
             {status === "loading" ? (
@@ -69,11 +102,12 @@ export const Header = () => {
                   type="button"
                   className={styles.profileButton}
                   onClick={() => setIsProfileOpen(true)}
+                  title={userProfile?.email || "Профиль"}
                 >
                   <span className={styles.profileEmail}>
                     {userProfile?.email}
                   </span>
-                  |
+                  <span className={styles.profileSeparator}>|</span>
                   <Tooltip
                     showArrow
                     content={userProfile?.selectedPlan?.name || "FREE"}
@@ -81,6 +115,7 @@ export const Header = () => {
                   >
                     <span className={styles.profileNetwork}>{userProfile?.selectedPlan?.name || "FREE"}</span>
                   </Tooltip>
+                  <UserIcon width="20" height="20" className={styles.profileIcon} />
                 </button>
 
                 <button
